@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Invest For Friend/Customer — fund someone else's future</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script>
+if(!window.jsQR){
+  document.write('<script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"><\/script>');
+}
+</script>
+<style>
+:root{
+  --bg:#C9CFD4; --bg2:#DCE0E3; --surf:#EDEFF1; --surf2:#F5F6F7;
+  --line:rgba(150,117,26,.30); --line-soft:rgba(40,55,48,.13);
+  --copper:#B8912F; --copper-lt:#8A6A16; --sage:#2E9560; --sage-dk:#1E6B47;
+  --ivory:#000000; --muted:#5C6B62; --muted2:#83908A; --rose:#B84B48;
+  --serif:'Fraunces',Georgia,serif; --sans:'Karla',system-ui,sans-serif; --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ivory);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;
+  background-image:radial-gradient(1100px 540px at 82% -10%,rgba(201,162,75,.13),transparent 62%),radial-gradient(900px 600px at 0% 6%,rgba(63,178,122,.06),transparent 58%)}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.tnum{font-variant-numeric:tabular-nums}
+.wrap{max-width:1220px;margin:0 auto;padding:0 26px}
+header{position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);background:linear-gradient(180deg,rgba(201,207,212,.92),rgba(201,207,212,.5));border-bottom:1px solid var(--line-soft)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:74px;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(150deg,#ead08a,#a87e22);display:flex;align-items:center;justify-content:center;color:#0b120e;font-family:var(--serif);font-weight:600;font-size:20px;box-shadow:0 0 0 1px rgba(201,162,75,.4),0 10px 26px rgba(201,162,75,.18)}
+.brand h1{font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.1}
+.brand small{color:var(--muted);font-size:14px;letter-spacing:.02em}
+nav{display:flex;gap:22px}
+nav a{color:var(--muted);font-size:14px;text-decoration:none}
+nav a:hover{color:var(--ivory)}
+.btn{border-radius:10px;padding:10px 17px;font-weight:600;font-size:14px;transition:all .18s;border:1px solid transparent;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+a.btn{text-decoration:none}
+.btn-p{background:linear-gradient(145deg,#A7CDF0,#6BA0D4);color:#000;box-shadow:0 8px 22px rgba(107,160,212,.30)}
+.btn-p:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+.btn-s{background:linear-gradient(145deg,#C2DDF6,#93BFE8);color:#000}
+.btn-s:hover{filter:brightness(1.06)}
+.btn-s:disabled{opacity:.4;cursor:not-allowed}
+.btn-g{border-color:var(--line);color:var(--ivory)}
+.btn-g:hover{border-color:#6BA0D4;background:rgba(107,160,212,.08)}
+.full{width:100%;margin-top:12px}
+.hero{padding:16px 0 4px;text-align:center}
+.eyebrow{color:var(--copper);font-family:var(--serif);font-style:italic;font-size:19px;margin-bottom:10px}
+.hero h2{font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.35;max-width:60ch;margin:0 auto}
+.hero h2 em{font-style:italic;color:var(--copper-lt)}
+.hero p{color:var(--muted);max-width:58ch;margin:14px auto 0}
+.band{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;margin:18px 0 4px}
+.stat{background:var(--bg2);padding:13px 16px;text-align:center}
+.stat .k{color:var(--muted);font-size:12px}
+.stat .v{font-family:var(--serif);font-size:21px;font-weight:500;margin-top:2px}
+.stat .s{color:var(--muted2);font-size:12px}
+.tabbar{display:flex;justify-content:center;gap:8px;padding:18px 0 14px;border-bottom:1px solid var(--line-soft);margin-bottom:22px;
+  position:sticky;top:74px;z-index:30;background:linear-gradient(180deg,var(--bg) 70%,rgba(201,207,212,.9));
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabbar::-webkit-scrollbar{display:none}
+.tabbar button{white-space:nowrap;flex:0 0 auto}
+.tabbar button{border:1px solid var(--line-soft);border-radius:999px;padding:9px 18px;font-size:14px;color:var(--muted);transition:all .18s}
+.tabbar button:hover{color:var(--ivory);border-color:var(--line)}
+.tabbar button.on{border-color:var(--copper);color:var(--copper-lt);background:rgba(201,162,75,.09)}
+.tabbar button .c{color:var(--muted2);margin-left:6px;font-size:11.5px}
+.views{padding-bottom:36px}
+.view{display:none;margin:0 auto}
+.view.on{display:block}
+.view[data-tab="fund"]{max-width:480px}
+.view[data-tab="referral"]{max-width:480px}
+.view[data-tab="myrefs"]{max-width:480px}
+.view[data-tab="positions"]{max-width:680px}
+.view[data-tab="redeem"]{max-width:480px}
+.view[data-tab="dist"]{max-width:680px}
+.view[data-tab="admin"]{max-width:680px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.codeinp{text-transform:uppercase;letter-spacing:.12em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-align:center;font-size:19px}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;font-size:13.5px;color:var(--ivory);word-break:break-all}
+.mini{border:1px solid var(--line-soft);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--ivory);white-space:nowrap}
+.mini:hover{border-color:#6BA0D4;background:rgba(107,160,212,.08)}
+.mini.dan{color:var(--rose)}
+.mini:disabled{opacity:.4;cursor:not-allowed}
+.crow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--line-soft);flex-wrap:wrap}
+.crow:first-child{border-top:none}
+.crow .cl{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 180px}
+.crow .cm{color:var(--muted);font-size:12px}
+.crow .ca{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 8px}
+.toolbar .btn{padding:8px 13px;font-size:13px}
+.ok{color:var(--sage);font-weight:600}
+.bad{color:var(--rose);font-weight:600}
+.feat{margin:10px 0 4px;padding-left:18px;color:var(--muted);font-size:13.5px}
+.feat li{margin:3px 0}
+.how.view{max-width:none;margin:0}
+#topnav button{color:var(--muted);font-size:14px}
+#topnav button:hover,#topnav button.on{color:var(--ivory)}
+.panel{background:var(--surf);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden}
+.ph{padding:15px 18px 0;text-align:center}
+.ph h3{font-family:var(--serif);font-weight:500;font-size:19px}
+.ph .n{color:var(--muted);font-size:13.5px;margin-top:2px}
+.pb{padding:13px 18px 18px}
+.field{margin-top:11px}
+.field label{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;margin-bottom:5px;flex-wrap:wrap}
+.field label b{color:var(--ivory);font-weight:500;cursor:pointer}
+.inp{width:100%;min-width:0;background:var(--bg2);border:1px solid var(--line-soft);border-radius:10px;padding:10px 12px;color:var(--ivory);font-size:15.5px}
+.inp:focus{outline:none;border-color:var(--copper)}
+.inp:disabled{opacity:.6;cursor:not-allowed}
+.inp::placeholder{color:var(--muted2)}
+.row{display:flex;gap:9px}
+.row .inp{flex:1}
+.mx{background:rgba(107,160,212,.14);color:#000;border:1px solid rgba(107,160,212,.42);border-radius:10px;padding:0 14px;font-weight:600;font-size:13px}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:3px}
+.chips button{border:1px solid var(--line-soft);border-radius:9px;padding:7px 0;font-size:12.5px;color:var(--muted)}
+.chips button.on{border-color:var(--copper);color:var(--copper-lt);background:rgba(201,162,75,.09)}
+.chips.p3{grid-template-columns:repeat(3,1fr)}
+.planfix{display:flex;align-items:center;justify-content:center;gap:12px;border:1px solid var(--line);border-radius:10px;background:rgba(201,162,75,.07);padding:11px 14px}
+.planfix .pm{font-family:var(--serif);font-size:22px;color:var(--copper-lt);line-height:1}
+.planfix .ps{font-size:12px;color:var(--muted);line-height:1.35}
+.chips .pm{font-family:var(--serif);font-size:15px;display:block;line-height:1.2}
+.chips .ps{font-size:10.5px;color:var(--muted2);display:block;line-height:1.3}
+.chips button.on .ps{color:var(--copper)}
+.prev{margin-top:11px;border:1px solid var(--line-soft);border-radius:11px;background:var(--bg2);padding:10px 13px}
+.pr{display:flex;justify-content:space-between;gap:10px;padding:3px 0;font-size:13.5px}
+.pr .v{text-align:right;word-break:break-word}
+.pr .k{color:var(--muted)}
+.pr .v{font-variant-numeric:tabular-nums}
+.pr.hi .v{color:var(--copper-lt);font-family:var(--serif);font-size:16px}
+.hint{color:var(--muted2);font-size:12.5px;margin-top:8px;line-height:1.45}
+#benInfo .bnote{display:block;color:var(--copper-lt);font-size:12.5px;margin-bottom:5px}
+.btot{display:flex;gap:8px;margin:2px 0 9px;flex-wrap:wrap}
+.elab{color:var(--muted);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;margin:12px 0 5px}
+.hlist{margin:2px 0 6px;border:1px solid var(--line-soft);border-radius:10px;overflow:hidden}
+.hrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--line-soft);font-size:12.5px}
+.hrow:first-child{border-top:none}
+.ha{color:var(--ivory);font-variant-numeric:tabular-nums}
+.hm{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.hlink{color:var(--copper-lt);text-decoration:none;font-size:12px;white-space:nowrap}
+.hemp{padding:12px;color:var(--muted2);font-size:12.5px;text-align:center}
+.pos details summary{list-style:none}
+.pos details summary::-webkit-details-marker{display:none}
+.pos details summary:before{content:"▸ ";color:var(--muted2)}
+.pos details[open] summary:before{content:"▾ "}
+.pos details summary:hover{color:var(--ivory)}
+.gate{position:fixed;inset:0;z-index:200;background:rgba(5,10,7,.86);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px}
+.gatebox{position:relative;width:100%;max-width:400px;background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:28px 24px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+.gatebox .gclose{position:absolute;top:8px;right:12px;background:none;border:none;color:var(--muted);font-size:24px;line-height:1;cursor:pointer;padding:4px 6px}
+.gatebox .gclose:hover{color:var(--ivory)}
+.gatebox .gskip{display:block;margin:12px auto 0;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;text-decoration:underline}
+.gatebox .gskip:hover{color:var(--ivory)}
+.gatebox .gmark{width:48px;height:48px;margin:0 auto 14px;border-radius:13px;background:var(--copper);color:#0b120e;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:26px;font-weight:600}
+.gatebox h3{font-family:var(--serif);font-weight:500;font-size:23px;margin-bottom:9px}
+.gatebox p{color:var(--muted);font-size:13.5px;line-height:1.5;margin-bottom:18px}
+.gatebox .inp{text-align:center}
+.gatebox .ghint{color:var(--copper-lt);font-size:12px;margin-top:9px;line-height:1.45;min-height:1px}
+.btot>div{flex:1;min-width:96px;background:var(--bg2);border:1px solid var(--line-soft);border-radius:9px;padding:8px 10px}
+.btot span{display:block;color:var(--muted);font-size:11px}
+.btot b{display:block;color:var(--ivory);font-size:15px;font-family:var(--serif);font-weight:500;margin-top:2px;font-variant-numeric:tabular-nums}
+#benInfo .benrow{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line-soft);font-size:12.5px}
+#benInfo .benrow:first-of-type{border-top:none}
+#benInfo .brt{color:var(--ivory)}
+#benInfo .brt b{color:var(--copper-lt);font-weight:600}
+#benInfo .brm{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.warn{color:var(--rose);font-size:12.5px;margin-top:9px}
+.empty{text-align:center;padding:28px 14px;color:var(--muted)}
+.empty .f{font-family:var(--serif);font-size:30px;color:var(--copper);font-style:italic;margin-bottom:4px}
+.pos{border-top:1px solid var(--line-soft);padding:14px 0}
+.pos:first-child{border-top:none}
+.pt{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pt .t{font-family:var(--serif);font-size:16px}
+.pt .t span{font-family:var(--sans);font-size:12px;color:var(--muted);margin-left:7px}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:11px 0 10px}
+.meta .k{color:var(--muted);font-size:12.5px}
+.meta .v{font-size:15px;margin-top:2px;font-variant-numeric:tabular-nums}
+.meter{height:7px;border-radius:99px;background:rgba(40,55,48,.10);overflow:hidden;position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;border-radius:99px;background:linear-gradient(90deg,#6f5416,#ead08a);box-shadow:0 0 12px rgba(201,162,75,.4)}
+.meter.ok i{background:linear-gradient(90deg,#1e6b47,#5ccb8e)}
+.mc{display:flex;justify-content:space-between;margin-top:6px;color:var(--muted2);font-size:11px}
+.tag{padding:5px 10px;border-radius:99px;font-size:11.5px;font-weight:600;border:1px solid transparent;display:inline-block}
+.tg-w{color:var(--muted);border-color:var(--line-soft)}
+.tg-t{color:var(--copper-lt);border-color:var(--line);background:rgba(201,162,75,.08)}
+.tg-r{color:var(--sage);border-color:var(--sage-dk);background:rgba(63,178,122,.1)}
+.tg-d{color:var(--muted2);border-color:var(--line-soft)}
+.act{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.act .btn{flex:1 1 auto;min-width:140px}
+.cd{font-variant-numeric:tabular-nums;color:var(--copper-lt);font-size:13px}
+.ev{display:flex;gap:13px;border-top:1px solid var(--line-soft);padding:13px 0}
+.ev:first-child{border-top:none}
+.ev .ic{width:32px;height:32px;flex:0 0 32px;border-radius:9px;border:1px solid var(--line-soft);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px}
+.ic.g{color:var(--copper);background:rgba(201,162,75,.09)}
+.ic.c{color:var(--sage);background:rgba(63,178,122,.09)}
+.ic.i{color:var(--copper-lt);background:rgba(201,162,75,.06)}
+.ic.v{color:var(--muted)}
+.ev .b{flex:1;min-width:0}
+.ev .l1{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ev .tt{font-size:14px;font-weight:600}
+.ev .am{font-variant-numeric:tabular-nums;font-size:14px}
+.ev .am.in{color:var(--sage)}
+.ev .l2{color:var(--muted);font-size:12px;margin-top:2px;display:flex;gap:12px;flex-wrap:wrap}
+.ev .l2 a{color:var(--muted2);text-decoration:none}
+.ev .l2 a:hover{color:var(--copper)}
+.alert{border-radius:12px;padding:12px 15px;margin:12px auto;font-size:13px;display:flex;gap:10px;line-height:1.5;max-width:70ch;text-align:left}
+.alert .a{width:19px;height:19px;flex:0 0 19px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--serif)}
+.alert.w{border:1px solid rgba(201,111,111,.3);background:rgba(201,111,111,.07);color:#7A2E2E}
+.alert.w .a{background:rgba(201,111,111,.2);color:var(--rose)}
+.alert.i2{border:1px solid var(--line);background:rgba(201,162,75,.06);color:var(--muted)}
+.alert.i2 .a{background:rgba(201,162,75,.18);color:var(--copper-lt)}
+.alert b{color:var(--ivory)}
+.alert button{color:var(--copper-lt);text-decoration:underline;font-weight:600}
+.how{padding:0 0 70px}
+.how h3{font-family:var(--serif);font-weight:500;font-size:27px;margin-bottom:4px;text-align:center}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;margin-top:18px}
+.step{background:var(--bg2);padding:20px;text-align:center}
+.step .n{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--copper)}
+.step h4{font-size:14.5px;margin:7px 0 5px}
+.step p{color:var(--muted);font-size:13px}
+.risk{margin-top:20px;border:1px solid rgba(201,111,111,.26);background:rgba(201,111,111,.06);border-radius:12px;padding:17px 19px;text-align:center;max-width:70ch;margin-left:auto;margin-right:auto}
+.risk h4{color:var(--rose);font-size:14px;margin-bottom:5px}
+.risk p{color:#3E4A44;font-size:12.5px;line-height:1.6}
+footer{border-top:1px solid var(--line-soft);padding:24px 0;color:var(--muted2);font-size:12px}
+.foot{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;text-align:center}
+.scanwrap{position:fixed;inset:0;z-index:90;background:rgba(5,10,7,.86);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px}
+.scanwrap[hidden]{display:none}
+.scanbox{background:var(--surf);border:1px solid var(--line);border-radius:16px;overflow:hidden;width:100%;max-width:420px}
+.scanhd{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line-soft);font-weight:600;font-size:14px}
+.scanhd button{color:var(--copper-lt);font-size:13px;font-weight:600}
+.scanview{position:relative;background:#000;aspect-ratio:1/1}
+.scanview video{width:100%;height:100%;object-fit:cover;display:block}
+.scanframe{position:absolute;inset:16%;border:2px solid var(--copper);border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.25)}
+.scanft{padding:12px 16px;color:var(--muted);font-size:12.5px;text-align:center}
+.qrbtns{display:flex;gap:8px;margin-top:7px}
+.qrbtns button{flex:1;border:1px solid var(--line-soft);border-radius:10px;padding:9px 0;font-size:12.5px;color:var(--muted)}
+.qrbtns button:hover{border-color:var(--copper);color:var(--copper-lt)}
+#toasts{position:fixed;right:20px;bottom:20px;z-index:80;display:flex;flex-direction:column;gap:9px;max-width:350px}
+.toast{background:var(--surf2);border:1px solid var(--line);border-radius:12px;padding:12px 15px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.toast.err{border-color:rgba(201,111,111,.5)}
+.toast .t{font-weight:600;font-size:13.5px}
+.toast .d{color:var(--muted);font-size:12px;margin-top:2px;word-break:break-word}
+.toast a{color:var(--copper-lt)}
+@media(max-width:940px){
+  .band,.steps{grid-template-columns:repeat(2,1fr)}
+  nav{display:none}
+  .meta{grid-template-columns:1fr 1fr}
+  .view,.view[data-tab="fund"],.view[data-tab="referral"],.view[data-tab="myrefs"],.view[data-tab="positions"],.view[data-tab="redeem"],.view[data-tab="dist"],.view[data-tab="admin"]{max-width:none}
+}
+@media(max-width:680px){
+  body{font-size:15.5px}
+  .wrap{padding:0 16px}
+  .bar{height:64px}
+  .brand h1{font-size:18px}
+  .brand small{font-size:12px}
+  .mark{width:32px;height:32px;font-size:18px;border-radius:9px}
+  #cbtn{padding:9px 14px;font-size:13px}
+  .hero{padding:12px 0 4px;text-align:center}
+  .eyebrow{font-size:16px;margin-bottom:8px}
+  .hero h2{font-size:18px;line-height:1.4;max-width:none}
+  .hero p{font-size:14px;margin-top:12px}
+  .band{grid-template-columns:1fr 1fr;margin:20px 0 4px}
+  .stat{padding:12px 13px}
+  .stat .v{font-size:19px}
+  .stat .k,.stat .s{font-size:11px}
+  .tabbar{top:64px;padding:14px 0 12px;margin-bottom:18px;gap:7px;justify-content:flex-start}
+  .tabbar button{padding:8px 14px;font-size:13px}
+  .ph{padding:13px 14px 0}
+  .ph h3{font-size:18px}
+  .pb{padding:12px 14px 15px}
+  .inp{font-size:16px;padding:12px 13px}
+  .chips{grid-template-columns:repeat(3,1fr)}
+  .chips.p3{grid-template-columns:repeat(2,1fr)}
+  .chips button{padding:10px 0}
+  .meta{grid-template-columns:1fr 1fr;gap:10px}
+  .pt .t{font-size:16px}
+  .steps{grid-template-columns:1fr}
+  .how h3{font-size:23px}
+  .risk{padding:15px 16px}
+  #toasts{right:12px;left:12px;bottom:12px;max-width:none}
+  .foot{flex-direction:column;gap:6px}
+  .row{flex-wrap:nowrap}
+  .mx{padding:0 12px;font-size:12.5px}
+}
+@media(max-width:680px){
+  .bar{gap:10px}
+  .brand{min-width:0;flex:1 1 auto;gap:9px}
+  .brand>div:last-child{min-width:0}
+  .brand h1{font-size:14.5px;line-height:1.18;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+  .brand small{display:none}
+  .mark{flex:0 0 32px}
+  .hdrActions{flex:0 0 auto;gap:6px}
+  #cbtn{white-space:nowrap;padding:8px 12px;font-size:12.5px}
+  #setBtn{width:38px;height:38px;font-size:16px}
+}
+@media(max-width:380px){
+  .brand h1{font-size:13.5px}
+  .mark{width:28px;height:28px;flex:0 0 28px;font-size:16px;border-radius:8px}
+  #cbtn{padding:8px 10px;font-size:12px}
+  #setBtn{width:34px;height:34px}
+}
+@media(max-width:400px){
+  .band{grid-template-columns:1fr}
+  .meta{grid-template-columns:1fr}
+  .chips,.chips.p3{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* wallet-connect price popup */
+.pricePop{position:fixed;inset:0;background:rgba(0,0,0,.66);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.pricePop.show{display:flex}
+.pricePop-card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:30px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.55);animation:popIn .25s ease}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+.pricePop-arrow{font-size:66px;line-height:1;margin-bottom:8px;font-weight:700}
+.pricePop-pct{font-family:var(--serif);font-variant-numeric:tabular-nums;font-size:26px;font-weight:800;margin-bottom:14px}
+.pricePop.up .pricePop-arrow,.pricePop.up .pricePop-pct{color:var(--sage)}
+.pricePop.down .pricePop-arrow,.pricePop.down .pricePop-pct{color:var(--rose)}
+.pricePop-msg{color:var(--ivory);font-size:17px;font-weight:600;line-height:1.55;margin-bottom:24px}
+.pricePop-btn{width:100%;padding:12px;border:none;border-radius:10px;background:#6BA0D4;color:#000;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
+.pricePop-btn:hover{filter:brightness(1.08)}
+/* transaction-complete popup */
+.txPop{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:10001;padding:20px}
+.txPop.show{display:flex}
+.txPop-card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:30px 24px;max-width:370px;width:100%;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.55);animation:popIn .25s ease}
+.txPop-check{width:70px;height:70px;margin:0 auto 16px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:700;box-shadow:0 8px 26px rgba(46,149,96,.4)}
+.txPop-title{font-family:var(--serif);font-size:24px;font-weight:600;margin-bottom:9px}
+.txPop-msg{color:var(--muted);font-size:15px;line-height:1.55;margin-bottom:16px}
+.txPop-link{display:inline-block;color:var(--copper-lt);font-size:13px;font-weight:600;text-decoration:none;margin-bottom:18px}
+.txPop-link:hover{text-decoration:underline}
+.txPop-btn{width:100%;padding:12px;border:none;border-radius:10px;background:var(--sage);color:#fff;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
+.txPop-btn:hover{filter:brightness(1.08)}
+.hdrActions{display:flex;align-items:center;gap:8px}
+#setBtn{width:42px;height:42px;padding:0;border-radius:10px;font-size:18px;flex:0 0 auto}
+.gatebox select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) center,calc(100% - 13px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <div class="brand"><div class="mark">I</div><div><h1>Invest For Friend/Customer</h1><small data-i18n="brandTag">Turn Your Expense Into Investment</small></div></div>
+  <nav id="topnav"></nav>
+  <div class="hdrActions">
+    <button id="cbtn" class="btn btn-p">Connect wallet</button>
+    <button id="setBtn" class="btn btn-g" onclick="openSettings()" aria-label="Settings" title="Settings">⚙️</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div id="banners"></div>
+    <div class="band" id="band"></div>
+  </section>
+
+  <div class="tabbar" id="tabbar"></div>
+
+  <div class="views">
+    <section class="view" data-tab="fund">
+      <div class="panel">
+        <div class="ph"><h3 data-i18n="giftTitle">Gift Someone</h3><div class="n" data-i18n="giftSub">The beneficiary must be someone other than you.</div></div>
+        <div class="pb" id="giftBox"></div>
+      </div>
+    </section>
+    <section class="panel view" id="v-positions" data-tab="positions"><div class="ph"><h3 data-i18n="posTitle">Positions held for you</h3><div class="n" data-i18n="posSub">Funded by others. You claim; the price target decides when.</div></div>
+        <div class="pb">
+          <div class="field" style="margin-top:0">
+            <label><span data-i18n="lkLabel">Check any wallet's gifts — no connect needed</span></label>
+            <div class="row">
+              <input class="inp" id="lookupIn" data-i18n-ph="lkPlaceholder" placeholder="Search by 0x… wallet address" oninput="onLookupInput(this.value)" onkeydown="if(event.key==='Enter')doLookup()">
+              <button class="mx" id="lookupBtn" onclick="doLookup()" data-i18n="lkSearch">Search</button>
+            </div>
+            <div class="qrbtns">
+              <button type="button" onclick="S.scanTarget='lookup';openScanner()" data-i18n="lkScan">Scan QR</button>
+              <button type="button" onclick="S.scanTarget='lookup';pickQrImage()" data-i18n="lkUpload">Upload QR from gallery</button>
+            </div>
+            <div class="hint" data-i18n="lkHint">Enter any wallet address to see the gifts funded for it and their total value — no wallet connection needed.</div>
+          </div>
+          <div id="lookupResult"></div>
+          <div id="posList"></div>
+        </div></section>
+    <section class="panel view" id="v-myrefs" data-tab="myrefs"><div class="ph"><h3 data-i18n="myEarnTitle">My Earning</h3><div class="n" data-i18n="myEarnSub">What you earn as a referrer and as a gift funder.</div></div>
+        <div class="pb" id="myrefsBox"></div></section>
+    <section class="panel view" id="v-redeem" data-tab="redeem"><div class="ph"><h3 data-i18n="rdTitle">Redeem a gift code</h3><div class="n" data-i18n="rdSub">Got a code from a distributor? Enter it to receive the gift in your wallet.</div></div>
+        <div class="pb" id="redeemBox"></div></section>
+    <section class="view" id="v-dist" data-tab="dist"><div class="stack" id="distBox"></div></section>
+    <section class="view" id="v-admin" data-tab="admin"><div class="stack" id="adminBox"></div></section>
+    
+  </div>
+
+  <section class="how view" id="v-how" data-tab="how">
+    <h3 data-i18n="howTitle">How it works</h3>
+    <div class="steps">
+      <div class="step"><div class="n">i</div><h4 data-i18n="howDepositH">Deposit</h4><p data-i18n="howDepositP">Gift USDT to a friend or customer to buy KAVI for them.</p></div>
+      <div class="step"><div class="n">ii</div><h4 data-i18n="howTargetH">The target</h4><p data-i18n="howTargetP">Your chosen plan sets the unlock price. Nothing can be claimed until KAVI trades at or above it.</p></div>
+      <div class="step"><div class="n">iii</div><h4 data-i18n="howClaimsH">Ten claims</h4><p data-i18n="howClaimsP">Once unlocked, the beneficiary claims a tenth of the target each month, sold to USDT at market.</p></div>
+      <div class="step"><div class="n">iv</div><h4 data-i18n="howEarnH">Everyone earns</h4><p data-i18n="howEarnP">Each claim pays 10% to you as the funder and 10% to the platform. The beneficiary keeps 80%.</p></div>
+    </div>
+    <div class="risk">
+      <h4 data-i18n="riskH">Understand this before funding</h4>
+      <p data-i18n="riskP">The position stays locked until its price target is met, and if the market never reaches it, nothing can ever be claimed. Payouts are produced by selling the locked KAVI at market, so the amount received depends on the price at each claim. Every claim also sells KAVI into the pool. So fund a position only if you believe KAVI can reach the multiple you choose.</p>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap foot"><div data-i18n="footer">Invest For Ur Valuable Customer.</div></div></footer>
+<div id="toasts"></div>
+
+<div class="pricePop" id="pricePop" onclick="closePricePop(event)">
+  <div class="pricePop-card">
+    <div class="pricePop-arrow" id="pricePopArrow">▲</div>
+    <div class="pricePop-pct" id="pricePopPct"></div>
+    <div class="pricePop-msg" id="pricePopMsg"></div>
+    <button class="pricePop-btn" onclick="closePricePop()" data-i18n="ppGotIt">Got it</button>
+  </div>
+</div>
+
+<div class="txPop" id="txPop" onclick="closeTxPop(event)">
+  <div class="txPop-card">
+    <div class="txPop-check">✓</div>
+    <div class="txPop-title" id="txPopTitle" data-i18n="txDefaultTitle">Transaction complete</div>
+    <div class="txPop-msg" id="txPopMsg"></div>
+    <a class="txPop-link" id="txPopLink" href="#" target="_blank" rel="noopener" style="display:none" data-i18n="txViewExplorer">View on explorer ↗</a>
+    <button class="txPop-btn" onclick="closeTxPop()" data-i18n="txDone">Done</button>
+  </div>
+</div>
+
+<div id="fvGate" class="gate" style="display:none" onclick="if(event.target.id==='fvGate')closeFV()">
+  <div class="gatebox">
+    <button class="gclose" onclick="closeFV()" aria-label="Close">×</button>
+    <div class="gmark" id="fvMark">₹</div>
+    <h3 data-i18n="fvTitle">Your gift's future value</h3>
+    <p data-i18n="fvDesc">Here's what the gifts funded for you are worth once every position reaches its price target.</p>
+    <div class="prev" style="text-align:left">
+      <div class="pr hi"><span class="k" data-i18n="fvTotalLabel">Total future value</span><span class="v" id="fvTotal">—</span></div>
+      <div class="pr"><span class="k" data-i18n="fvClaimedLabel">Already claimed</span><span class="v" id="fvClaimed">—</span></div>
+      <div class="pr"><span class="k" data-i18n="fvRemainLabel">Still to unlock</span><span class="v" id="fvRemain">—</span></div>
+      <div class="pr"><span class="k" data-i18n="fvCountLabel">Gifts funded for you</span><span class="v" id="fvCount">—</span></div>
+    </div>
+    <button class="btn btn-p full" onclick="closeFV()" style="margin-top:12px" data-i18n="continueBtn">Continue</button>
+  </div>
+</div>
+
+<div id="walletGate" class="gate" style="display:none" onclick="if(event.target.id==='walletGate')closeWalletGate()">
+  <div class="gatebox">
+    <button class="gclose" onclick="closeWalletGate()" aria-label="Close">×</button>
+    <div class="gmark">⇄</div>
+    <h3 id="wgTitle">Open in your wallet app</h3>
+    <p id="wgDesc"></p>
+    <div id="wgBtns" style="display:flex;flex-direction:column;gap:9px"></div>
+    <div class="ghint" id="wgHint" style="text-align:left"></div>
+  </div>
+</div>
+
+<div id="setGate" class="gate" style="display:none" onclick="if(event.target.id==='setGate')closeSettings()">
+  <div class="gatebox">
+    <button class="gclose" onclick="closeSettings()" aria-label="Close">×</button>
+    <div class="gmark">⚙</div>
+    <h3 data-i18n="settingsTitle">Settings</h3>
+    <div class="field" style="text-align:left">
+      <label><span data-i18n="currencyLabel">Currency</span></label>
+      <select class="inp" id="setCurrency"></select>
+    </div>
+    <div class="field" style="text-align:left">
+      <label><span data-i18n="languageLabel">Language</span></label>
+      <select class="inp" id="setLanguage"></select>
+    </div>
+    <button class="btn btn-p full" onclick="saveSettings()" style="margin-top:12px" data-i18n="saveBtn">Save</button>
+  </div>
+</div>
+
+<div id="refGate" class="gate" style="display:none" onclick="if(event.target.id==='refGate')closeGate()">
+  <div class="gatebox">
+    <button class="gclose" onclick="closeGate()" aria-label="Close">×</button>
+    <div class="gmark">I</div>
+    <h3 data-i18n="refTitle">Set your referrer</h3>
+    <p data-i18n="refDesc">Setting a referrer is required before you can gift, and it's permanent — set only once. If someone referred you, add their wallet now. You can skip to look around first.</p>
+    <input class="inp" id="gateIn" placeholder="0x… referrer wallet address" oninput="onGateInput(this.value)">
+    <div class="ghint" id="gateHint"></div>
+    <button class="btn btn-p full" id="gateBtn" disabled onclick="doSetReferrer()" style="margin-top:12px" data-i18n="refBtn">Set referrer</button>
+    <button class="gskip" onclick="closeGate()" data-i18n="refSkip">Skip for now</button>
+  </div>
+</div>
+
+<div id="scan" class="scanwrap" hidden>
+  <div class="scanbox">
+    <div class="scanhd"><span data-i18n="scanTitle">Scan a wallet QR</span><button onclick="closeScanner()" data-i18n="scanClose">Close</button></div>
+    <div class="scanview"><video id="scanVid" playsinline muted></video><div class="scanframe"></div></div>
+    <div class="scanft" id="scanMsg" data-i18n="scanHint">Point the camera at the QR code.</div>
+  </div>
+</div>
+<input type="file" id="qrFile" accept="image/*,.png,.jpg,.jpeg,.webp" hidden>
+<canvas id="qrCanvas" hidden></canvas>
+
+<script>
+const CONFIG = {
+  contract:"0x1Cd34fF023CDA9071018201dfB4b87057074986f",
+  voucher:"0x83FF7EbD76D2A8c58e125D047FCa09E2C3EAd10E",
+  trance:"0xd97f1ca94d7858e2700cf4996a122875d6264348",
+  chainIdHex:"0x38", chainName:"BNB Smart Chain",
+  rpc:"https://bsc-dataseed.binance.org", explorer:"https://bscscan.com", native:"BNB",
+};
+
+const ABI=[
+ "function kavi() view returns (address)",
+ "function stable() view returns (address)",
+ "function stableDecimals() view returns (uint8)",
+ "function tranceProtocol() view returns (address)",
+ "function minDepositUSD() view returns (uint256)",
+ "function maxDepositUSD() view returns (uint256)",
+ "function MIN_DEPOSIT_USD() view returns (uint256)",
+ "function MAX_DEPOSIT_USD() view returns (uint256)",
+ "function voucherContract() view returns (address)",
+ "function admin() view returns (address)",
+ "function pendingAdmin() view returns (address)",
+ "function feeWallet() view returns (address)",
+ "function setDepositLimits(uint256,uint256)",
+ "function transferAdmin(address)",
+ "function acceptAdmin()",
+ "function setVoucherContract(address)",
+ "function CLAIM_COUNT() view returns (uint256)",
+ "function CLAIM_INTERVAL() view returns (uint256)",
+ "function PLAN_COUNT() view returns (uint8)",
+ "function planUnlockMultiplier(uint8) pure returns (uint256)",
+ "function REFERRAL_BPS() view returns (uint256)",
+ "function FEE_BPS() view returns (uint256)",
+ "function RESERVE_BPS() view returns (uint256)",
+ "function CLAIM_DEPOSITOR_BPS() view returns (uint256)",
+ "function CLAIM_FEE_BPS() view returns (uint256)",
+ "function slippagePresetsBps() pure returns (uint256[5])",
+ "function MAX_SLIPPAGE_BPS() view returns (uint256)",
+ "function getSlippageBps(address) view returns (uint256)",
+ "function setSlippageBps(uint256)",
+ "function getKaviPriceUSD() view returns (uint256)",
+ "function totalLocked() view returns (uint256)",
+ "function totalDepositsCount() view returns (uint256)",
+ "function totalReserveFundedKavi() view returns (uint256)",
+ "function totalReserveFundedUSDT() view returns (uint256)",
+ "function referrerOf(address) view returns (address)",
+ "function setReferrer(address)",
+ "function getReferralInfo(address) view returns (uint256 count, uint256 earnings)",
+ "function getDepositorInfo(address) view returns (uint256 count, uint256 earnings)",
+ "function getRefereeCount(address) view returns (uint256)",
+ "function getReferee(address,uint256) view returns (address)",
+ "function getReferees(address) view returns (address[])",
+ "function getRefereesPaged(address,uint256,uint256) view returns (address[])",
+ "function getFundedCount(address) view returns (uint256)",
+ "function getFunded(address,uint256) view returns (address,uint256)",
+ "function getFundedDeposit(address,uint256) view returns (address,uint256,tuple(uint256 lockedTokens,uint256 depositUSD,uint256 targetUSD,uint256 monthlyUSD,uint256 claimedUSD,uint256 lastClaimTime,uint256 unlockPrice,uint256 claimsMade,address depositor,address referrer,bool active))",
+ "function getFundedPaged(address,uint256,uint256) view returns (address[],uint256[],tuple(uint256 lockedTokens,uint256 depositUSD,uint256 targetUSD,uint256 monthlyUSD,uint256 claimedUSD,uint256 lastClaimTime,uint256 unlockPrice,uint256 claimsMade,address depositor,address referrer,bool active)[])",
+ "function getDeposits(address) view returns (tuple(uint256 lockedTokens,uint256 depositUSD,uint256 targetUSD,uint256 monthlyUSD,uint256 claimedUSD,uint256 lastClaimTime,uint256 unlockPrice,uint256 claimsMade,address depositor,address referrer,bool active)[])",
+ "function getAccountStats(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,address)",
+ "function getDepositsCount(address) view returns (uint256)",
+ "function getDeposit(address,uint256) view returns (tuple(uint256 lockedTokens,uint256 depositUSD,uint256 targetUSD,uint256 monthlyUSD,uint256 claimedUSD,uint256 lastClaimTime,uint256 unlockPrice,uint256 claimsMade,address depositor,address referrer,bool active))",
+ "function canClaim(address,uint256) view returns (bool)",
+ "function pendingClaimUSD(address,uint256) view returns (uint256)",
+ "function nextClaimTime(address,uint256) view returns (uint256)",
+ "function deposit(address,address,uint256,uint8,uint256,uint256) returns (uint256)",
+ "function claim(uint256,uint256,uint256)"
+];
+const ERC20=["function balanceOf(address) view returns (uint256)","function allowance(address,address) view returns (uint256)","function approve(address,uint256) returns (bool)","function decimals() view returns (uint8)","function symbol() view returns (string)"];
+
+const E=ethers, $=s=>document.querySelector(s);
+
+/* ---------- Currency & Language settings ---------- */
+const CURRENCIES=[
+ {code:"USD",symbol:"$",locale:"en-US",name:"US Dollar",flag:"🇺🇸"},
+ {code:"INR",symbol:"₹",locale:"en-IN",name:"Indian Rupee",flag:"🇮🇳"},
+ {code:"EUR",symbol:"€",locale:"de-DE",name:"Euro",flag:"🇪🇺"},
+ {code:"GBP",symbol:"£",locale:"en-GB",name:"British Pound",flag:"🇬🇧"},
+ {code:"JPY",symbol:"¥",locale:"ja-JP",name:"Japanese Yen",flag:"🇯🇵"},
+ {code:"CNY",symbol:"¥",locale:"zh-CN",name:"Chinese Yuan",flag:"🇨🇳"},
+ {code:"AUD",symbol:"A$",locale:"en-AU",name:"Australian Dollar",flag:"🇦🇺"},
+ {code:"CAD",symbol:"C$",locale:"en-CA",name:"Canadian Dollar",flag:"🇨🇦"},
+ {code:"SGD",symbol:"S$",locale:"en-SG",name:"Singapore Dollar",flag:"🇸🇬"},
+ {code:"AED",symbol:"د.إ",locale:"ar-AE",name:"UAE Dirham",flag:"🇦🇪"},
+ {code:"SAR",symbol:"﷼",locale:"ar-SA",name:"Saudi Riyal",flag:"🇸🇦"},
+ {code:"BRL",symbol:"R$",locale:"pt-BR",name:"Brazilian Real",flag:"🇧🇷"},
+ {code:"ZAR",symbol:"R",locale:"en-ZA",name:"South African Rand",flag:"🇿🇦"},
+ {code:"RUB",symbol:"₽",locale:"ru-RU",name:"Russian Ruble",flag:"🇷🇺"},
+ {code:"KRW",symbol:"₩",locale:"ko-KR",name:"South Korean Won",flag:"🇰🇷"},
+ {code:"MXN",symbol:"$",locale:"es-MX",name:"Mexican Peso",flag:"🇲🇽"},
+ {code:"IDR",symbol:"Rp",locale:"id-ID",name:"Indonesian Rupiah",flag:"🇮🇩"},
+ {code:"PKR",symbol:"₨",locale:"ur-PK",name:"Pakistani Rupee",flag:"🇵🇰"},
+ {code:"BDT",symbol:"৳",locale:"bn-BD",name:"Bangladeshi Taka",flag:"🇧🇩"},
+ {code:"NGN",symbol:"₦",locale:"en-NG",name:"Nigerian Naira",flag:"🇳🇬"},
+];
+const LANGS=["en","hi","es","fr","de","pt","ar","zh","ja","ru"];
+const LANG_NAMES={en:"English",hi:"हिन्दी (Hindi)",es:"Español (Spanish)",fr:"Français (French)",de:"Deutsch (German)",pt:"Português (Portuguese)",ar:"العربية (Arabic)",zh:"中文 (Chinese)",ja:"日本語 (Japanese)",ru:"Русский (Russian)"};
+const I18N_ROWS=[
+["brandTag","Turn Your Expense Into Investment","विरासत बनाएं","Crea un legado","Créez un héritage","Vermächtnis schaffen","Crie um legado","اصنع إرثًا","创造传承","レガシーを築く","Создайте наследие"],
+["connectWallet","Connect wallet","वॉलेट कनेक्ट करें","Conectar billetera","Connecter le portefeuille","Wallet verbinden","Conectar carteira","ربط المحفظة","连接钱包","ウォレットを接続","Подключить кошелёк"],
+["tabFund","Gift Now","अभी गिफ्ट करें","Regalar ahora","Offrir maintenant","Jetzt schenken","Presentear agora","إهدِ الآن","立即赠送","今すぐギフト","Подарить сейчас"],
+["tabPositions","Your positions","आपकी पोजीशन","Tus posiciones","Vos positions","Deine Positionen","Suas posições","مراكزك","您的持仓","あなたのポジション","Ваши позиции"],
+["tabMyEarning","My Earning","मेरी कमाई","Mis ganancias","Mes gains","Meine Einnahmen","Meus ganhos","أرباحي","我的收益","マイ収益","Мой доход"],
+["tabHow","How it works","यह कैसे काम करता है","Cómo funciona","Comment ça marche","So funktioniert's","Como funciona","كيف يعمل","工作原理","仕組み","Как это работает"],
+["giftTitle","Gift Someone","किसी को गिफ्ट करें","Regalar a alguien","Offrir à quelqu'un","Jemandem schenken","Presentear alguém","أهدِ شخصًا","赠送给某人","誰かにギフト","Подарить кому-то"],
+["giftSub","The beneficiary must be someone other than you.","लाभार्थी आपके अलावा कोई और होना चाहिए।","El beneficiario debe ser otra persona.","Le bénéficiaire doit être une autre personne.","Der Begünstigte muss eine andere Person sein.","O beneficiário deve ser outra pessoa.","يجب أن يكون المستفيد شخصًا آخر غيرك.","受益人必须是您以外的其他人。","受益者はあなた以外の人である必要があります。","Получатель должен отличаться от вас."],
+["posTitle","Positions held for you","आपके लिए रखी गई पोजीशन","Posiciones a tu nombre","Positions détenues pour vous","Für dich gehaltene Positionen","Posições mantidas para você","المراكز المحتفظ بها لك","为您持有的持仓","あなたのために保有されているポジション","Позиции, удерживаемые для вас"],
+["posSub","Funded by others. You claim; the price target decides when.","दूसरों द्वारा वित्तपोषित। आप क्लेम करते हैं; मूल्य लक्ष्य तय करता है कब।","Financiado por otros. Tú reclamas; el precio objetivo decide cuándo.","Financé par d'autres. Vous réclamez ; l'objectif de prix décide quand.","Von anderen finanziert. Du beanspruchst; das Kursziel entscheidet wann.","Financiado por outros. Você reivindica; a meta de preço decide quando.","ممولة من آخرين. أنت تطالب؛ الهدف السعري يحدد الوقت.","由他人出资。您领取；价格目标决定何时。","他者によって資金提供されています。あなたが請求し、価格目標がタイミングを決めます。","Финансируется другими. Вы забираете; цель по цене решает когда."],
+["myEarnTitle","My Earning","मेरी कमाई","Mis ganancias","Mes gains","Meine Einnahmen","Meus ganhos","أرباحي","我的收益","マイ収益","Мой доход"],
+["myEarnSub","What you earn as a referrer and as a gift funder.","रेफरर और गिफ्ट फंडर के रूप में आप जो कमाते हैं।","Lo que ganas como referente y como financiador de regalos.","Ce que vous gagnez en tant que parrain et bailleur de fonds.","Was du als Werber und Geschenkgeber verdienst.","O que você ganha como indicador e como financiador de presentes.","ما تكسبه كمُحيل وكممول للهدايا.","作为推荐人和礼物资助人您所赚取的收益。","紹介者およびギフト資金提供者としての収益。","Что вы зарабатываете как реферер и спонсор подарка."],
+["howTitle","How it works","यह कैसे काम करता है","Cómo funciona","Comment ça marche","So funktioniert's","Como funciona","كيف يعمل","工作原理","仕組み","Как это работает"],
+["footer","Invest For Ur Valuable Customer.","अपने मूल्यवान ग्राहक के लिए निवेश करें।","Invierte para tu valioso cliente.","Investissez pour votre précieux client.","Investieren Sie für Ihren wertvollen Kunden.","Invista para o seu valioso cliente.","استثمر من أجل عميلك القيّم.","为您珍贵的客户投资。","大切なお客様のために投資を。","Инвестируйте для вашего ценного клиента."],
+["settingsTitle","Settings","सेटिंग्स","Configuración","Paramètres","Einstellungen","Configurações","الإعدادات","设置","設定","Настройки"],
+["currencyLabel","Currency","मुद्रा","Moneda","Devise","Währung","Moeda","العملة","货币","通貨","Валюта"],
+["languageLabel","Language","भाषा","Idioma","Langue","Sprache","Idioma","اللغة","语言","言語","Язык"],
+["saveBtn","Save","सहेजें","Guardar","Enregistrer","Speichern","Salvar","حفظ","保存","保存","Сохранить"],
+["closeBtn","Close","बंद करें","Cerrar","Fermer","Schließen","Fechar","إغلاق","关闭","閉じる","Закрыть"],
+["giftBtnConnect","Connect wallet to gift","गिफ्ट करने के लिए वॉलेट कनेक्ट करें","Conecta tu billetera para regalar","Connectez le portefeuille pour offrir","Wallet verbinden zum Schenken","Conecte a carteira para presentear","اربط محفظتك للإهداء","连接钱包以赠送","ギフトするにはウォレットを接続","Подключите кошелёк, чтобы подарить"],
+["fvTitle","Your gift's future value","आपके गिफ्ट का भविष्य मूल्य","El valor futuro de tu regalo","La valeur future de votre cadeau","Der zukünftige Wert deines Geschenks","O valor futuro do seu presente","القيمة المستقبلية لهديتك","您礼物的未来价值","あなたのギフトの将来価値","Будущая стоимость вашего подарка"],
+["fvDesc","Here's what the gifts funded for you are worth once every position reaches its price target.","यह है कि आपके लिए वित्तपोषित गिफ्ट का मूल्य क्या होगा जब हर पोजीशन अपने मूल्य लक्ष्य तक पहुंच जाएगी।","Esto es lo que valdrán los regalos financiados para ti una vez que cada posición alcance su objetivo de precio.","Voici ce que valent les cadeaux financés pour vous une fois que chaque position atteint son objectif de prix.","Das ist der Wert der für dich finanzierten Geschenke, sobald jede Position ihr Kursziel erreicht.","Aqui está o que os presentes financiados para você valerão quando cada posição atingir sua meta de preço.","إليك ما ستساويه الهدايا الممولة لك بمجرد وصول كل مركز إلى هدفه السعري.","这是当每个持仓都达到其价格目标后，为您资助的礼物的价值。","これは、すべてのポジションが価格目標に達したときに、あなたのために資金提供されたギフトの価値です。","Вот сколько будут стоить подаренные вам подарки, когда каждая позиция достигнет своей ценовой цели."],
+["fvTotalLabel","Total future value","कुल भविष्य मूल्य","Valor futuro total","Valeur future totale","Gesamter zukünftiger Wert","Valor futuro total","إجمالي القيمة المستقبلية","总未来价值","合計将来価値","Общая будущая стоимость"],
+["fvClaimedLabel","Already claimed","पहले से क्लेम किया गया","Ya reclamado","Déjà réclamé","Bereits beansprucht","Já reivindicado","تمت المطالبة به بالفعل","已领取","既に請求済み","Уже получено"],
+["fvRemainLabel","Still to unlock","अभी अनलॉक होना बाकी","Aún por desbloquear","Encore à débloquer","Noch freizuschalten","Ainda a desbloquear","لا يزال يتعين فتحه","仍待解锁","まだ解除されていない","Ещё предстоит разблокировать"],
+["fvCountLabel","Gifts funded for you","आपके लिए वित्तपोषित गिफ्ट","Regalos financiados para ti","Cadeaux financés pour vous","Für dich finanzierte Geschenke","Presentes financiados para você","الهدايا الممولة لك","为您资助的礼物","あなたのために資金提供されたギフト","Подарки, профинансированные для вас"],
+["continueBtn","Continue","जारी रखें","Continuar","Continuer","Weiter","Continuar","متابعة","继续","続ける","Продолжить"],
+["refTitle","Set your referrer","अपना रेफरर सेट करें","Establece tu referente","Définissez votre parrain","Lege deinen Werber fest","Defina seu indicador","حدد المُحيل الخاص بك","设置您的推荐人","紹介者を設定","Установите вашего реферера"],
+["refDesc","Setting a referrer is required before you can gift, and it's permanent — set only once. If someone referred you, add their wallet now. You can skip to look around first.","गिफ्ट करने से पहले रेफरर सेट करना आवश्यक है, और यह स्थायी है — केवल एक बार सेट करें। यदि किसी ने आपको रेफर किया है, तो अभी उनका वॉलेट जोड़ें। आप पहले देखने के लिए छोड़ सकते हैं।","Establecer un referente es obligatorio antes de poder regalar, y es permanente: se establece una sola vez. Si alguien te refirió, añade su billetera ahora. Puedes omitir para mirar primero.","Définir un parrain est requis avant de pouvoir offrir, et c'est permanent — à définir une seule fois. Si quelqu'un vous a parrainé, ajoutez son portefeuille maintenant. Vous pouvez passer pour regarder d'abord.","Das Festlegen eines Werbers ist erforderlich, bevor du schenken kannst, und ist dauerhaft — nur einmal festlegbar. Wenn dich jemand geworben hat, füge jetzt dessen Wallet hinzu. Du kannst zunächst überspringen, um dich umzusehen.","Definir um indicador é obrigatório antes de você poder presentear, e é permanente — defina apenas uma vez. Se alguém te indicou, adicione a carteira dele agora. Você pode pular para olhar primeiro.","تحديد مُحيل مطلوب قبل أن تتمكن من الإهداء، وهو دائم — يُحدد مرة واحدة فقط. إذا أحالك شخص ما، أضف محفظته الآن. يمكنك التخطي للتجول أولاً.","在您赠送礼物之前，必须设置推荐人，且此设置是永久性的——仅可设置一次。如果有人推荐了您，现在添加他们的钱包。您也可以跳过先四处看看。","ギフトを贈る前に紹介者の設定が必要で、これは永久的です（一度だけ設定可能）。誰かに紹介された場合は、今すぐそのウォレットを追加してください。先に見て回るためにスキップすることもできます。","Установка реферера обязательна перед тем, как вы сможете дарить подарки, и это необратимо — устанавливается только один раз. Если вас кто-то пригласил, добавьте его кошелёк сейчас. Вы можете пропустить, чтобы сначала осмотреться."],
+["refBtn","Set referrer","रेफरर सेट करें","Establecer referente","Définir le parrain","Werber festlegen","Definir indicador","تحديد المُحيل","设置推荐人","紹介者を設定","Установить реферера"],
+["refSkip","Skip for now","अभी के लिए छोड़ें","Omitir por ahora","Passer pour l'instant","Vorerst überspringen","Pular por agora","تخطي الآن","暂时跳过","今はスキップ","Пропустить пока"],
+["refHintSelf","You can't set yourself as your own referrer.","आप खुद को अपना रेफरर नहीं बना सकते।","No puedes ponerte como tu propio referente.","Vous ne pouvez pas être votre propre parrain.","Du kannst dich nicht selbst als Werber angeben.","Você não pode se definir como seu próprio indicador.","لا يمكنك جعل نفسك مُحيلًا لك.","您不能将自己设为自己的推荐人。","自分自身を紹介者にすることはできません。","Вы не можете указать себя своим же реферером."],
+["refHintInvalid","Enter a full 0x wallet address.","पूरा 0x वॉलेट पता दर्ज करें।","Ingresa una dirección de billetera 0x completa.","Entrez une adresse de portefeuille 0x complète.","Gib eine vollständige 0x-Wallet-Adresse ein.","Digite um endereço de carteira 0x completo.","أدخل عنوان محفظة 0x كاملاً.","请输入完整的0x钱包地址。","完全な0xウォレットアドレスを入力してください。","Введите полный адрес кошелька 0x."],
+["scanTitle","Scan a wallet QR","वॉलेट QR स्कैन करें","Escanear QR de billetera","Scanner un QR de portefeuille","Wallet-QR scannen","Escanear QR da carteira","مسح رمز QR للمحفظة","扫描钱包二维码","ウォレットQRをスキャン","Сканировать QR кошелька"],
+["scanClose","Close","बंद करें","Cerrar","Fermer","Schließen","Fechar","إغلاق","关闭","閉じる","Закрыть"],
+["scanHint","Point the camera at the QR code.","कैमरे को QR कोड की ओर करें।","Apunta la cámara al código QR.","Pointez la caméra vers le code QR.","Richte die Kamera auf den QR-Code.","Aponte a câmera para o código QR.","وجّه الكاميرا نحو رمز QR.","将相机对准二维码。","カメラをQRコードに向けてください。","Наведите камеру на QR-код."],
+];
+const T={}; LANGS.forEach(l=>T[l]={});
+I18N_ROWS.forEach(row=>{ const key=row[0]; LANGS.forEach((l,i)=>{ T[l][key]=row[i+1]; }); });
+/* Extra strings for all dynamically-rendered content, keyed by string id.
+   Order of each array: en, hi, es, fr, de, pt, ar, zh, ja, ru  (matches LANGS). */
+const EX_ROWS=[
+["stCompleted","Completed","पूर्ण","Completado","Terminé","Abgeschlossen","Concluído","مكتمل","已完成","完了","Завершено"],
+["stUnlocked","Unlocked","अनलॉक","Desbloqueado","Débloqué","Freigeschaltet","Desbloqueado","مفتوح","已解锁","解除済み","Разблокировано"],
+["stWaiting","Waiting for target","लक्ष्य की प्रतीक्षा में","Esperando objetivo","En attente de l'objectif","Warten auf Ziel","Aguardando meta","بانتظار الهدف","等待目标","目標待ち","Ожидание цели"],
+["bnWrong","<b>Wrong network.</b> This contract lives on {chain}.","<b>गलत नेटवर्क।</b> यह कॉन्ट्रैक्ट {chain} पर है।","<b>Red incorrecta.</b> Este contrato está en {chain}.","<b>Mauvais réseau.</b> Ce contrat est sur {chain}.","<b>Falsches Netzwerk.</b> Dieser Vertrag liegt auf {chain}.","<b>Rede errada.</b> Este contrato está na {chain}.","<b>شبكة خاطئة.</b> هذا العقد على {chain}.","<b>网络错误。</b>此合约位于 {chain}。","<b>ネットワークが違います。</b>このコントラクトは {chain} 上にあります。","<b>Неверная сеть.</b> Этот контракт находится в {chain}."],
+["bnSwitch","Switch","स्विच करें","Cambiar","Changer","Wechseln","Trocar","تبديل","切换","切り替え","Переключить"],
+["bnNoPrice","<b>No price available.</b> The KAVI/USDT pool has no liquidity, so funding and claiming will not go through.","<b>कोई मूल्य उपलब्ध नहीं।</b> KAVI/USDT पूल में कोई लिक्विडिटी नहीं है, इसलिए फंडिंग और क्लेम नहीं होंगे।","<b>Sin precio disponible.</b> El pool KAVI/USDT no tiene liquidez, por lo que financiar y reclamar no funcionarán.","<b>Aucun prix disponible.</b> Le pool KAVI/USDT n'a pas de liquidité, le financement et les réclamations échoueront.","<b>Kein Preis verfügbar.</b> Der KAVI/USDT-Pool hat keine Liquidität, daher funktionieren Einzahlen und Beanspruchen nicht.","<b>Sem preço disponível.</b> O pool KAVI/USDT não tem liquidez, então financiar e reivindicar não funcionarão.","<b>لا يوجد سعر متاح.</b> لا توجد سيولة في مجمع KAVI/USDT، لذا لن يعمل التمويل والمطالبة.","<b>无可用价格。</b>KAVI/USDT 资金池没有流动性，因此无法出资和领取。","<b>価格がありません。</b>KAVI/USDT プールに流動性がないため、資金提供と請求はできません。","<b>Цена недоступна.</b> В пуле KAVI/USDT нет ликвидности, поэтому финансирование и получение не пройдут."],
+["bandPrice","KAVI price","KAVI मूल्य","Precio de KAVI","Prix de KAVI","KAVI-Preis","Preço do KAVI","سعر KAVI","KAVI 价格","KAVI 価格","Цена KAVI"],
+["bandPer","per {sym}","प्रति {sym}","por {sym}","par {sym}","pro {sym}","por {sym}","لكل {sym}","每 {sym}","{sym} あたり","за {sym}"],
+["pvWaitingTargetPrice","Waiting for target price","लक्ष्य मूल्य की प्रतीक्षा में","Esperando precio objetivo","En attente du prix cible","Warten auf Zielpreis","Aguardando preço-alvo","بانتظار السعر المستهدف","等待目标价格","目標価格待ち","Ожидание целевой цены"],
+["pvWhyWaiting","Current price {cur} needs to reach {unlock} before any claim opens.","किसी भी क्लेम के खुलने से पहले वर्तमान मूल्य {cur} को {unlock} तक पहुंचना होगा।","El precio actual {cur} debe alcanzar {unlock} antes de que se abra cualquier reclamo.","Le prix actuel {cur} doit atteindre {unlock} avant l'ouverture d'une réclamation.","Der aktuelle Preis {cur} muss {unlock} erreichen, bevor ein Anspruch möglich ist.","O preço atual {cur} precisa atingir {unlock} antes de qualquer reivindicação.","يجب أن يصل السعر الحالي {cur} إلى {unlock} قبل فتح أي مطالبة.","当前价格 {cur} 需达到 {unlock} 后才能开始领取。","現在の価格 {cur} が {unlock} に達するまで請求はできません。","Текущая цена {cur} должна достичь {unlock}, прежде чем откроется получение."],
+["pvNextClaim","Next claim in","अगला क्लेम","Próximo reclamo en","Prochaine réclamation dans","Nächster Anspruch in","Próxima reivindicação em","المطالبة التالية خلال","下次领取还有","次の請求まで","Следующее получение через"],
+["pvWhyNext","Price target reached. Claims are spaced 30 days apart — this one opens {date}.","मूल्य लक्ष्य पूरा हुआ। क्लेम 30 दिन के अंतराल पर होते हैं — यह {date} को खुलेगा।","Objetivo de precio alcanzado. Los reclamos tienen 30 días de diferencia; este se abre el {date}.","Objectif de prix atteint. Les réclamations sont espacées de 30 jours — celle-ci s'ouvre le {date}.","Kursziel erreicht. Ansprüche liegen 30 Tage auseinander — dieser öffnet am {date}.","Meta de preço atingida. As reivindicações têm 30 dias de intervalo — esta abre em {date}.","تم بلوغ الهدف السعري. المطالبات تفصلها 30 يومًا — هذه تُفتح في {date}.","已达到价格目标。领取间隔 30 天——此次于 {date} 开放。","価格目標に到達しました。請求は30日間隔です。これは {date} に開きます。","Целевая цена достигнута. Получения раз в 30 дней — это откроется {date}."],
+["pvReady","Ready to claim","क्लेम के लिए तैयार","Listo para reclamar","Prêt à réclamer","Bereit zum Beanspruchen","Pronto para reivindicar","جاهز للمطالبة","可领取","請求可能","Готово к получению"],
+["pvClaimNow","Claim now","अभी क्लेम करें","Reclamar ahora","Réclamer maintenant","Jetzt beanspruchen","Reivindicar agora","طالب الآن","立即领取","今すぐ請求","Получить сейчас"],
+["pvClaimedShort","Claimed","क्लेम किया","Reclamado","Réclamé","Beansprucht","Reivindicado","تمت المطالبة","已领取","請求済み","Получено"],
+["pvOpensDate","Opens {date}","{date} को खुलेगा","Abre el {date}","Ouvre le {date}","Öffnet am {date}","Abre em {date}","يُفتح في {date}","{date} 开放","{date} に開く","Откроется {date}"],
+["pvReadyNow","Ready now","अभी तैयार","Listo ahora","Prêt maintenant","Jetzt bereit","Pronto agora","جاهز الآن","现在可领","今すぐ可能","Готово сейчас"],
+["pvAfterClaim","After claim #{n} · +30 days","क्लेम #{n} के बाद · +30 दिन","Después del reclamo #{n} · +30 días","Après la réclamation #{n} · +30 jours","Nach Anspruch #{n} · +30 Tage","Após a reivindicação #{n} · +30 dias","بعد المطالبة #{n} · +30 يومًا","第 {n} 次领取后 · +30 天","請求 #{n} の後 · +30日","После получения №{n} · +30 дней"],
+["pvClaimNof10","Claim {n} of 10","10 में से क्लेम {n}","Reclamo {n} de 10","Réclamation {n} sur 10","Anspruch {n} von 10","Reivindicação {n} de 10","المطالبة {n} من 10","第 {n} / 10 次领取","請求 {n} / 10","Получение {n} из 10"],
+["pvPosition","Position #{n}","पोजीशन #{n}","Posición #{n}","Position #{n}","Position #{n}","Posição #{n}","المركز #{n}","持仓 #{n}","ポジション #{n}","Позиция №{n}"],
+["pvClaimsCount","{n}/10 claims","{n}/10 क्लेम","{n}/10 reclamos","{n}/10 réclamations","{n}/10 Ansprüche","{n}/10 reivindicações","{n}/10 مطالبات","{n}/10 次领取","{n}/10 請求","{n}/10 получений"],
+["pvUnlockPrice","Unlock price","अनलॉक मूल्य","Precio de desbloqueo","Prix de déblocage","Freischaltpreis","Preço de desbloqueio","سعر الفتح","解锁价格","解除価格","Цена разблокировки"],
+["pvTotalTarget","Total target","कुल लक्ष्य","Objetivo total","Objectif total","Gesamtziel","Meta total","الهدف الإجمالي","总目标","合計目標","Общая цель"],
+["pvClaimedLabel","Claimed","क्लेम किया गया","Reclamado","Réclamé","Beansprucht","Reivindicado","تمت المطالبة","已领取","請求済み","Получено"],
+["pvFundedBy","Funded by","द्वारा वित्तपोषित","Financiado por","Financé par","Finanziert von","Financiado por","مموّل من","出资人","資金提供者","Профинансировано"],
+["pvOfProgress","{a} of {b}","{b} में से {a}","{a} de {b}","{a} sur {b}","{a} von {b}","{a} de {b}","{a} من {b}","{b} 中 {a}","{b} 中 {a}","{a} из {b}"],
+["pvLeft","{x} left","{x} शेष","{x} restante","{x} restant","{x} übrig","{x} restante","بقي {x}","剩余 {x}","残り {x}","осталось {x}"],
+["pvSchedule","Claim schedule","क्लेम शेड्यूल","Calendario de reclamos","Calendrier des réclamations","Anspruchsplan","Cronograma de reivindicações","جدول المطالبات","领取时间表","請求スケジュール","График получений"],
+["posConnectPrompt","Connect your wallet to claim your own gifts — or just search any address above to see its total gifts.","अपने गिफ्ट क्लेम करने के लिए वॉलेट कनेक्ट करें — या ऊपर कोई भी पता सर्च करके उसके कुल गिफ्ट देखें।","Conecta tu billetera para reclamar tus regalos, o busca cualquier dirección arriba para ver sus regalos totales.","Connectez votre portefeuille pour réclamer vos cadeaux, ou recherchez n'importe quelle adresse ci-dessus pour voir ses cadeaux.","Verbinde deine Wallet, um deine Geschenke zu beanspruchen — oder suche oben eine beliebige Adresse, um deren Geschenke zu sehen.","Conecte sua carteira para reivindicar seus presentes — ou pesquise qualquer endereço acima para ver seus presentes.","اربط محفظتك للمطالبة بهداياك — أو ابحث عن أي عنوان أعلاه لرؤية إجمالي هداياه.","连接钱包以领取您的礼物——或在上方搜索任意地址查看其全部礼物。","自分のギフトを請求するにはウォレットを接続してください。または上で任意のアドレスを検索して合計ギフトを確認できます。","Подключите кошелёк, чтобы получить свои подарки — или найдите любой адрес выше, чтобы увидеть его подарки."],
+["posYoursHead","Positions held for your connected wallet","आपके कनेक्टेड वॉलेट के लिए रखी गई पोजीशन","Posiciones de tu billetera conectada","Positions de votre portefeuille connecté","Positionen für deine verbundene Wallet","Posições da sua carteira conectada","المراكز المحتفظ بها لمحفظتك المتصلة","为您已连接钱包持有的持仓","接続中のウォレットのために保有されているポジション","Позиции для вашего подключённого кошелька"],
+["posNobody","Nobody has funded a position for you yet.","अभी तक किसी ने आपके लिए पोजीशन फंड नहीं की है।","Nadie ha financiado una posición para ti todavía.","Personne n'a encore financé de position pour vous.","Noch niemand hat eine Position für dich finanziert.","Ninguém financiou uma posição para você ainda.","لم يموّل أحد مركزًا لك بعد.","还没有人为您出资任何持仓。","まだ誰もあなたのためにポジションを資金提供していません。","Пока никто не профинансировал позицию для вас."],
+["lkLabel","Check any wallet's gifts — no connect needed","किसी भी वॉलेट के गिफ्ट देखें — कनेक्ट की जरूरत नहीं","Consulta los regalos de cualquier billetera, sin conectar","Vérifiez les cadeaux de tout portefeuille — sans connexion","Geschenke jeder Wallet prüfen — ohne Verbindung","Veja os presentes de qualquer carteira — sem conectar","تحقق من هدايا أي محفظة — دون اتصال","查看任意钱包的礼物——无需连接","任意のウォレットのギフトを確認 — 接続不要","Проверьте подарки любого кошелька — без подключения"],
+["lkPlaceholder","Search by 0x… wallet address","0x… वॉलेट पते से सर्च करें","Buscar por dirección 0x…","Rechercher par adresse 0x…","Nach 0x…-Adresse suchen","Pesquisar por endereço 0x…","ابحث بعنوان 0x…","按 0x… 钱包地址搜索","0x… ウォレットアドレスで検索","Поиск по адресу 0x…"],
+["lkSearch","Search","सर्च","Buscar","Rechercher","Suchen","Pesquisar","بحث","搜索","検索","Поиск"],
+["lkScan","Scan QR","QR स्कैन करें","Escanear QR","Scanner le QR","QR scannen","Escanear QR","مسح QR","扫描二维码","QRをスキャン","Сканировать QR"],
+["lkUpload","Upload QR from gallery","गैलरी से QR अपलोड करें","Subir QR desde galería","Importer un QR depuis la galerie","QR aus Galerie hochladen","Carregar QR da galeria","تحميل QR من المعرض","从相册上传二维码","ギャラリーからQRをアップロード","Загрузить QR из галереи"],
+["lkHint","Enter any wallet address to see the gifts funded for it and their total value — no wallet connection needed.","किसी भी वॉलेट पते को दर्ज करें और उसके लिए फंड किए गए गिफ्ट व उनका कुल मूल्य देखें — वॉलेट कनेक्ट की जरूरत नहीं।","Introduce cualquier dirección para ver los regalos financiados y su valor total, sin conectar la billetera.","Saisissez une adresse pour voir les cadeaux financés et leur valeur totale — sans connecter de portefeuille.","Gib eine beliebige Adresse ein, um die finanzierten Geschenke und deren Gesamtwert zu sehen — ohne Wallet-Verbindung.","Insira qualquer endereço para ver os presentes financiados e seu valor total — sem conectar a carteira.","أدخل أي عنوان محفظة لرؤية الهدايا الممولة له وقيمتها الإجمالية — دون الحاجة لربط محفظة.","输入任意钱包地址即可查看为其出资的礼物及总价值——无需连接钱包。","任意のウォレットアドレスを入力すると、そのために資金提供されたギフトと合計額を確認できます — 接続不要。","Введите любой адрес, чтобы увидеть подаренные ему подарки и их общую стоимость — без подключения кошелька."],
+["lkInvalidTitle","Enter a valid address","मान्य पता दर्ज करें","Ingresa una dirección válida","Entrez une adresse valide","Gültige Adresse eingeben","Insira um endereço válido","أدخل عنوانًا صالحًا","请输入有效地址","有効なアドレスを入力","Введите корректный адрес"],
+["lkInvalidBody","Paste a full 0x wallet address to search.","सर्च करने के लिए पूरा 0x वॉलेट पता पेस्ट करें।","Pega una dirección 0x completa para buscar.","Collez une adresse 0x complète pour rechercher.","Füge eine vollständige 0x-Adresse zum Suchen ein.","Cole um endereço 0x completo para pesquisar.","الصق عنوان محفظة 0x كاملاً للبحث.","粘贴完整的 0x 钱包地址进行搜索。","検索するには完全な 0x アドレスを貼り付けてください。","Вставьте полный адрес 0x для поиска."],
+["lkLoading","Still loading chain data — please try again in a moment.","चेन डेटा अभी लोड हो रहा है — कृपया थोड़ी देर में पुनः प्रयास करें।","Aún cargando datos de la cadena; inténtalo de nuevo en un momento.","Chargement des données en cours — réessayez dans un instant.","Kettendaten werden noch geladen — bitte gleich erneut versuchen.","Ainda carregando dados da cadeia — tente novamente em instantes.","لا تزال بيانات السلسلة تُحمّل — يرجى المحاولة بعد قليل.","链上数据仍在加载——请稍后重试。","チェーンデータを読み込み中です — 少し後にもう一度お試しください。","Данные сети ещё загружаются — попробуйте через момент."],
+["lkSearching","Searching this wallet…","इस वॉलेट को खोजा जा रहा है…","Buscando esta billetera…","Recherche de ce portefeuille…","Diese Wallet wird durchsucht…","Pesquisando esta carteira…","جارٍ البحث في هذه المحفظة…","正在搜索此钱包…","このウォレットを検索中…","Поиск по этому кошельку…"],
+["lkNone","No gifts have been funded for {addr} yet.","{addr} के लिए अभी तक कोई गिफ्ट फंड नहीं किया गया है।","Aún no se han financiado regalos para {addr}.","Aucun cadeau n'a encore été financé pour {addr}.","Für {addr} wurden noch keine Geschenke finanziert.","Nenhum presente foi financiado para {addr} ainda.","لم تُموّل أي هدايا لـ {addr} بعد.","尚未为 {addr} 出资任何礼物。","{addr} のためのギフトはまだありません。","Для {addr} ещё не профинансировано ни одного подарка."],
+["lkTotalGifts","Total gifts","कुल गिफ्ट","Regalos totales","Cadeaux totaux","Geschenke gesamt","Presentes totais","إجمالي الهدايا","礼物总数","ギフト合計","Всего подарков"],
+["lkTotalValue","Total gift value","कुल गिफ्ट मूल्य","Valor total de regalos","Valeur totale des cadeaux","Gesamtwert der Geschenke","Valor total dos presentes","القيمة الإجمالية للهدايا","礼物总价值","ギフト合計額","Общая стоимость подарков"],
+["lkAlreadyClaimed","Already claimed","पहले से क्लेम किया","Ya reclamado","Déjà réclamé","Bereits beansprucht","Já reivindicado","تمت المطالبة به","已领取","請求済み","Уже получено"],
+["lkLeftToClaim","Left to claim","क्लेम करने को शेष","Por reclamar","Reste à réclamer","Zu beanspruchen","A reivindicar","المتبقي للمطالبة","待领取","請求可能残高","Осталось получить"],
+["lkGiftsFor","Gifts for {addr}","{addr} के लिए गिफ्ट","Regalos para {addr}","Cadeaux pour {addr}","Geschenke für {addr}","Presentes para {addr}","هدايا لـ {addr}","{addr} 的礼物","{addr} へのギフト","Подарки для {addr}"],
+["lkGiftsForSelf","Gifts for {addr} (your wallet — you can claim below)","{addr} के लिए गिफ्ट (आपका वॉलेट — आप नीचे क्लेम कर सकते हैं)","Regalos para {addr} (tu billetera: puedes reclamar abajo)","Cadeaux pour {addr} (votre portefeuille — réclamez ci-dessous)","Geschenke für {addr} (deine Wallet — unten beanspruchbar)","Presentes para {addr} (sua carteira — reivindique abaixo)","هدايا لـ {addr} (محفظتك — يمكنك المطالبة أدناه)","{addr} 的礼物（您的钱包——可在下方领取）","{addr} へのギフト（あなたのウォレット — 下で請求できます）","Подарки для {addr} (ваш кошелёк — можно получить ниже)"],
+["lkError","Couldn't load gifts for this wallet. Check the address and try again.","इस वॉलेट के गिफ्ट लोड नहीं हो सके। पता जांचें और पुनः प्रयास करें।","No se pudieron cargar los regalos de esta billetera. Verifica la dirección e inténtalo de nuevo.","Impossible de charger les cadeaux de ce portefeuille. Vérifiez l'adresse et réessayez.","Geschenke dieser Wallet konnten nicht geladen werden. Adresse prüfen und erneut versuchen.","Não foi possível carregar os presentes desta carteira. Verifique o endereço e tente novamente.","تعذّر تحميل هدايا هذه المحفظة. تحقق من العنوان وحاول مجددًا.","无法加载此钱包的礼物。请检查地址后重试。","このウォレットのギフトを読み込めませんでした。アドレスを確認して再試行してください。","Не удалось загрузить подарки этого кошелька. Проверьте адрес и повторите."],
+["biConnect","Connect your wallet to search.","सर्च करने के लिए वॉलेट कनेक्ट करें।","Conecta tu billetera para buscar.","Connectez votre portefeuille pour rechercher.","Verbinde deine Wallet zum Suchen.","Conecte sua carteira para pesquisar.","اربط محفظتك للبحث.","连接钱包以搜索。","検索するにはウォレットを接続してください。","Подключите кошелёк для поиска."],
+["biSearching","Searching this wallet…","इस वॉलेट को खोजा जा रहा है…","Buscando esta billetera…","Recherche de ce portefeuille…","Diese Wallet wird durchsucht…","Pesquisando esta carteira…","جارٍ البحث في هذه المحفظة…","正在搜索此钱包…","このウォレットを検索中…","Поиск по этому кошельку…"],
+["biNoPos","This wallet has no positions yet — you'll fund its first.","इस वॉलेट में अभी कोई पोजीशन नहीं है — आप इसकी पहली फंड करेंगे।","Esta billetera aún no tiene posiciones: financiarás la primera.","Ce portefeuille n'a pas encore de position — vous financerez la première.","Diese Wallet hat noch keine Positionen — du finanzierst die erste.","Esta carteira ainda não tem posições — você financiará a primeira.","لا توجد مراكز لهذه المحفظة بعد — ستموّل أولها.","此钱包尚无持仓——您将出资第一笔。","このウォレットにはまだポジションがありません — 最初の資金提供になります。","У этого кошелька пока нет позиций — вы профинансируете первую."],
+["biHolds","This wallet holds {n} position(s)","इस वॉलेट में {n} पोजीशन हैं","Esta billetera tiene {n} posición(es)","Ce portefeuille détient {n} position(s)","Diese Wallet hält {n} Position(en)","Esta carteira tem {n} posição(ões)","تحتفظ هذه المحفظة بـ {n} مركزًا","此钱包持有 {n} 个持仓","このウォレットは {n} 件のポジションを保有","На этом кошельке {n} позиц."],
+["biSentByYou"," · {m} sent by you."," · {m} आपके द्वारा भेजे गए।"," · {m} enviado(s) por ti."," · {m} envoyé(s) par vous."," · {m} von dir gesendet."," · {m} enviado(s) por você."," · {m} أرسلتها أنت."," · 其中 {m} 个由您发送。"," · うち {m} 件はあなたが送信。"," · {m} отправлено вами."],
+["biTotalPositions","Total positions","कुल पोजीशन","Posiciones totales","Positions totales","Positionen gesamt","Posições totais","إجمالي المراكز","持仓总数","ポジション合計","Всего позиций"],
+["biTotalClaim","Total claim amount","कुल क्लेम राशि","Monto total a reclamar","Montant total à réclamer","Gesamter Anspruchsbetrag","Valor total a reivindicar","إجمالي مبلغ المطالبة","可领取总额","請求合計額","Общая сумма получений"],
+["gbBenLabel","Beneficiary — search the wallet you're gifting to","लाभार्थी — जिस वॉलेट को गिफ्ट कर रहे हैं उसे सर्च करें","Beneficiario: busca la billetera a la que regalas","Bénéficiaire — recherchez le portefeuille destinataire","Begünstigter — suche die Wallet, der du schenkst","Beneficiário — pesquise a carteira que vai presentear","المستفيد — ابحث عن المحفظة التي تهديها","受益人——搜索您要赠送的钱包","受益者 — ギフトを贈るウォレットを検索","Получатель — найдите кошелёк, которому дарите"],
+["gbAmount","Amount","राशि","Monto","Montant","Betrag","Valor","المبلغ","金额","金額","Сумма"],
+["gbBalance","Balance {bal} {sym}","बैलेंस {bal} {sym}","Saldo {bal} {sym}","Solde {bal} {sym}","Guthaben {bal} {sym}","Saldo {bal} {sym}","الرصيد {bal} {sym}","余额 {bal} {sym}","残高 {bal} {sym}","Баланс {bal} {sym}"],
+["gbMax","Max","अधिकतम","Máx","Max","Max","Máx","الأقصى","最大","最大","Макс"],
+["gbMinimum","Minimum {min}","न्यूनतम {min}","Mínimo {min}","Minimum {min}","Minimum {min}","Mínimo {min}","الحد الأدنى {min}","最低 {min}","最低 {min}","Минимум {min}"],
+["gbPlan","Plan","प्लान","Plan","Plan","Plan","Plano","الخطة","计划","プラン","План"],
+["gbUnlocksAt","Unlocks at","अनलॉक होता है","Se desbloquea en","Se débloque à","Freischaltung bei","Desbloqueia em","يُفتح عند","解锁于","解除価格","Разблокируется при"],
+["gbTheirTarget","Their total target","उनका कुल लक्ष्य","Su objetivo total","Leur objectif total","Ihr Gesamtziel","Meta total deles","هدفهم الإجمالي","其总目标","相手の合計目標","Их общая цель"],
+["gbMaxSlippage","Max slippage","अधिकतम स्लिपेज","Deslizamiento máx.","Glissement max","Max. Slippage","Deslizamento máx.","أقصى انزلاق","最大滑点","最大スリッページ","Макс. проскальзывание"],
+["gbFooter","Paid out over 10 monthly claims once the price target is met. You receive 10% of each claim.","मूल्य लक्ष्य पूरा होने पर 10 मासिक क्लेम में भुगतान। हर क्लेम का 10% आपको मिलता है।","Se paga en 10 reclamos mensuales una vez alcanzado el objetivo. Recibes el 10% de cada reclamo.","Versé en 10 réclamations mensuelles une fois l'objectif atteint. Vous recevez 10% de chaque réclamation.","Auszahlung in 10 monatlichen Ansprüchen, sobald das Ziel erreicht ist. Du erhältst 10% pro Anspruch.","Pago em 10 reivindicações mensais após atingir a meta. Você recebe 10% de cada uma.","يُدفع على 10 مطالبات شهرية بعد بلوغ الهدف. تحصل على 10% من كل مطالبة.","达到价格目标后分 10 次每月领取。您获得每次领取的 10%。","価格目標達成後、毎月10回に分けて支払われます。各請求の10%を受け取ります。","Выплачивается 10 ежемесячными получениями по достижении цели. Вы получаете 10% с каждого."],
+["gbApprove","Approve {sym}","{sym} स्वीकृत करें","Aprobar {sym}","Approuver {sym}","{sym} genehmigen","Aprovar {sym}","الموافقة على {sym}","批准 {sym}","{sym} を承認","Одобрить {sym}"],
+["gbSendGift","Send Gift","गिफ्ट भेजें","Enviar regalo","Envoyer le cadeau","Geschenk senden","Enviar presente","إرسال الهدية","发送礼物","ギフトを送る","Отправить подарок"],
+["mrConnect","Connect to view","देखने के लिए कनेक्ट करें","Conectar para ver","Connecter pour voir","Verbinden zum Ansehen","Conectar para ver","اتصل للعرض","连接以查看","接続して表示","Подключить для просмотра"],
+["mrTotalEarned","Total earned","कुल कमाई","Total ganado","Total gagné","Gesamt verdient","Total ganho","إجمالي الأرباح","总收益","合計収益","Всего заработано"],
+["mrFromGifts","From gifts you funded","आपके द्वारा फंड किए गए गिफ्ट से","De los regalos que financiaste","Des cadeaux que vous avez financés","Aus von dir finanzierten Geschenken","Dos presentes que você financiou","من الهدايا التي مولتها","来自您出资的礼物","あなたが資金提供したギフトから","С подарков, которые вы профинансировали"],
+["mrGiftsFunded","Gifts you funded","आपके फंड किए गिफ्ट","Regalos que financiaste","Cadeaux que vous avez financés","Von dir finanzierte Geschenke","Presentes que você financiou","الهدايا التي مولتها","您出资的礼物","資金提供したギフト","Подарки, которые вы профинансировали"],
+["mrEarnedSoFar","Earned so far","अब तक कमाया","Ganado hasta ahora","Gagné jusqu'ici","Bisher verdient","Ganho até agora","المكتسب حتى الآن","目前已赚","これまでの収益","Заработано на данный момент"],
+["mrProjected","Projected future","अनुमानित भविष्य","Futuro proyectado","Futur projeté","Voraussichtlich künftig","Futuro projetado","المتوقع مستقبلًا","预计未来","将来の見込み","Прогноз на будущее"],
+["mrLoadingGifts","Loading your gifts…","आपके गिफ्ट लोड हो रहे हैं…","Cargando tus regalos…","Chargement de vos cadeaux…","Deine Geschenke werden geladen…","Carregando seus presentes…","جارٍ تحميل هداياك…","正在加载您的礼物…","ギフトを読み込み中…","Загрузка ваших подарков…"],
+["mrPeopleReferred","People you referred","आपके द्वारा रेफर किए लोग","Personas que referiste","Personnes que vous avez parrainées","Von dir geworbene Personen","Pessoas que você indicou","الأشخاص الذين أحلتهم","您推荐的人","あなたが紹介した人","Приглашённые вами люди"],
+["mrReferralIncome","Referral income","रेफरल आय","Ingresos por referidos","Revenus de parrainage","Empfehlungseinnahmen","Renda de indicação","دخل الإحالة","推荐收入","紹介収入","Реферальный доход"],
+["mrLoading","Loading…","लोड हो रहा है…","Cargando…","Chargement…","Wird geladen…","Carregando…","جارٍ التحميل…","加载中…","読み込み中…","Загрузка…"],
+["mrFooter","Every time someone you gifted claims, you receive 10% of that claim. \"Projected future\" is your remaining 10% across every gift you've funded, assuming each reaches its target — the actual amount depends on KAVI's price at each claim.","जब भी आपका गिफ्ट पाने वाला क्लेम करता है, आपको उस क्लेम का 10% मिलता है। \"अनुमानित भविष्य\" आपके सभी फंड किए गिफ्ट पर बचा हुआ 10% है, यह मानते हुए कि हर एक अपने लक्ष्य तक पहुंचे — वास्तविक राशि हर क्लेम पर KAVI के मूल्य पर निर्भर करती है।","Cada vez que alguien a quien regalaste reclama, recibes el 10% de ese reclamo. \"Futuro proyectado\" es tu 10% restante de cada regalo que financiaste, suponiendo que cada uno alcance su objetivo; el monto real depende del precio de KAVI en cada reclamo.","Chaque fois qu'un bénéficiaire réclame, vous recevez 10% de cette réclamation. Le « futur projeté » est vos 10% restants sur chaque cadeau financé, en supposant que chacun atteigne son objectif — le montant réel dépend du prix de KAVI à chaque réclamation.","Jedes Mal, wenn ein Beschenkter beansprucht, erhältst du 10% davon. „Voraussichtlich künftig“ sind deine verbleibenden 10% über alle finanzierten Geschenke, sofern jedes sein Ziel erreicht — der tatsächliche Betrag hängt vom KAVI-Preis bei jedem Anspruch ab.","Cada vez que alguém que você presenteou reivindica, você recebe 10% dessa reivindicação. \"Futuro projetado\" é seu 10% restante em cada presente financiado, supondo que cada um atinja a meta — o valor real depende do preço do KAVI em cada reivindicação.","في كل مرة يطالب فيها شخص أهديته، تحصل على 10% من تلك المطالبة. \"المتوقع مستقبلًا\" هو 10% المتبقية لك عبر كل هدية مولتها، بافتراض بلوغ كل منها هدفها — المبلغ الفعلي يعتمد على سعر KAVI عند كل مطالبة.","每当您赠送的对象领取时，您将获得该次领取的 10%。\"预计未来\"是您在所有已出资礼物上剩余的 10%（假设每笔都达到目标）——实际金额取决于每次领取时 KAVI 的价格。","あなたが贈った相手が請求するたびに、その10%を受け取ります。「将来の見込み」は、資金提供した全ギフトが目標に達すると仮定した場合の残りの10%です。実際の額は各請求時の KAVI 価格によります。","Каждый раз, когда одаряемый получает выплату, вы получаете 10% с неё. «Прогноз на будущее» — это ваши оставшиеся 10% по всем профинансированным подаркам при условии, что каждый достигнет цели; фактическая сумма зависит от цены KAVI на момент получения."],
+["lfNone","You haven't funded any gifts yet.","आपने अभी तक कोई गिफ्ट फंड नहीं किया है।","Aún no has financiado ningún regalo.","Vous n'avez encore financé aucun cadeau.","Du hast noch keine Geschenke finanziert.","Você ainda não financiou nenhum presente.","لم تموّل أي هدايا بعد.","您还没有出资任何礼物。","まだギフトを資金提供していません。","Вы ещё не профинансировали ни одного подарка."],
+["lfError","Couldn't load your gifts.","आपके गिफ्ट लोड नहीं हो सके।","No se pudieron cargar tus regalos.","Impossible de charger vos cadeaux.","Deine Geschenke konnten nicht geladen werden.","Não foi possível carregar seus presentes.","تعذّر تحميل هداياك.","无法加载您的礼物。","ギフトを読み込めませんでした。","Не удалось загрузить ваши подарки."],
+["lrNone","No one has used your referral yet.","अभी तक किसी ने आपका रेफरल उपयोग नहीं किया है।","Nadie ha usado tu referido todavía.","Personne n'a encore utilisé votre parrainage.","Noch niemand hat deine Empfehlung genutzt.","Ninguém usou sua indicação ainda.","لم يستخدم أحد إحالتك بعد.","还没有人使用您的推荐。","まだ誰もあなたの紹介を使っていません。","Пока никто не воспользовался вашим приглашением."],
+["lrView","View ↗","देखें ↗","Ver ↗","Voir ↗","Ansehen ↗","Ver ↗","عرض ↗","查看 ↗","表示 ↗","Открыть ↗"],
+["lrError","Couldn't load referrals.","रेफरल लोड नहीं हो सके।","No se pudieron cargar los referidos.","Impossible de charger les parrainages.","Empfehlungen konnten nicht geladen werden.","Não foi possível carregar as indicações.","تعذّر تحميل الإحالات.","无法加载推荐。","紹介を読み込めませんでした。","Не удалось загрузить приглашения."],
+["txDefaultTitle","Transaction complete","लेन-देन पूर्ण","Transacción completa","Transaction terminée","Transaktion abgeschlossen","Transação concluída","اكتملت المعاملة","交易完成","取引完了","Транзакция завершена"],
+["txDone","Done","हो गया","Listo","Terminé","Fertig","Concluído","تم","完成","完了","Готово"],
+["txViewExplorer","View on explorer ↗","एक्सप्लोरर पर देखें ↗","Ver en el explorador ↗","Voir sur l'explorateur ↗","Im Explorer ansehen ↗","Ver no explorador ↗","عرض في المستكشف ↗","在浏览器中查看 ↗","エクスプローラで表示 ↗","Открыть в обозревателе ↗"],
+["txGiftTitle","Gift sent 🎉","गिफ्ट भेजा गया 🎉","Regalo enviado 🎉","Cadeau envoyé 🎉","Geschenk gesendet 🎉","Presente enviado 🎉","تم إرسال الهدية 🎉","礼物已发送 🎉","ギフトを送りました 🎉","Подарок отправлен 🎉"],
+["txGiftMsg","Your gift to {ben} has been funded. They can claim it once the price target is reached, and you'll earn 10% of every claim.","{ben} को आपका गिफ्ट फंड हो गया है। मूल्य लक्ष्य पूरा होने पर वे इसे क्लेम कर सकते हैं, और आप हर क्लेम का 10% कमाएंगे।","Tu regalo a {ben} ha sido financiado. Podrá reclamarlo cuando se alcance el objetivo de precio, y tú ganarás el 10% de cada reclamo.","Votre cadeau à {ben} est financé. Il pourra le réclamer une fois l'objectif atteint, et vous gagnerez 10% de chaque réclamation.","Dein Geschenk an {ben} wurde finanziert. Es kann beansprucht werden, sobald das Kursziel erreicht ist, und du erhältst 10% pro Anspruch.","Seu presente para {ben} foi financiado. Poderá ser reivindicado quando a meta for atingida, e você ganhará 10% de cada reivindicação.","تم تمويل هديتك إلى {ben}. يمكن المطالبة بها عند بلوغ الهدف السعري، وستكسب 10% من كل مطالبة.","您给 {ben} 的礼物已出资。达到价格目标后即可领取，您将获得每次领取的 10%。","{ben} へのギフトに資金提供しました。価格目標に達すると請求でき、あなたは各請求の10%を得られます。","Ваш подарок для {ben} профинансирован. Его можно будет получить по достижении цели, а вы будете получать 10% с каждого получения."],
+["txClaimTitle","Claim complete","क्लेम पूर्ण","Reclamo completo","Réclamation terminée","Anspruch abgeschlossen","Reivindicação concluída","اكتملت المطالبة","领取完成","請求完了","Получение завершено"],
+["txClaimMsg","Your claim has been settled to {sym} and sent to your wallet.","आपका क्लेम {sym} में सेटल होकर आपके वॉलेट में भेज दिया गया है।","Tu reclamo se ha liquidado en {sym} y enviado a tu billetera.","Votre réclamation a été réglée en {sym} et envoyée à votre portefeuille.","Dein Anspruch wurde in {sym} abgerechnet und an deine Wallet gesendet.","Sua reivindicação foi liquidada em {sym} e enviada para sua carteira.","تمت تسوية مطالبتك بـ {sym} وأُرسلت إلى محفظتك.","您的领取已结算为 {sym} 并发送到您的钱包。","請求は {sym} で決済され、ウォレットに送られました。","Ваше получение рассчитано в {sym} и отправлено на кошелёк."],
+["ppGotIt","Got it","समझ गया","Entendido","Compris","Verstanden","Entendi","حسنًا","知道了","了解","Понятно"],
+["ppUp","Congratulations !! Your Asset Growing. Invest More. Gain More.","बधाई हो !! आपकी संपत्ति बढ़ रही है। अधिक निवेश करें। अधिक कमाएं।","¡¡Felicidades!! Tu activo está creciendo. Invierte más. Gana más.","Félicitations !! Votre actif progresse. Investissez plus. Gagnez plus.","Glückwunsch !! Dein Vermögen wächst. Investiere mehr. Gewinne mehr.","Parabéns !! Seu ativo está crescendo. Invista mais. Ganhe mais.","تهانينا !! أصولك تنمو. استثمر أكثر. اربح أكثر.","恭喜!! 您的资产正在增长。多投资，多收益。","おめでとうございます！！資産が増えています。もっと投資して、もっと得ましょう。","Поздравляем!! Ваш актив растёт. Инвестируйте больше. Зарабатывайте больше."],
+["ppDown","Hurry Up !! Market is Down. It's Time to Invest.","जल्दी करें !! बाजार गिरा है। निवेश का समय है।","¡¡Date prisa!! El mercado ha bajado. Es hora de invertir.","Dépêchez-vous !! Le marché est en baisse. C'est le moment d'investir.","Beeil dich !! Der Markt ist unten. Zeit zu investieren.","Rápido !! O mercado caiu. É hora de investir.","أسرع !! السوق منخفض. حان وقت الاستثمار.","抓紧!! 市场下跌，正是投资时机。","お急ぎください！！相場が下がっています。今が投資のときです。","Скорее !! Рынок упал. Время инвестировать."],
+["fwSelf","The beneficiary must be a different wallet from yours.","लाभार्थी आपके वॉलेट से अलग होना चाहिए।","El beneficiario debe ser una billetera distinta a la tuya.","Le bénéficiaire doit être un portefeuille différent du vôtre.","Der Begünstigte muss eine andere Wallet als deine sein.","O beneficiário deve ser uma carteira diferente da sua.","يجب أن يكون المستفيد محفظة مختلفة عن محفظتك.","受益人必须是与您不同的钱包。","受益者はあなたとは別のウォレットである必要があります。","Получатель должен быть другим кошельком, не вашим."],
+["fwIncomplete","That beneficiary address is incomplete.","वह लाभार्थी पता अधूरा है।","Esa dirección de beneficiario está incompleta.","Cette adresse de bénéficiaire est incomplète.","Diese Begünstigtenadresse ist unvollständig.","Esse endereço de beneficiário está incompleto.","عنوان المستفيد غير مكتمل.","该受益人地址不完整。","受益者アドレスが不完全です。","Адрес получателя неполный."],
+["fwOverBal","You only have {bal} {sym}.","आपके पास केवल {bal} {sym} है।","Solo tienes {bal} {sym}.","Vous n'avez que {bal} {sym}.","Du hast nur {bal} {sym}.","Você tem apenas {bal} {sym}.","لديك فقط {bal} {sym}.","您只有 {bal} {sym}。","{bal} {sym} しかありません。","У вас только {bal} {sym}."],
+["fwNoPrice","No price available right now.","अभी कोई मूल्य उपलब्ध नहीं है।","No hay precio disponible ahora.","Aucun prix disponible pour le moment.","Derzeit kein Preis verfügbar.","Nenhum preço disponível agora.","لا يوجد سعر متاح الآن.","目前无可用价格。","現在価格がありません。","Сейчас цена недоступна."],
+["scanStarting","Starting the camera…","कैमरा शुरू हो रहा है…","Iniciando la cámara…","Démarrage de la caméra…","Kamera wird gestartet…","Iniciando a câmera…","جارٍ تشغيل الكاميرا…","正在启动相机…","カメラを起動中…","Запуск камеры…"],
+["howDepositH","Deposit","जमा करें","Depositar","Dépôt","Einzahlen","Depositar","إيداع","存入","入金","Внесение"],
+["howDepositP","Gift USDT to a friend or customer to buy KAVI for them.","किसी दोस्त या ग्राहक को USDT गिफ्ट करें ताकि उनके लिए KAVI खरीदा जा सके।","Regala USDT a un amigo o cliente para comprar KAVI por él.","Offrez de l'USDT à un ami ou client pour acheter du KAVI pour lui.","Schenke einem Freund oder Kunden USDT, um KAVI für ihn zu kaufen.","Presenteie USDT a um amigo ou cliente para comprar KAVI para ele.","أهدِ USDT لصديق أو عميل لشراء KAVI له.","向朋友或客户赠送 USDT，为他们购买 KAVI。","友人や顧客に USDT を贈り、その人のために KAVI を購入します。","Подарите USDT другу или клиенту, чтобы купить для него KAVI."],
+["howTargetH","The target","लक्ष्य","El objetivo","L'objectif","Das Ziel","A meta","الهدف","目标","目標","Цель"],
+["howTargetP","Your chosen plan sets the unlock price. Nothing can be claimed until KAVI trades at or above it.","आपका चुना हुआ प्लान अनलॉक मूल्य तय करता है। जब तक KAVI उस मूल्य पर या उससे ऊपर नहीं आता, कुछ भी क्लेम नहीं किया जा सकता।","El plan que elijas fija el precio de desbloqueo. No se puede reclamar nada hasta que KAVI cotice en ese precio o por encima.","Le plan que vous choisissez fixe le prix de déblocage. Rien ne peut être réclamé tant que KAVI ne se négocie pas à ce niveau ou au-dessus.","Der von dir gewählte Plan legt den Freischaltpreis fest. Es kann nichts beansprucht werden, bis KAVI zu diesem Preis oder darüber gehandelt wird.","O plano que você escolher define o preço de desbloqueio. Nada pode ser reivindicado até que o KAVI seja negociado nesse preço ou acima.","تحدد الخطة التي تختارها سعر الفتح. لا يمكن المطالبة بأي شيء حتى يتداول KAVI عند هذا السعر أو أعلى.","您选择的计划设定解锁价格。在 KAVI 达到或超过该价格之前，无法领取任何内容。","選んだプランが解除価格を決めます。KAVI がその価格以上で取引されるまで、何も請求できません。","Выбранный план задаёт цену разблокировки. Ничего нельзя получить, пока KAVI не будет торговаться на этом уровне или выше."],
+["howClaimsH","Ten claims","दस क्लेम","Diez reclamos","Dix réclamations","Zehn Ansprüche","Dez reivindicações","عشر مطالبات","十次领取","10回の請求","Десять получений"],
+["howClaimsP","Once unlocked, the beneficiary claims a tenth of the target each month, sold to USDT at market.","अनलॉक होने के बाद, लाभार्थी हर महीने लक्ष्य का दसवां हिस्सा क्लेम करता है, जो बाज़ार भाव पर USDT में बेचा जाता है।","Una vez desbloqueado, el beneficiario reclama una décima parte del objetivo cada mes, vendida a USDT al precio de mercado.","Une fois débloqué, le bénéficiaire réclame un dixième de l'objectif chaque mois, vendu en USDT au prix du marché.","Nach dem Freischalten beansprucht der Begünstigte jeden Monat ein Zehntel des Ziels, das zum Marktpreis in USDT verkauft wird.","Uma vez desbloqueado, o beneficiário reivindica um décimo da meta a cada mês, vendido em USDT a preço de mercado.","بعد الفتح، يطالب المستفيد بعُشر الهدف كل شهر، ويُباع بـ USDT بسعر السوق.","解锁后，受益人每月领取目标的十分之一，按市价卖成 USDT。","解除後、受益者は毎月目標の10分の1を請求し、市場価格で USDT に売却されます。","После разблокировки получатель каждый месяц забирает десятую часть цели, продаваемую в USDT по рыночной цене."],
+["howEarnH","Everyone earns","सभी कमाते हैं","Todos ganan","Tout le monde gagne","Alle verdienen","Todos ganham","الجميع يربح","人人受益","全員が得をする","Выигрывают все"],
+["howEarnP","Each claim pays 10% to you as the funder and 10% to the platform. The beneficiary keeps 80%.","हर क्लेम पर आपको फंडर के रूप में 10% और प्लेटफॉर्म को 10% मिलता है। लाभार्थी 80% रखता है।","Cada reclamo te paga el 10% como financiador y el 10% a la plataforma. El beneficiario se queda con el 80%.","Chaque réclamation vous verse 10% en tant que bailleur et 10% à la plateforme. Le bénéficiaire conserve 80%.","Jeder Anspruch zahlt dir als Geldgeber 10% und der Plattform 10%. Der Begünstigte behält 80%.","Cada reivindicação paga 10% a você como financiador e 10% à plataforma. O beneficiário fica com 80%.","تدفع كل مطالبة 10% لك كممول و10% للمنصة. يحتفظ المستفيد بـ 80%.","每次领取向作为出资人的您支付 10%，向平台支付 10%。受益人保留 80%。","各請求では、資金提供者であるあなたに10%、プラットフォームに10%が支払われます。受益者は80%を受け取ります。","Каждое получение приносит 10% вам как спонсору и 10% платформе. Получатель оставляет себе 80%."],
+["riskH","Understand this before funding","फंड करने से पहले यह समझें","Entiende esto antes de financiar","Comprenez ceci avant de financer","Verstehe dies vor der Finanzierung","Entenda isto antes de financiar","افهم هذا قبل التمويل","出资前请理解这一点","資金提供の前に理解してください","Поймите это перед финансированием"],
+["riskP","The position stays locked until its price target is met, and if the market never reaches it, nothing can ever be claimed. Payouts are produced by selling the locked KAVI at market, so the amount received depends on the price at each claim. Every claim also sells KAVI into the pool. So fund a position only if you believe KAVI can reach the multiple you choose.","पोजीशन तब तक लॉक रहती है जब तक उसका मूल्य लक्ष्य पूरा न हो, और अगर बाज़ार कभी वहां न पहुंचे तो कुछ भी क्लेम नहीं किया जा सकता। भुगतान लॉक किए गए KAVI को बाज़ार में बेचकर बनते हैं, इसलिए मिलने वाली राशि हर क्लेम के समय के मूल्य पर निर्भर करती है। हर क्लेम KAVI को पूल में भी बेचता है। इसलिए किसी पोजीशन को तभी फंड करें जब आपको विश्वास हो कि KAVI आपके चुने हुए गुणक तक पहुंच सकता है।","La posición permanece bloqueada hasta alcanzar su precio objetivo, y si el mercado nunca lo alcanza, nunca se podrá reclamar nada. Los pagos se generan vendiendo el KAVI bloqueado en el mercado, por lo que el monto recibido depende del precio en cada reclamo. Cada reclamo también vende KAVI al pool. Así que financia una posición solo si crees que KAVI puede alcanzar el múltiplo que elijas.","La position reste bloquée jusqu'à ce que son objectif de prix soit atteint ; si le marché ne l'atteint jamais, rien ne pourra être réclamé. Les paiements proviennent de la vente du KAVI bloqué au marché, donc le montant reçu dépend du prix à chaque réclamation. Chaque réclamation vend aussi du KAVI dans le pool. Ne financez donc une position que si vous croyez que KAVI peut atteindre le multiple que vous choisissez.","Die Position bleibt gesperrt, bis ihr Kursziel erreicht ist; erreicht der Markt es nie, kann nichts beansprucht werden. Auszahlungen entstehen durch den Verkauf des gesperrten KAVI am Markt, daher hängt der erhaltene Betrag vom Preis bei jedem Anspruch ab. Jeder Anspruch verkauft zudem KAVI in den Pool. Finanziere eine Position also nur, wenn du glaubst, dass KAVI das gewählte Vielfache erreichen kann.","A posição permanece bloqueada até atingir sua meta de preço e, se o mercado nunca chegar lá, nada poderá ser reivindicado. Os pagamentos são gerados vendendo o KAVI bloqueado no mercado, então o valor recebido depende do preço em cada reivindicação. Cada reivindicação também vende KAVI no pool. Portanto, financie uma posição apenas se acreditar que o KAVI pode atingir o múltiplo que você escolher.","يبقى المركز مقفلاً حتى بلوغ هدفه السعري، وإذا لم يصل السوق إليه أبدًا، فلن يمكن المطالبة بأي شيء. تُنتَج المدفوعات ببيع KAVI المقفل في السوق، لذا يعتمد المبلغ المستلَم على السعر عند كل مطالبة. كل مطالبة تبيع أيضًا KAVI في المجمع. لذا موّل مركزًا فقط إذا كنت تعتقد أن KAVI يمكنه بلوغ المضاعف الذي تختاره.","持仓将保持锁定，直到达到其价格目标；若市场始终未达到，则永远无法领取任何内容。收益通过在市场上卖出被锁定的 KAVI 产生，因此收到的金额取决于每次领取时的价格。每次领取也会将 KAVI 卖入资金池。因此，仅当您相信 KAVI 能达到您所选的倍数时才为持仓出资。","ポジションは価格目標に達するまでロックされ、市場が到達しなければ何も請求できません。支払いはロックされた KAVI を市場で売却して生み出されるため、受取額は各請求時の価格によります。各請求は KAVI をプールに売却もします。したがって、KAVI が選んだ倍率に到達すると信じる場合にのみ資金提供してください。","Позиция остаётся заблокированной до достижения целевой цены; если рынок её не достигнет, получить ничего не удастся. Выплаты формируются продажей заблокированного KAVI на рынке, поэтому получаемая сумма зависит от цены на момент каждого получения. Каждое получение также продаёт KAVI в пул. Поэтому финансируйте позицию только если верите, что KAVI сможет достичь выбранного вами множителя."]
+];
+EX_ROWS.forEach(row=>{ const key=row[0]; LANGS.forEach((l,i)=>{ if(!T[l])T[l]={}; T[l][key]=row[i+1]; }); });
+function t(key,vars){
+  let s=(T[S.language]&&T[S.language][key]);
+  if(s==null) s=T.en[key]!=null?T.en[key]:key;
+  if(vars) for(const k in vars) s=s.split("{"+k+"}").join(vars[k]);
+  return s;
+}
+function applyI18n(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ el.textContent=t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ el.setAttribute("placeholder",t(el.dataset.i18nPh)); });
+  document.documentElement.dir = S.language==="ar" ? "rtl" : "ltr";
+}
+function guessDefaults(){
+  let lang="en", cur="USD";
+  try{
+    const nl=(navigator.language||"en").toLowerCase();
+    const map={hi:["hi","INR"],en_in:["en","INR"],es:["es","MXN"],fr:["fr","EUR"],de:["de","EUR"],pt:["pt","BRL"],ar:["ar","AED"],zh:["zh","CNY"],ja:["ja","JPY"],ru:["ru","RUB"]};
+    if(nl.includes("in")&&(nl.startsWith("hi")||nl.startsWith("en-in"))){lang="hi";cur="INR";}
+    else{
+      for(const k in map){ if(nl.startsWith(k.replace("_","-"))){ lang=map[k][0]; cur=map[k][1]; break; } }
+    }
+  }catch(_){}
+  return {lang,cur};
+}
+const DEF=guessDefaults();
+
+const S={prov:null,signer:null,acct:null,chainOk:false,c:null,ro:null,kavi:null,stable:null,
+  kd:18,sd:18,ks:"KAVI",ss:"USDT",price:null,minUsd:null,plans:[],presets:[30,50,100,200,300],
+  slipSaved:null,slipPick:0,customSlip:"",bal:0n,allow:0n,
+  myPos:[],refInfo:null,depInfo:null,myReferrer:null,
+  ben:"",amt:"",refIn:"",plan:0,benTok:0,giftSlipBps:50,gateDismissed:false,depBps:null,
+  fvDismissed:false,fvActive:false,scanTarget:"gift",lookupAddr:"",
+
+  stats:null,lastErr:"",priceOk:true,tab:"fund",usdInr:null,
+  currency:localStorage.getItem("kavi_currency")||DEF.cur,
+  language:localStorage.getItem("kavi_lang")||DEF.lang,
+  rates:null};
+
+function curInfo(){ return CURRENCIES.find(c=>c.code===S.currency)||CURRENCIES[0]; }
+function openSettings(){
+  const cs=$("#setCurrency"), ls=$("#setLanguage");
+  if(cs && !cs.dataset.built){
+    cs.innerHTML=CURRENCIES.map(c=>`<option value="${c.code}">${c.flag} ${c.code} — ${c.name}</option>`).join("");
+    cs.dataset.built="1";
+  }
+  if(ls && !ls.dataset.built){
+    ls.innerHTML=LANGS.map(l=>`<option value="${l}">${LANG_NAMES[l]}</option>`).join("");
+    ls.dataset.built="1";
+  }
+  if(cs) cs.value=S.currency;
+  if(ls) ls.value=S.language;
+  applyI18n();
+  $("#setGate").style.display="flex";
+}
+function closeSettings(){ $("#setGate").style.display="none"; }
+function saveSettings(){
+  const cs=$("#setCurrency"), ls=$("#setLanguage");
+  if(cs) S.currency=cs.value;
+  if(ls) S.language=ls.value;
+  try{ localStorage.setItem("kavi_currency",S.currency); localStorage.setItem("kavi_lang",S.language); }catch(_){}
+  closeSettings();
+  applyI18n();
+  render();
+  const lr=document.getElementById("lookupResult");
+  if(lr && lr.innerHTML.trim() && isAddr(S.lookupAddr)) doLookup();
+}
+
+const now=()=>Math.floor(Date.now()/1000);
+const short=a=>a?a.slice(0,6)+"…"+a.slice(-4):"";
+function fmt(x,d=18,m=2){try{return Number(E.formatUnits(x,d)).toLocaleString(undefined,{maximumFractionDigits:m})}catch(e){return "0"}}
+function usd(x,m=4){
+  try{
+    const n=Number(E.formatUnits(x,18));
+    const ci=curInfo();
+    const rate=S.rates&&S.rates[ci.code]!=null?S.rates[ci.code]:(ci.code==="USD"?1:null);
+    if(rate==null) return "$"+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:n<0.01?m+2:m});
+    const v=n*rate;
+    return ci.symbol+v.toLocaleString(ci.locale,{minimumFractionDigits:2,maximumFractionDigits:v<0.01?m+2:m});
+  }catch(e){return "0"}
+}
+function inr(x){try{
+  if(S.usdInr==null) return null;
+  const v=Number(E.formatUnits(x,18))*S.usdInr;
+  return "₹"+v.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:v<1?6:2});
+}catch(e){return null}}
+const FX_URLS=["https://open.er-api.com/v6/latest/USD","https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json"];
+async function fetchFx(){
+  if(S.rates!=null) return;
+  for(const url of FX_URLS){
+    try{
+      const r=await fetch(url,{cache:"no-store"});
+      const j=await r.json();
+      let rates=null;
+      if(j&&j.rates) rates=j.rates;
+      else if(j&&j.usd){ rates={}; for(const k in j.usd) rates[k.toUpperCase()]=j.usd[k]; }
+      if(rates){ S.rates=rates; S.usdInr=rates.INR||null; render(); return; }
+    }catch(_){}
+  }
+}
+function giftKey(){return "kavi_gifts_"+(S.acct||"").toLowerCase()}
+function trackedBens(){try{const r=localStorage.getItem(giftKey());return r?JSON.parse(r):[]}catch(_){return[]}}
+function trackBen(addr){try{if(!isAddr(addr))return;const list=trackedBens(),a=addr.toLowerCase();if(!list.includes(a)){list.push(a);localStorage.setItem(giftKey(),JSON.stringify(list))}}catch(_){}}
+function dur(s){s=Math.max(0,Math.floor(s));const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
+  return d>0?`${d}d ${h}h`:h>0?`${h}h ${String(m).padStart(2,"0")}m`:`${m}m ${String(s%60).padStart(2,"0")}s`}
+const isAddr=a=>/^0x[0-9a-fA-F]{40}$/.test(a||"");
+const ZERO="0x0000000000000000000000000000000000000000";
+
+const ERRS={"Beneficiary must differ from depositor":"You can't fund a position for your own wallet — enter someone else's address.",
+"Referrer must differ from depositor":"You can't set yourself as your own referrer.",
+"Referrer already set":"Your referrer is already set and can't be changed.",
+"Deposit below minimum":"That amount is below the minimum deposit.",
+"Price below unlock threshold":"The price hasn't reached this position's target yet.",
+"Claim interval not elapsed":"The 30-day wait since the last claim hasn't finished.",
+"Deposit not active":"This position is already complete.",
+"Nothing to claim":"There is nothing left to claim on this position.",
+"Empty reserves":"The KAVI/USDT pool has no liquidity, so no price can be read.",
+"Invalid plan":"That plan doesn't exist.","Invalid slippage":"Choose a slippage between 0.01% and 20%.",
+"Slippage too high":"That slippage is above the 20% limit.","Contracts not allowed":"This action must come from a normal wallet, not a contract.",
+"Deposit above maximum":"That amount is above the maximum allowed per gift.",
+"Price above max":"The KAVI price jumped while your transaction was pending (possibly a bot). Nothing was spent — please try again.",
+"Price below min":"The KAVI price dropped while your claim was pending (possibly a bot). Nothing was sold — please try again.",
+"maxPriceUSD required":"Price protection missing. Reload the page and try again.",
+"minPriceUSD required":"Price protection missing. Reload the page and try again.",
+"Not a distributor":"This wallet is not a distributor yet.",
+"Distributorship expired":"Your distributorship has expired. Renew it to create new codes.",
+"Amount above maximum":"That amount per code is above the maximum.",
+"Amount below minimum":"That amount per code is below the minimum.",
+"Count 1 se 100":"Between 1 and 100 codes per transaction.",
+"Code already used":"One of these codes already exists. Try again.",
+"Wrong code":"That code doesn't match. Check every character.",
+"Invalid or used code":"This code is invalid or has already been used.",
+"Code expired":"This code has expired.",
+"Distributor cannot redeem own code":"You created this code — give it to someone else to redeem.",
+"Not your code":"Only the distributor who created this code can cancel it.",
+"Not active":"This code is no longer active.",
+"Self referral":"You can't be your own referrer.",
+"Only voucher contract":"The voucher contract is not linked yet. Ask the admin to link it.",
+"Not admin":"Only the admin wallet can do this.",
+"Min below floor":"Minimum must be at least $0.01.","Max below min":"Maximum must be at least the minimum.",
+"Period 1 se 3650":"Validity must be 1 to 3650 days.","Not pending admin":"Only the pending admin wallet can accept.",
+"Voucher already set":"The voucher contract is already linked.","Voucher not a contract":"That address is not a contract."};
+function decodeErr(e){
+  const raw=e?.info?.error?.message||e?.shortMessage||e?.reason||e?.message||"";
+  if(/user rejected|denied transaction|ACTION_REJECTED/i.test(raw)||e?.code===4001)return "You cancelled the transaction in your wallet.";
+  for(const k in ERRS) if(raw.includes(k)) return ERRS[k];
+  if(/INSUFFICIENT_OUTPUT_AMOUNT/i.test(raw))return "The swap moved past your slippage limit. Raise slippage and retry.";
+  if(/insufficient funds/i.test(raw))return "Not enough BNB for gas in this wallet.";
+  if(/transfer amount exceeds balance/i.test(raw))return "Not enough USDT in this wallet.";
+  if(/nonce|underpriced/i.test(raw))return "A pending transaction is blocking this one. Wait for it to finish.";
+  return raw?raw.slice(0,170):"The transaction failed.";
+}
+function toast(t,d,k){const el=document.createElement("div");el.className="toast"+(k==="err"?" err":"");
+  el.innerHTML=`<div class="t">${t}</div>${d?`<div class="d">${d}</div>`:""}`;$("#toasts").appendChild(el);
+  setTimeout(()=>{el.style.opacity="0";setTimeout(()=>el.remove(),300)},k==="err"?7000:5200);return el}
+const txl=h=>`<a href="${CONFIG.explorer}/tx/${h}" target="_blank" rel="noopener">${h.slice(0,10)}… ↗</a>`;
+
+function showPricePop(dir,pct){
+  const pop=document.getElementById("pricePop");
+  pop.classList.remove("up","down"); pop.classList.add(dir);
+  document.getElementById("pricePopArrow").textContent = dir==="up" ? "▲" : "▼";
+  const pctEl=document.getElementById("pricePopPct");
+  if(pct===null||pct===undefined||isNaN(pct)){ pctEl.style.display="none"; pctEl.textContent=""; }
+  else { pctEl.style.display=""; pctEl.textContent=(pct>=0?"+":"")+pct.toFixed(2)+"%"; }
+  document.getElementById("pricePopMsg").textContent = dir==="up"
+    ? t("ppUp")
+    : t("ppDown");
+  pop.classList.add("show");
+}
+function closePricePop(e){
+  if(e && e.target && e.target.id && e.target.id!=="pricePop") return;
+  document.getElementById("pricePop").classList.remove("show");
+}
+async function maybeShowPricePop(){
+  if(S.pricePopupShown) return;
+  let pRaw = (S.price!=null) ? S.price : null;
+  if(pRaw==null){ try{ pRaw = await S.c.getKaviPriceUSD(); }catch(e){ pRaw=null; } }
+  if(pRaw==null) return;
+  let price; try{ price = Number(E.formatUnits(pRaw,18)); }catch(e){ return; }
+  if(!isFinite(price)||price<=0) return;
+  S.pricePopupShown=true;
+  let prev=NaN;
+  try{ const r=localStorage.getItem("kaviPrevPrice"); if(r!=null) prev=parseFloat(r); }catch(e){}
+  let pct=null;
+  if(!isNaN(prev)&&prev>0){ pct=((price-prev)/prev)*100; }
+  const dir=(pct!==null&&pct<0)?"down":"up";
+  showPricePop(dir,pct);
+  try{ localStorage.setItem("kaviPrevPrice",String(price)); }catch(e){}
+}
+
+/* ---------- QR: camera scan + image upload ---------- */
+let scanStream=null, scanRAF=null;
+function qrAddress(text){
+  if(!text) return null;
+  const m=String(text).match(/0x[0-9a-fA-F]{40}/);
+  return m?m[0]:null;
+}
+function applyScanned(text){
+  const a=qrAddress(text);
+  if(!a){toast("No wallet address found","That QR doesn't contain a 0x address.","err");return false}
+  if(S.scanTarget==="lookup"){
+    S.lookupAddr=a;
+    const inp=document.getElementById("lookupIn"); if(inp) inp.value=a;
+    onLookupInput(a); doLookup();
+    toast("Address filled",short(a)); return true;
+  }
+  S.ben=a; renderGiftBox(); toast("Address filled",short(a)); return true;
+}
+let nativeDetector=null;
+function decoderReady(){ return !!(nativeDetector || window.jsQR); }
+async function initDetector(){
+  if(nativeDetector||window.jsQR) return;
+  try{
+    if("BarcodeDetector" in window){
+      const fmts=await window.BarcodeDetector.getSupportedFormats();
+      if(fmts.includes("qr_code")) nativeDetector=new window.BarcodeDetector({formats:["qr_code"]});
+    }
+  }catch(_){}
+}
+async function openScanner(){
+  const msgEl=()=>document.getElementById("scanMsg");
+  if(!window.isSecureContext){
+    toast("Camera needs HTTPS","This page must be served over https:// for the camera to work. Use \"Upload QR image\" instead.","err"); return;
+  }
+  if(!navigator.mediaDevices?.getUserMedia){
+    toast("Camera unavailable","This browser can't open the camera. Use \"Upload QR image\" instead.","err"); return;
+  }
+  await initDetector();
+  if(!decoderReady()){
+    toast("Scanner failed to load","The QR library didn't load. Check your connection and reload, or use \"Upload QR image\".","err"); return;
+  }
+  const box=document.getElementById("scan"), vid=document.getElementById("scanVid");
+  box.hidden=false; msgEl().textContent=t("scanStarting");
+  try{
+    scanStream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:1280}},audio:false});
+    vid.srcObject=scanStream;
+    await vid.play();
+    msgEl().textContent=t("scanHint");
+    scanLoop();
+  }catch(e){
+    closeScanner();
+    const nm=e&&e.name||"";
+    toast(nm==="NotAllowedError"?"Camera permission denied":"Camera couldn't start",
+      nm==="NotAllowedError"?"Allow camera access in your browser settings, or use \"Upload QR image\"."
+      :"Another app may be using the camera. Try again, or use \"Upload QR image\".","err");
+  }
+}
+async function scanLoop(){
+  if(!scanStream) return;
+  const vid=document.getElementById("scanVid"), cv=document.getElementById("qrCanvas");
+  if(vid && vid.videoWidth>0){
+    try{
+      if(nativeDetector){
+        const found=await nativeDetector.detect(vid);
+        if(found&&found.length&&found[0].rawValue){
+          if(applyScanned(found[0].rawValue)){ closeScanner(); return; }
+        }
+      }else{
+        const w=vid.videoWidth, h=vid.videoHeight, sc=Math.min(1,640/Math.max(w,h));
+        cv.width=Math.round(w*sc); cv.height=Math.round(h*sc);
+        const cx=cv.getContext("2d",{willReadFrequently:true});
+        cx.drawImage(vid,0,0,cv.width,cv.height);
+        const img=cx.getImageData(0,0,cv.width,cv.height);
+        const code=jsQR(img.data,img.width,img.height,{inversionAttempts:"attemptBoth"});
+        if(code&&code.data){ if(applyScanned(code.data)){ closeScanner(); return; } }
+      }
+    }catch(_){}
+  }
+  scanRAF=requestAnimationFrame(scanLoop);
+}
+function closeScanner(){
+  if(scanRAF){cancelAnimationFrame(scanRAF);scanRAF=null}
+  if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null}
+  const vid=document.getElementById("scanVid"); if(vid) vid.srcObject=null;
+  document.getElementById("scan").hidden=true;
+}
+function pickQrImage(){ document.getElementById("qrFile").click(); }
+async function decodeCanvas(cv){
+  if(nativeDetector){
+    try{
+      const f=await nativeDetector.detect(cv);
+      if(f&&f.length&&f[0].rawValue) return f[0].rawValue;
+    }catch(_){}
+  }
+  if(window.jsQR){
+    const cx=cv.getContext("2d",{willReadFrequently:true});
+    const d=cx.getImageData(0,0,cv.width,cv.height);
+    const code=jsQR(d.data,d.width,d.height,{inversionAttempts:"attemptBoth"});
+    if(code&&code.data) return code.data;
+  }
+  return null;
+}
+
+function drawTo(cv,im,w,h,sx,sy,sw,sh){
+  cv.width=w; cv.height=h;
+  const cx=cv.getContext("2d",{willReadFrequently:true});
+  cx.fillStyle="#FFFFFF";                 // transparent PNGs decode as black without this
+  cx.fillRect(0,0,w,h);
+  cx.imageSmoothingEnabled=true;
+  cx.imageSmoothingQuality="high";
+  if(sw) cx.drawImage(im,sx,sy,sw,sh,0,0,w,h);
+  else   cx.drawImage(im,0,0,w,h);
+}
+
+async function readQrFile(file){
+  if(!file) return;
+  await initDetector();
+  if(!decoderReady()){
+    toast("Scanner failed to load","The QR library didn't load. Check your connection and reload the page.","err");
+    return;
+  }
+  const t=toast("Reading the image","Looking for a QR code…");
+  let im;
+  try{
+    im = await createImageBitmap(file);
+  }catch(_){
+    try{
+      im = await new Promise((res,rej)=>{
+        const u=URL.createObjectURL(file), x=new Image();
+        x.onload=()=>{URL.revokeObjectURL(u);res(x)};
+        x.onerror=()=>{URL.revokeObjectURL(u);rej()};
+        x.src=u;
+      });
+    }catch(_){
+      t.remove(); toast("Couldn't read that image","Pick a PNG or JPG of the QR code.","err"); return;
+    }
+  }
+
+  const cv=document.getElementById("qrCanvas");
+  const W=im.width||im.naturalWidth, H=im.height||im.naturalHeight;
+  let found=null;
+
+  // whole image at a few sizes — dense wallet QRs need the larger passes
+  for(const target of [1600,1100,800,560]){
+    const sc=Math.min(1,target/Math.max(W,H));
+    drawTo(cv,im,Math.max(1,Math.round(W*sc)),Math.max(1,Math.round(H*sc)));
+    found = await decodeCanvas(cv);
+    if(found) break;
+  }
+
+  // screenshots often have the QR in the middle with lots of padding
+  if(!found){
+    for(const frac of [0.75,0.55]){
+      const sw=Math.round(W*frac), sh=Math.round(H*frac);
+      const sx=Math.round((W-sw)/2), sy=Math.round((H-sh)/2);
+      const sc=Math.min(1,1100/Math.max(sw,sh));
+      drawTo(cv,im,Math.max(1,Math.round(sw*sc)),Math.max(1,Math.round(sh*sc)),sx,sy,sw,sh);
+      found = await decodeCanvas(cv);
+      if(found) break;
+    }
+  }
+
+  if(im.close) im.close();
+  t.remove();
+
+  if(!found){
+    toast("No QR code found","Crop the image so the QR fills most of it, then try again.","err");
+    return;
+  }
+  applyScanned(found);
+}
+
+async function connect(){
+  if(!window.ethereum) await waitForEthereum(3500);
+  if(!window.ethereum){openWalletGate();return}
+  try{
+    S.prov=new E.BrowserProvider(window.ethereum);
+    await S.prov.send("eth_requestAccounts",[]);
+    S.signer=await S.prov.getSigner(); S.acct=await S.signer.getAddress();
+    S.pricePopupShown=false;
+    const n=await S.prov.getNetwork();
+    S.chainOk=("0x"+n.chainId.toString(16))===CONFIG.chainIdHex;
+    if(!S.chainOk) await switchChain();
+    window.ethereum.on?.("accountsChanged",()=>location.reload());
+    window.ethereum.on?.("chainChanged",()=>location.reload());
+    await init();
+    maybeShowPricePop();
+  }catch(e){ if(e&&e.code!==4001) toast("Could not connect",decodeErr(e),"err"); }
+}
+async function switchChain(){
+  try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:CONFIG.chainIdHex}]});S.chainOk=true}
+  catch(e){
+    if(e.code===4902){try{await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:CONFIG.chainIdHex,chainName:CONFIG.chainName,nativeCurrency:{name:CONFIG.native,symbol:CONFIG.native,decimals:18},rpcUrls:[CONFIG.rpc],blockExplorerUrls:[CONFIG.explorer]}]});S.chainOk=true}
+      catch(_){toast("Network not added","Add BNB Smart Chain manually and reload.","err")}}
+    else if(e.code!==4001) toast("Could not switch network","Switch to "+CONFIG.chainName+" manually.","err");
+    render();
+  }
+}
+async function loadConfig(c){
+  const rp=S.signer||S.prov||S.ro;
+  const [k,st,lim,pc]=await Promise.all([c.kavi(),c.stable(),readLimits(c),c.PLAN_COUNT()]);
+  S.kavi=new E.Contract(k,ERC20,S.prov||S.ro); S.stable=new E.Contract(st,ERC20,rp); S.minUsd=lim[0]; S.maxUsd=lim[1];
+  S.v=new E.Contract(CONFIG.voucher,VABI,rp);
+  try{[S.kd,S.ks]=await Promise.all([S.kavi.decimals(),S.kavi.symbol()])}catch(_){}
+  try{[S.sd,S.ss]=await Promise.all([S.stable.decimals(),S.stable.symbol()])}catch(_){}
+  const n=Number(pc), ms=[];
+  for(let i=0;i<n;i++) ms.push(Number(await c.planUnlockMultiplier(i)));
+  S.plans=ms;
+  const i200=ms.indexOf(200);
+  S.plan = i200>=0 ? i200 : ms.length-1;
+  try{S.presets=(await c.slippagePresetsBps()).map(x=>Number(x))}catch(_){}
+  const q=new URLSearchParams(location.search).get("ref"); if(isAddr(q)) S.refIn=q;
+  if(S.rCode&&normCode(S.rCode).length===16) checkCode();
+}
+async function init(){
+  S.c=new E.Contract(CONFIG.contract,ABI,S.signer||S.prov);
+  try{ await loadConfig(S.c); }
+  catch(e){
+    S.lastErr="No contract found at this address on "+CONFIG.chainName+".";
+    render(); toast("Contract not reachable",S.lastErr,"err"); return;
+  }
+  await refresh();
+}
+const READ_RPCS=[CONFIG.rpc,"https://bsc-dataseed1.binance.org","https://bsc-rpc.publicnode.com","https://binance.llamarpc.com","https://bsc-dataseed1.defibit.io"];
+async function makeReadContract(){
+  // 1) Prefer the injected wallet's provider for reads — it talks over postMessage, not fetch,
+  //    so it dodges CORS / sandbox / "Headers could not be cloned" issues. No connect prompt.
+  if(window.ethereum){
+    try{
+      const bp=new E.BrowserProvider(window.ethereum);
+      const net=await bp.getNetwork();
+      if(("0x"+net.chainId.toString(16))===CONFIG.chainIdHex){
+        const c=new E.Contract(CONFIG.contract,ABI,bp);
+        await c.PLAN_COUNT();
+        S.ro=bp; return c;
+      }
+    }catch(err){console.warn("Wallet read provider failed:",err&&err.message)}
+  }
+  // 2) Fall back to public RPCs via fetch. staticNetwork skips the eth_chainId probe.
+  const NET=E.Network.from(56);
+  for(const url of READ_RPCS){
+    try{
+      const ro=new E.JsonRpcProvider(url,NET,{staticNetwork:NET});
+      const c=new E.Contract(CONFIG.contract,ABI,ro);
+      await c.PLAN_COUNT();               // probes RPC reachability + that the contract exists
+      S.ro=ro; return c;
+    }catch(err){console.warn("Read RPC failed:",url,err&&err.message)}
+  }
+  return null;
+}
+async function bootstrap(){
+  if(S.acct&&S.c&&S.plans.length) return; // wallet path already loaded everything
+  try{
+    const c=await makeReadContract();
+    if(!c){
+      S.lastErr="Couldn't reach "+CONFIG.chainName+". This usually means the page is running in a sandboxed preview / in-app view that blocks network + wallet. Open the file in a normal browser tab (Chrome, Brave, Firefox) with a wallet like MetaMask set to "+CONFIG.chainName+". (Or the contract at "+short(CONFIG.contract)+" isn't deployed there.)";
+      render(); return;
+    }
+    if(!S.c) S.c=c;
+    await loadConfig(S.c);
+    S.lastErr="";
+    await refresh();
+  }catch(e){
+    console.error(e);
+    S.lastErr="Contract data couldn't load from "+CONFIG.chainName+". "+decodeErr(e);
+    render();
+  }
+}
+async function refresh(){
+  if(!S.c) return;
+  fetchFx();
+  try{
+    const [p,tl,tc,rk,ru]=await Promise.all([
+      S.c.getKaviPriceUSD().catch(()=>null),S.c.totalLocked(),S.c.totalDepositsCount(),
+      S.c.totalReserveFundedKavi(),S.c.totalReserveFundedUSDT()]);
+    S.price=p; S.priceOk=!!p; S.stats={tl,tc,rk,ru};
+    if(S.acct){
+      S.bal=await S.stable.balanceOf(S.acct);
+      S.allow=await S.stable.allowance(S.acct,CONFIG.contract);
+      S.myReferrer=await S.c.referrerOf(S.acct);
+      S.refInfo=await S.c.getReferralInfo(S.acct);
+      S.depInfo=await S.c.getDepositorInfo(S.acct);
+      S.slipSaved=Number(await S.c.getSlippageBps(S.acct));
+      const cnt=Number(await S.c.getDepositsCount(S.acct)), ps=[];
+      for(let i=0;i<cnt;i++){
+        const d=await S.c.getDeposit(S.acct,i);
+        ps.push({id:i,locked:d[0],depUSD:d[1],target:d[2],monthly:d[3],claimed:d[4],last:Number(d[5]),unlock:d[6],made:Number(d[7]),depositor:d[8],referrer:d[9],active:d[10]});
+      }
+      S.myPos=ps;
+      await loadAdminRole();
+      loadDist();
+      if(S.tab==="admin") loadAdmin();
+    }
+    S.lastErr="";
+  }catch(e){console.error(e);const m=decodeErr(e);if(/liquidity|price/i.test(m))S.priceOk=false;else S.lastErr="Live data could not be loaded. "+m}
+  render();
+}
+async function send(fn,pending,done,popup){
+  const t=toast(pending,"Confirm in your wallet…");
+  try{const tx=await fn();t.querySelector(".d").textContent="Waiting for confirmation…";
+    const rc=await tx.wait();t.querySelector(".t").textContent=done;t.querySelector(".d").innerHTML=txl(rc.hash);
+    if(popup) showTxPop(popup.title,popup.msg,rc.hash);
+    await refresh();
+  }catch(e){const m=decodeErr(e);t.className="toast err";
+    t.querySelector(".t").textContent=/cancelled/.test(m)?"Transaction cancelled":"Transaction failed";
+    t.querySelector(".d").textContent=m}
+}
+function showTxPop(title,msg,hash){
+  const pop=document.getElementById("txPop"); if(!pop) return;
+  const set=(id,v)=>{const e=document.getElementById(id); if(e) e.textContent=v;};
+  set("txPopTitle",title||"Transaction complete");
+  set("txPopMsg",msg||"");
+  const link=document.getElementById("txPopLink");
+  if(link){
+    if(hash){ link.href=CONFIG.explorer+"/tx/"+hash; link.style.display="inline-block"; }
+    else link.style.display="none";
+  }
+  pop.classList.add("show");
+}
+function closeTxPop(e){
+  if(e&&e.target&&e.target.id&&e.target.id!=="txPop") return;
+  const pop=document.getElementById("txPop"); if(pop) pop.classList.remove("show");
+}
+function guard(){
+  if(!S.acct){connect();return false}
+  if(!S.chainOk){toast("Wrong network","Switch to "+CONFIG.chainName+".","err");switchChain();return false}
+  if(!S.c){toast("Not loaded","Reload the page and reconnect.","err");return false}
+  return true;
+}
+function refIsSet(){return !!(S.myReferrer&&S.myReferrer!==ZERO&&!/^0x0+$/i.test(S.myReferrer))}
+function refReady(){
+  if(refIsSet())return true;
+  S.gateDismissed=false;
+  renderGate();
+  toast("Set your referrer first","Setting a referrer is required before you can gift or deposit.","err");
+  return false;
+}
+const parse=(v,d)=>{try{return E.parseUnits((v||"0").toString(),d)}catch(e){return 0n}};
+function slipBps(){ return S.giftSlipBps; }
+async function doApprove(){if(!guard()||!refReady())return;
+  await send(()=>S.stable.connect(S.signer).approve(CONFIG.contract,E.MaxUint256),"Approving "+S.ss,S.ss+" approved")}
+async function doDeposit(){
+  if(!guard()||!refReady())return;
+  const amt=parse(S.amt,S.sd);
+  if(!isAddr(S.ben)){toast("Beneficiary needed","Enter the wallet address that will hold this position.","err");return}
+  if(S.ben.toLowerCase()===S.acct.toLowerCase()){toast("Pick someone else","The beneficiary must be a different wallet from yours.","err");return}
+  if(amt<=0n){toast("Enter an amount","","err");return}
+  if(amt>S.bal){toast("Not enough "+S.ss,"Your balance is "+fmt(S.bal,S.sd,2)+" "+S.ss+".","err");return}
+  if(S.minUsd&&toUsd(amt)<S.minUsd){toast(t("fwMin",{min:usd(S.minUsd,2)}),"","err");return}
+  if(S.maxUsd&&toUsd(amt)>S.maxUsd){toast(t("fwMax",{max:usd(S.maxUsd,2)}),"","err");return}
+  if(!S.priceOk){toast("No price available","The KAVI/USDT pool has no liquidity right now.","err");return}
+  let ref=ZERO;
+  if(S.myReferrer&&S.myReferrer!==ZERO) ref=S.myReferrer;
+  else if(S.refIn){
+    if(!isAddr(S.refIn)){toast("Referrer address is invalid","Paste a full 0x address or clear the field.","err");return}
+    if(S.refIn.toLowerCase()===S.acct.toLowerCase()){toast("You can't refer yourself","","err");return}
+    ref=S.refIn;
+  }
+  const benShort=short(S.ben);
+  await send(async()=>S.c.connect(S.signer).deposit(S.ben,ref,amt,S.plan,slipBps(),await guardedPrice(1)),"Funding position","Position funded",
+    {title:t("txGiftTitle"),msg:t("txGiftMsg",{ben:benShort})});
+  S.amt="";
+}
+async function doClaim(id){
+  if(!guard())return;
+  await send(async()=>S.c.connect(S.signer).claim(id,slipBps(),await guardedPrice(-1)),"Claiming","Claim settled to "+S.ss,
+    {title:t("txClaimTitle"),msg:t("txClaimMsg",{sym:S.ss})});
+}
+async function doSetReferrer(){
+  if(!guard())return;
+  if(!isAddr(S.refIn)){toast("Enter an address","Paste your referrer's 0x address.","err");return}
+  if(S.refIn.toLowerCase()===S.acct.toLowerCase()){toast("You can't refer yourself","","err");return}
+  await send(()=>S.c.connect(S.signer).setReferrer(S.refIn),"Saving referrer","Referrer set permanently");
+}
+async function doSetSlippage(){
+  if(!guard())return;
+  const b=slipBps();
+  if(b<=0||b>2000){toast("Invalid slippage","Choose between 0.01% and 20%.","err");return}
+  await send(()=>S.c.connect(S.signer).setSlippageBps(b),"Saving preference","Slippage saved");
+}
+
+const TABS=[["fund","tabFund"],["redeem","tabRedeem"],["positions","tabPositions"],["myrefs","tabMyEarning"],["dist","tabDist"],["how","tabHow"]];
+function setTab(tb){S.tab=tb;renderTabs();if(tb==="admin"){S.adm=null;renderAdmin();}if(tb==="dist"&&!S.dist)loadDist();}
+function renderTabs(){
+  const tabs=tabsList();
+  if(!tabs.some(([k])=>k===S.tab))S.tab="fund";
+  const counts={positions:S.myPos.length};
+  $("#tabbar").innerHTML=tabs.map(([k,lk])=>{
+    const c=counts[k]!==undefined&&counts[k]>0?`<span class="c">${counts[k]}</span>`:"";
+    return `<button class="${S.tab===k?"on":""}" onclick="setTab('${k}')">${t(lk)}${c}</button>`;
+  }).join("");
+  $("#topnav").innerHTML=tabs.map(([k,lk])=>`<button class="${S.tab===k?"on":""}" onclick="setTab('${k}')">${t(lk)}</button>`).join("");
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.dataset.tab===S.tab));
+}
+function typing(){
+  const a=document.activeElement;
+  return !!(a && (a.tagName==="INPUT"||a.tagName==="TEXTAREA"));
+}
+function render(){
+  applyI18n();
+  renderTop();renderBanners();renderBand();renderTabs();renderPos();renderFoot();
+  if(typing()){ updateFund(); updateRedeem(); updateCreate(); return; }   // keep live inputs alive
+  renderGiftBox();renderMyrefs();renderRedeem();renderDist();renderAdmin();renderFV();renderGate();
+}
+function renderTop(){const b=$("#cbtn");
+  if(S.acct){b.className="btn btn-g";b.textContent=short(S.acct);b.onclick=()=>refresh()}
+  else{b.className="btn btn-p";b.textContent=t("connectWallet");b.onclick=connect}}
+function renderBanners(){
+  const el=$("#banners"),o=[],A=(c,i,h)=>`<div class="alert ${c}"><div class="a">${i}</div><div>${h}</div></div>`;
+  if(S.acct&&!S.chainOk) o.push(A("w","!",`${t("bnWrong",{chain:CONFIG.chainName})} <button onclick="switchChain()">${t("bnSwitch")}</button>`));
+  if(S.acct&&S.chainOk&&!S.priceOk) o.push(A("w","!",t("bnNoPrice")));
+  // "Data problem" banner intentionally hidden per request
+  el.innerHTML=o.join("");
+}
+function renderBand(){
+  const band=$("#band");
+  if(!S.price){ band.innerHTML=""; band.style.gridTemplateColumns=""; return; }
+  const val=usd(S.price,6);
+  const sub=t("bandPer",{sym:S.ks});
+  const cells=[[t("bandPrice"),val,sub]];
+  band.style.gridTemplateColumns=`repeat(${cells.length},1fr)`;
+  band.innerHTML=cells.map(c=>`<div class="stat"><div class="k">${c[0]}</div><div class="v tnum">${c[1]}</div><div class="s">${c[2]}</div></div>`).join("");
+}
+function posView(p,mine){
+  const t2=now(), done=!p.active;
+  const priceOk=S.price&&S.price>=p.unlock;
+  const nextAt=p.last===0?0:p.last+2592000;
+  const remain=p.target>p.claimed?p.target-p.claimed:0n;
+  let pct=0; try{pct=Number(p.claimed*10000n/(p.target||1n))/100}catch(_){}
+  let tag,cd="",why="";
+  if(done){tag=`<span class="tag tg-d">${t("stCompleted")}</span>`;pct=100}
+  else if(!priceOk){
+    tag=`<span class="tag tg-w">${t("pvWaitingTargetPrice")}</span>`;
+    why=`<div class="hint" style="margin-top:6px">${t("pvWhyWaiting",{cur:S.price?usd(S.price,6):"—",unlock:usd(p.unlock,6)})}</div>`;
+  }
+  else if(t2<nextAt){
+    tag=`<span class="tag tg-t">${t("pvNextClaim")}</span>`;cd=`<span class="cd" data-at="${nextAt}">${dur(nextAt-t2)}</span>`;
+    why=`<div class="hint" style="margin-top:6px">${t("pvWhyNext",{date:new Date(nextAt*1000).toLocaleDateString()})}</div>`;
+  }
+  else tag=`<span class="tag tg-r">${t("pvReady")}</span>`;
+  const btn = mine&&!done&&priceOk&&t2>=nextAt
+    ? `<button class="btn btn-s" style="padding:8px 16px" onclick="doClaim(${p.id})">${t("pvClaimNow")}</button>` : "";
+  let sched='';
+  for(let i=0;i<10;i++){
+    let st;
+    if(i<p.made) st=t("pvClaimedShort");
+    else if(i===p.made) st=done?"—":(!priceOk?t("stWaiting"):(t2<nextAt?t("pvOpensDate",{date:new Date(nextAt*1000).toLocaleDateString()}):t("pvReadyNow")));
+    else st=t("pvAfterClaim",{n:i});
+    sched+=`<div class="hrow"><span class="ha">${t("pvClaimNof10",{n:i+1})}</span><span class="hm">${usd(p.monthly,2)} · ${st}</span></div>`;
+  }
+  return `<div class="pos">
+    <div class="pt"><div class="t">${t("pvPosition",{n:p.id+1})} <span>${t("pvClaimsCount",{n:p.made})}</span></div></div>
+    <div class="meta">
+      <div><div class="k">${t("pvUnlockPrice")}</div><div class="v">${usd(p.unlock,6)}</div></div>
+      <div><div class="k">${t("pvTotalTarget")}</div><div class="v">${usd(p.target,2)}</div></div>
+      <div><div class="k">${t("pvClaimedLabel")}</div><div class="v">${usd(p.claimed,2)}</div></div>
+      <div><div class="k">${t("pvFundedBy")}</div><div class="v">${short(p.depositor)}</div></div>
+    </div>
+    <div class="meter ${done?"ok":""}"><i style="width:${pct}%"></i></div>
+    <div class="mc"><span>${t("pvOfProgress",{a:usd(p.claimed,2),b:usd(p.target,2)})}</span><span>${t("pvLeft",{x:usd(remain,2)})}</span></div>
+    <div class="act">${tag}${cd}${btn}</div>
+    ${why}
+    ${mine?`<details style="margin-top:9px"><summary style="cursor:pointer;color:var(--muted);font-size:12.5px">${t("pvSchedule")}</summary><div class="hlist" style="margin-top:6px">${sched}</div></details>`:""}
+    </div>`;
+}
+function renderPos(){
+  const b=$("#posList");
+  if(!b) return;
+  if(!S.acct){
+    b.innerHTML=`<div class="empty" style="padding:22px 14px"><div class="f">—</div>${t("posConnectPrompt")}</div>`;
+    return;
+  }
+  const head=`<div class="elab" style="margin-top:16px">${t("posYoursHead")}</div>`;
+  b.innerHTML=head+(S.myPos.length?S.myPos.map(p=>posView(p,true)).join(""):`<div class="hemp">${t("posNobody")}</div>`);
+}
+function onLookupInput(v){
+  S.lookupAddr=(v||"").trim();
+}
+async function doLookup(){
+  const addr=(S.lookupAddr||"").trim();
+  const res=document.getElementById("lookupResult");
+  if(!res) return;
+  if(!isAddr(addr)){ toast(t("lkInvalidTitle"),t("lkInvalidBody"),"err"); return; }
+  if(!S.c){
+    res.innerHTML=`<div class="hemp">${t("lkLoading")}</div>`;
+    bootstrap(); return;
+  }
+  res.innerHTML=`<div class="hemp">${t("lkSearching")}</div>`;
+  try{
+    const cnt=Number(await S.c.getDepositsCount(addr));
+    if(cnt===0){
+      res.innerHTML=`<div class="empty" style="padding:20px 14px"><div class="f">∅</div>${t("lkNone",{addr:short(addr)})}</div>`;
+      return;
+    }
+    const pos=[];
+    for(let i=0;i<cnt;i++){
+      const d=await S.c.getDeposit(addr,i);
+      pos.push({id:i,locked:d[0],depUSD:d[1],target:d[2],monthly:d[3],claimed:d[4],last:Number(d[5]),unlock:d[6],made:Number(d[7]),depositor:d[8],referrer:d[9],active:d[10]});
+    }
+    let tTarget=0n,tClaimed=0n;
+    pos.forEach(p=>{tTarget+=p.target;tClaimed+=p.claimed});
+    const tRemain=tTarget>tClaimed?tTarget-tClaimed:0n;
+    const isSelf=S.acct&&addr.toLowerCase()===S.acct.toLowerCase();
+    const summary='<div class="btot" style="margin-top:12px">'
+      +'<div><span>'+t("lkTotalGifts")+'</span><b>'+pos.length+'</b></div>'
+      +'<div><span>'+t("lkTotalValue")+'</span><b>'+usd(tTarget,2)+'</b></div>'
+      +'<div><span>'+t("lkAlreadyClaimed")+'</span><b>'+usd(tClaimed,2)+'</b></div>'
+      +'<div><span>'+t("lkLeftToClaim")+'</span><b>'+usd(tRemain,2)+'</b></div>'
+      +'</div>';
+    const list=pos.map(p=>posView(p,isSelf)).join("");
+    const heading=isSelf?t("lkGiftsForSelf",{addr:short(addr)}):t("lkGiftsFor",{addr:short(addr)});
+    res.innerHTML='<div class="elab" style="margin-top:10px">'+heading+'</div>'+summary+list;
+  }catch(e){
+    console.error(e);
+    res.innerHTML=`<div class="hemp">${t("lkError")}</div>`;
+  }
+}
+function fundState(){
+  const amt=parse(S.amt,S.sd);
+  const mult=S.plans[S.plan]||0;
+  const selfBen=isAddr(S.ben)&&S.acct&&S.ben.toLowerCase()===S.acct.toLowerCase();
+  const overBal=S.acct?amt>S.bal:false;
+  const au=toUsd(amt), low=!!(S.minUsd&&amt>0n&&au<S.minUsd), high=!!(S.maxUsd&&au>S.maxUsd);
+  return {
+    amt, mult,
+    need: amt>0n&&S.allow<amt,
+    target: amt>0n?(Number(E.formatUnits(amt,S.sd))*(mult/2)):0,
+    unlock: S.price?S.price*BigInt(mult||1):null,
+    bad: !isAddr(S.ben)||selfBen||amt<=0n||overBal||low||high||!S.priceOk,
+    warn: selfBen?t("fwSelf")
+      :high?t("fwMax",{max:usd(S.maxUsd,2)})
+      :low?t("fwMin",{min:usd(S.minUsd,2)})
+      :(S.ben&&!isAddr(S.ben))?t("fwIncomplete")
+      :overBal?t("fwOverBal",{bal:fmt(S.bal,S.sd,2),sym:S.ss})
+      :!S.priceOk?t("fwNoPrice"):""
+  };
+}
+
+/* patches the derived parts only — never rebuilds the inputs, so the keyboard stays open */
+function updateFund(){
+  const f=fundState();
+  const set=(id,v)=>{const e=document.getElementById(id); if(e) e.textContent=v;};
+  set("fUnlock", f.unlock?usd(f.unlock,6):"—");
+  set("fTarget", f.target?"$"+f.target.toLocaleString(undefined,{maximumFractionDigits:2}):"—");
+  const w=document.getElementById("fWarn");
+  if(w){ w.textContent=f.warn; w.style.display=f.warn?"block":"none"; }
+  const btn=document.getElementById("fBtn");
+  if(btn){
+    if(!S.acct){ btn.textContent=t("giftBtnConnect"); btn.disabled=false; btn.onclick=connect; }
+    else if(f.need&&!f.bad){ btn.textContent=t("gbApprove",{sym:S.ss}); btn.disabled=false; btn.onclick=doApprove; }
+    else{ btn.textContent=t("gbSendGift"); btn.disabled=f.bad; btn.onclick=doDeposit; }
+  }
+}
+
+let benTimer=null;
+function refreshBenInfo(){
+  const el=document.getElementById("benInfo");
+  if(!el) return;
+  const v=S.ben;
+  if(benTimer){clearTimeout(benTimer);benTimer=null}
+  if(!isAddr(v)){ el.innerHTML=""; el.style.display="none"; return; }
+  if(S.acct&&v.toLowerCase()===S.acct.toLowerCase()){ el.innerHTML=""; el.style.display="none"; return; }
+  if(!S.c){ el.textContent=t("biConnect"); el.style.display="block"; return; }
+  el.textContent=t("biSearching"); el.style.display="block";
+  const tok=++S.benTok;
+  benTimer=setTimeout(async()=>{
+    try{
+      const cnt=Number(await S.c.getDepositsCount(v));
+      if(tok!==S.benTok) return;
+      const e=document.getElementById("benInfo"); if(!e) return;
+      e.style.display="block";
+      if(cnt===0){ e.innerHTML=`<span class="bnote">${t("biNoPos")}</span>`; return; }
+      const rows=[];
+      for(let i=0;i<cnt;i++){
+        const d=await S.c.getDeposit(v,i);
+        if(tok!==S.benTok) return;
+        rows.push({id:i,depUSD:d[1],target:d[2],claimed:d[4],made:Number(d[7]),unlock:d[6],depositor:d[8],active:d[10]});
+      }
+      const isMine=p=>S.acct&&p.depositor&&p.depositor.toLowerCase()===S.acct.toLowerCase();
+      const mine=rows.filter(isMine);
+      const show=rows;
+      let tTarget=0n,tClaimed=0n;
+      show.forEach(p=>{tTarget+=p.target;tClaimed+=p.claimed;});
+      const tRemain=tTarget>tClaimed?tTarget-tClaimed:0n;
+      const note=t("biHolds",{n:cnt})+(mine.length?t("biSentByYou",{m:mine.length}):".");
+      const totals=`<div class="btot">
+        <div><span>${t("biTotalPositions")}</span><b>${show.length}</b></div>
+        <div><span>${t("biTotalClaim")}</span><b>${usd(tTarget,2)}</b></div>
+        <div><span>${t("lkLeftToClaim")}</span><b>${usd(tRemain,2)}</b></div>
+      </div>`;
+      e.innerHTML=`<span class="bnote">${note}</span>`+totals;
+    }catch(_){
+      if(tok!==S.benTok) return;
+      const e=document.getElementById("benInfo"); if(e){ e.innerHTML=""; e.style.display="none"; }
+    }
+  },450);
+}
+function setBen(v){ S.ben=v; updateFund(); refreshBenInfo(); }
+function setAmt(v){ S.amt=v; const i=document.getElementById("fAmt"); if(i&&i.value!==v) i.value=v; updateFund(); }
+
+function renderGiftBox(){
+  const b=$("#giftBox");
+  const f=fundState();
+  b.innerHTML=`
+  <div class="field"><label><span>${t("gbBenLabel")}</span></label>
+    <input class="inp" id="fBen" placeholder="${t("lkPlaceholder")}" value="${S.ben}" oninput="setBen(this.value)">
+    <div class="qrbtns">
+      <button type="button" onclick="S.scanTarget='gift';openScanner()">${t("lkScan")}</button>
+      <button type="button" onclick="S.scanTarget='gift';pickQrImage()">${t("lkUpload")}</button>
+    </div>
+    <div id="benInfo" class="hint" style="display:none"></div></div>
+  <div class="field"><label><span>${t("gbAmount")}</span><b onclick="setAmt('${E.formatUnits(S.bal,S.sd)}')">${t("gbBalance",{bal:fmt(S.bal,S.sd,2),sym:S.ss})}</b></label>
+    <div class="row"><input class="inp tnum" id="fAmt" inputmode="decimal" placeholder="0.0" value="${S.amt}" oninput="setAmt(this.value)">
+    <button class="mx" onclick="setAmt('${E.formatUnits(S.bal,S.sd)}')">${t("gbMax")}</button></div>
+    <div class="hint">${S.maxUsd?t("gbLimits",{min:usd(S.minUsd,2),max:usd(S.maxUsd,2)}):t("gbMinimum",{min:S.minUsd?usd(S.minUsd,2):"—"})}</div></div>
+  <div class="field"><label><span>${t("gbPlan")}</span></label>
+    <div class="planfix"><span class="pm">${(f.mult||100)/2}×</span></div></div>
+  <div class="prev">
+    <div class="pr hi"><span class="k">${t("gbUnlocksAt")}</span><span class="v" id="fUnlock">—</span></div>
+    <div class="pr hi"><span class="k">${t("gbTheirTarget")}</span><span class="v" id="fTarget">—</span></div>
+  </div>
+  <div class="warn" id="fWarn" style="display:none"></div>
+  <div class="field"><label><span>${t("gbMaxSlippage")}</span></label>
+    <div class="chips" id="giftSlip">${[[30,"0.3%"],[50,"0.5%"],[100,"1%"],[200,"2%"]].map(([bps,lab])=>`<button class="${S.giftSlipBps===bps?"on":""}" onclick="S.giftSlipBps=${bps};document.querySelectorAll('#giftSlip button').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${lab}</button>`).join("")}</div></div>
+  <button class="btn btn-p full" id="fBtn"></button>
+  <div class="hint">${t("gbFooter")}</div>`;
+  updateFund();
+  refreshBenInfo();
+}
+
+function renderMyrefs(){
+  const b=$("#myrefsBox");
+  if(!b) return;
+  if(!S.acct){b.innerHTML=`<button class="btn btn-g full" onclick="connect()">${t("mrConnect")}</button>`;return}
+  const refN=S.refInfo?S.refInfo[0].toString():"—";
+  const refE=S.refInfo?fmt(S.refInfo[1],S.sd,2)+" "+S.ss:"—";
+  const depE=S.depInfo?fmt(S.depInfo[1],S.sd,2)+" "+S.ss:"—";
+  let total="—";
+  if(S.refInfo&&S.depInfo) total=fmt(S.refInfo[1]+S.depInfo[1],S.sd,2)+" "+S.ss;
+  b.innerHTML=`
+  <div class="btot"><div><span>${t("mrTotalEarned")}</span><b>${total}</b></div></div>
+  <div class="elab">${t("mrFromGifts")}</div>
+  <div class="btot">
+    <div><span>${t("mrGiftsFunded")}</span><b id="giftsN">…</b></div>
+    <div><span>${t("mrEarnedSoFar")}</span><b>${depE}</b></div>
+    <div><span>${t("mrProjected")}</span><b id="projEarn">…</b></div>
+  </div>
+  <div class="hlist" id="fundedList"><div class="hemp">${t("mrLoadingGifts")}</div></div>
+  <div class="elab">${t("mrPeopleReferred")}</div>
+  <div class="btot">
+    <div><span>${t("mrPeopleReferred")}</span><b>${refN}</b></div>
+    <div><span>${t("mrReferralIncome")}</span><b>${refE}</b></div>
+  </div>
+  <div class="hlist" id="refereeList"><div class="hemp">${t("mrLoading")}</div></div>
+  <div class="hint">${t("mrFooter")}</div>`;
+  loadFunded();
+  loadReferees();
+}
+async function loadFunded(){
+  const pe=$("#projEarn"), fl=$("#fundedList"), gn=$("#giftsN");
+  if(!S.acct||!S.c){ if(pe)pe.textContent="—"; if(gn)gn.textContent="—"; if(fl)fl.innerHTML=""; return; }
+  try{
+    if(S.depBps==null) S.depBps=Number(await S.c.CLAIM_DEPOSITOR_BPS());
+    const total=Number(await S.c.getFundedCount(S.acct));
+    if(gn)gn.textContent=total.toString();
+    if(total===0){ if(pe)pe.textContent=usd(0n,2); if(fl)fl.innerHTML=`<div class="hemp">${t("lfNone")}</div>`; return; }
+    let bens=[], infos=[];
+    for(let start=0; start<total; start+=50){
+      const r=await S.c.getFundedPaged(S.acct,start,50);
+      bens=bens.concat(r[0]); infos=infos.concat(r[2]);
+    }
+    let remaining=0n;
+    const rows=infos.map((p,i)=>{
+      const target=p[2], claimed=p[4], made=Number(p[7]), unlock=p[6], active=p[10];
+      if(active && target>claimed) remaining+=(target-claimed);
+      return {ben:bens[i], target, made, unlock, active};
+    });
+    if(pe) pe.textContent=usd(remaining*BigInt(S.depBps)/10000n,2);
+    if(fl) fl.innerHTML=rows.map(r=>{
+      const done=!r.active, priceOk=S.price&&S.price>=r.unlock;
+      const st=done?t("stCompleted"):(priceOk?t("stUnlocked"):t("stWaiting"));
+      return `<div class="hrow"><span class="ha">${short(r.ben)}</span><span class="hm">${usd(r.target,2)} · ${r.made}/10 · ${st}</span></div>`;
+    }).join("");
+  }catch(_){ if(pe)pe.textContent="—"; if(gn)gn.textContent="—"; if(fl)fl.innerHTML=`<div class="hemp">${t("lfError")}</div>`; }
+}
+async function loadReferees(){
+  const el=$("#refereeList");
+  if(!el) return;
+  if(!S.acct||!S.c){ el.innerHTML=""; return; }
+  try{
+    const list=await S.c.getReferees(S.acct);
+    if(!list.length){ el.innerHTML=`<div class="hemp">${t("lrNone")}</div>`; return; }
+    el.innerHTML=list.map(a=>`<div class="hrow"><span class="ha">${short(a)}</span><a class="hlink" href="${CONFIG.explorer}/address/${a}" target="_blank" rel="noopener">${t("lrView")}</a></div>`).join("");
+  }catch(_){ el.innerHTML=`<div class="hemp">${t("lrError")}</div>`; }
+}
+function closeFV(){S.fvDismissed=true;S.fvActive=false;const g=$("#fvGate");if(g)g.style.display="none";renderGate()}
+function renderFV(){
+  const g=$("#fvGate"); if(!g) return;
+  const hasPos=S.acct&&S.myPos&&S.myPos.length>0;
+  const need=S.acct&&S.chainOk&&S.c&&hasPos&&!S.fvDismissed;
+  S.fvActive=need;
+  g.style.display=need?"flex":"none";
+  if(need){
+    const set=(id,v)=>{const e=document.getElementById(id); if(e) e.textContent=v;};
+    let tTarget=0n,tClaimed=0n;
+    S.myPos.forEach(p=>{tTarget+=p.target;tClaimed+=p.claimed});
+    const remain=tTarget>tClaimed?tTarget-tClaimed:0n;
+    set("fvTotal",usd(tTarget,2));
+    set("fvClaimed",usd(tClaimed,2));
+    set("fvRemain",usd(remain,2));
+    set("fvCount",S.myPos.length.toString());
+    const mk=$("#fvMark"); if(mk) mk.textContent=curInfo().symbol;
+  }
+}
+function closeGate(){S.gateDismissed=true;const g=$("#refGate");if(g)g.style.display="none"}
+function onGateInput(v){
+  S.refIn=v;
+  const btn=$("#gateBtn"), h=$("#gateHint");
+  const self=S.acct&&v.toLowerCase()===S.acct.toLowerCase();
+  const ok=isAddr(v)&&!self;
+  if(btn)btn.disabled=!ok;
+  if(h)h.textContent=self?t("refHintSelf"):(v&&!isAddr(v)?t("refHintInvalid"):"");
+}
+function renderGate(){
+  const g=$("#refGate"); if(!g) return;
+  const loaded=S.myReferrer!==null, unset=loaded&&!refIsSet();
+  const need=S.acct&&S.chainOk&&S.c&&unset&&!S.gateDismissed&&!S.fvActive;
+  g.style.display=need?"flex":"none";
+  if(need){
+    const inp=$("#gateIn");
+    if(inp&&document.activeElement!==inp)inp.value=S.refIn||"";
+    onGateInput(S.refIn||"");
+  }
+}
+function renderFoot(){const el=$("#faddr");if(el)el.innerHTML=`<a href="${CONFIG.explorer}/address/${CONFIG.contract}" target="_blank" rel="noopener" style="color:var(--muted)">${short(CONFIG.contract)} ↗</a>`}
+
+/* ---------- Limits & price guard ---------- */
+function toUsd(a){try{return a*(10n**BigInt(18-Number(S.sd||18)))}catch(_){return a}}
+async function readLimits(c){
+  let mn=null,mx=null;
+  try{mn=await c.minDepositUSD()}catch(_){try{mn=await c.MIN_DEPOSIT_USD()}catch(_){}}
+  try{mx=await c.maxDepositUSD()}catch(_){try{mx=await c.MAX_DEPOSIT_USD()}catch(_){}}
+  return [mn,mx];
+}
+function guardTolBps(){return Math.max(100,Number(slipBps())||0)}
+async function guardedPrice(dir){
+  const p=await S.c.getKaviPriceUSD(), tol=BigInt(guardTolBps());
+  return dir>0?p*(10000n+tol)/10000n:p*(10000n-tol)/10000n;
+}
+const esc=v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function sendTx(fn,pending,done){
+  const tt=toast(pending,t("txConfirmWallet"));
+  try{
+    const tx=await fn(); tt.querySelector(".d").textContent=t("txWaiting");
+    const rc=await tx.wait(); tt.querySelector(".t").textContent=done; tt.querySelector(".d").innerHTML=txl(rc.hash);
+    return rc;
+  }catch(e){
+    const m=decodeErr(e); tt.className="toast err";
+    tt.querySelector(".t").textContent=/cancelled/.test(m)?"Transaction cancelled":"Transaction failed";
+    tt.querySelector(".d").textContent=m; return null;
+  }
+}
+async function copyText(txt,label){
+  try{await navigator.clipboard.writeText(txt);toast(label||t("copied"),"")}
+  catch(_){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");toast(label||t("copied"),"")}catch(__){toast(t("copyFail"),"","err")}ta.remove()}
+}
+function downloadFile(name,text){
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/csv"}));a.download=name;
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+}
+function fmtDate(ts){return ts?new Date(Number(ts)*1000).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}):"—"}
+
+/* ---------- Voucher contract ---------- */
+const VTUPLE="(address distributor,uint256 amount,uint8 planId,uint64 createdAt,uint64 expiry,uint8 status,address redeemedBy,uint64 redeemedAt,uint256 depositId)";
+const VABI=[
+ "function registerDistributor(address referrer)",
+ "function createCodes(address[] codeIds,uint256 amountPerCode,uint8 planId,uint64 codeExpiry)",
+ "function cancelVoucher(address codeId)",
+ "function redeem(address codeId,bytes signature,uint256 slippageBps,uint256 maxPriceUSD) returns (uint256)",
+ "function distributorValidity(address) view returns (bool valid,uint64 expiresAt,uint256 daysLeft)",
+ "function distributors(address) view returns (bool active,address referrer,uint64 joinedAt,uint64 expiresAt,uint32 codesCreated,uint32 codesRedeemed,uint32 codesCancelled,uint256 totalLoaded,uint256 totalRedeemed,uint256 lockedBalance)",
+ "function registrationFee() view returns (uint256)",
+ "function distributorPeriod() view returns (uint256)",
+ "function minVoucherAmount() view returns (uint256)",
+ "function maxVoucherAmount() view returns (uint256)",
+ "function MAX_BATCH() view returns (uint256)",
+ "function getVoucher(address) view returns "+VTUPLE,
+ "function getDistributorCodeCount(address) view returns (uint256)",
+ "function getDistributorCodesPaged(address,uint256,uint256) view returns (address[],"+VTUPLE+"[])",
+ "function getUserRedeemed(address) view returns (address[])",
+ "function feeWallet() view returns (address)",
+ "function invest() view returns (address)",
+ "function distributorCount() view returns (uint256)",
+ "function getDistributorsPaged(uint256,uint256) view returns (address[])",
+ "function setRegistrationFee(uint256)",
+ "function setDistributorPeriodDays(uint256)"
+];
+const CODE_ALPHA="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", CODE_PREFIX="KAVI-VOUCHER-V1:";
+const CHAIN_ID=parseInt(CONFIG.chainIdHex,16);
+function normCode(c){return String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
+function fmtCode(c){const n=normCode(c).slice(0,16);return (n.match(/.{1,4}/g)||[]).join("-")}
+function bytesToCode(b){let s="";for(const x of b)s+=CODE_ALPHA[x%32];return s.match(/.{4}/g).join("-")}
+function codeWallet(code){return new E.Wallet(E.keccak256(E.toUtf8Bytes(CODE_PREFIX+normCode(code))))}
+function codeIdOf(code){return codeWallet(code).address}
+function codeFromSeed(seed,i){return bytesToCode(E.getBytes(E.solidityPackedKeccak256(["bytes32","uint256"],[seed,i])).slice(0,16))}
+async function getSeed(){
+  if(S.seed&&S.seedFor===S.acct) return S.seed;
+  const msg="KAVI Voucher - code seed\n"+`Contract: ${CONFIG.voucher.toLowerCase()}\n`+`Chain: ${CHAIN_ID}\n`+
+    "Ye message sirf official KAVI app me sign karein. Isse aapke sabhi voucher codes bante hain.";
+  toast(t("dsSignTitle"),t("dsSignBody"));
+  const sig=await S.signer.signMessage(msg);
+  S.seed=E.keccak256(sig); S.seedFor=S.acct; return S.seed;
+}
+async function signRedeemFor(code,ben){
+  const w=codeWallet(code);
+  const th=E.keccak256(E.toUtf8Bytes("KAVI_VOUCHER_REDEEM_V1"));
+  const inner=E.keccak256(E.AbiCoder.defaultAbiCoder().encode(["bytes32","uint256","address","address","address"],[th,BigInt(CHAIN_ID),CONFIG.voucher,w.address,ben]));
+  return {codeId:w.address,signature:await w.signMessage(E.getBytes(inner))};
+}
+function shareLink(code){return /^https?:/.test(location.protocol)?location.origin+location.pathname+"?code="+normCode(code):""}
+function waShare(code,amt){
+  const link=shareLink(code);
+  const msg=t("shareMsg",{amt,code:fmtCode(code)})+(link?"\n"+link:"");
+  window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank","noopener");
+}
+function planMult(id){const m=S.plans[Number(id)];return m||0}
+function vStatus(v){
+  const st=Number(v.status);
+  if(st===1&&Number(v.expiry)>0&&now()>Number(v.expiry)) return "expired";
+  return ["none","active","redeemed","cancelled"][st]||"none";
+}
+function vTag(k){
+  const cls={active:"tg-r",redeemed:"tg-d",cancelled:"tg-w",expired:"tg-w",none:"tg-w"}[k];
+  return `<span class="tag ${cls}">${t("vs_"+k)}</span>`;
+}
+
+/* ---------- Redeem tab ---------- */
+let codeTimer=null;
+function renderRedeem(){
+  const b=$("#redeemBox"); if(!b) return;
+  b.innerHTML=`
+  <div class="field" style="margin-top:0"><label><span>${t("rdLabel")}</span></label>
+    <input class="inp codeinp" id="rCode" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="19" value="${esc(S.rCode)}" oninput="onCodeInput(this)"></div>
+  <div id="rInfo"></div>
+  <div class="warn" id="rWarn" style="display:none"></div>
+  <button class="btn btn-p full" id="rBtn"></button>
+  <div class="hint">${t("rdFooter")}</div>`;
+  updateRedeem();
+}
+function onCodeInput(el){
+  const f=fmtCode(el.value);
+  if(el.value!==f) el.value=f;
+  S.rCode=f; S.rInfo=null; S.rChecking=false; updateRedeem();
+  if(codeTimer) clearTimeout(codeTimer);
+  if(normCode(f).length===16) codeTimer=setTimeout(checkCode,250);
+}
+async function checkCode(){
+  const code=S.rCode; if(normCode(code).length!==16) return;
+  if(!S.v){ S.rInfo={err:t("lkLoading")}; updateRedeem(); return; }
+  const tok=(S.rTok=(S.rTok||0)+1); S.rChecking=true; updateRedeem();
+  try{
+    const codeId=codeIdOf(code), v=await S.v.getVoucher(codeId);
+    if(tok!==S.rTok) return;
+    S.rInfo={codeId,distributor:v.distributor,amount:v.amount,planId:Number(v.planId),expiry:Number(v.expiry),status:Number(v.status),redeemedBy:v.redeemedBy,key:vStatus(v)};
+  }catch(e){ if(tok!==S.rTok) return; S.rInfo={err:decodeErr(e)}; }
+  S.rChecking=false; updateRedeem();
+}
+function updateRedeem(){
+  const box=$("#rInfo"), w=$("#rWarn"), btn=$("#rBtn"); if(!btn) return;
+  const full=normCode(S.rCode).length===16, i=S.rInfo;
+  let html="", warn="", label=t("rdEnter"), dis=true, click=null;
+  if(!S.acct){ label=t("giftBtnConnect"); dis=false; click=connect; }
+  if(full&&S.rChecking) html=`<div class="hemp">${t("rdChecking")}</div>`;
+  else if(full&&i&&i.err) warn=i.err;
+  else if(full&&i){
+    if(i.status===0) warn=t("rdNotFound");
+    else{
+      const mult=planMult(i.planId), amtUsd=toUsd(i.amount), target=amtUsd*BigInt(mult||0)/2n;
+      html=`<div class="prev">
+        <div class="pr"><span class="k">${t("rdStatus")}</span><span class="v">${vTag(i.key)}</span></div>
+        <div class="pr hi"><span class="k">${t("rdGiftAmount")}</span><span class="v">${fmt(i.amount,S.sd,2)} ${S.ss}</span></div>
+        <div class="pr hi"><span class="k">${t("gbTheirTarget")}</span><span class="v">${mult?usd(target,2):"—"}</span></div>
+        <div class="pr"><span class="k">${t("gbUnlocksAt")}</span><span class="v">${S.price&&mult?usd(S.price*BigInt(mult),6):"—"}</span></div>
+        <div class="pr"><span class="k">${t("rdFrom")}</span><span class="v">${short(i.distributor)}</span></div>
+        ${i.expiry?`<div class="pr"><span class="k">${t("rdValidTill")}</span><span class="v">${fmtDate(i.expiry)}</span></div>`:""}
+      </div>`;
+      if(i.key==="redeemed") warn=t("rdUsed",{w:short(i.redeemedBy)});
+      else if(i.key==="cancelled") warn=t("rdCancelled");
+      else if(i.key==="expired") warn=t("rdExpired");
+      else if(S.acct&&i.distributor.toLowerCase()===S.acct.toLowerCase()) warn=t("rdOwn");
+      else if(S.acct){ label=t("rdRedeemBtn",{amt:fmt(i.amount,S.sd,2),sym:S.ss}); dis=false; click=doRedeem; }
+    }
+  }
+  if(box) box.innerHTML=html;
+  if(w){ w.textContent=warn; w.style.display=warn?"block":"none"; }
+  btn.textContent=label; btn.disabled=dis; btn.onclick=click;
+}
+async function doRedeem(){
+  if(!guard()) return;
+  const code=S.rCode, i=S.rInfo;
+  if(!i||i.key!=="active"){ toast(t("rdNotRedeemable"),"","err"); return; }
+  if(!S.priceOk){ toast(t("fwNoPrice"),"","err"); return; }
+  let sig;
+  try{ sig=await signRedeemFor(code,S.acct); }catch(e){ toast(t("rdWrong"),decodeErr(e),"err"); return; }
+  if(sig.codeId!==i.codeId){ toast(t("rdWrong"),"","err"); return; }
+  const amtTxt=fmt(i.amount,S.sd,2)+" "+S.ss;
+  const rc=await sendTx(async()=>S.v.connect(S.signer).redeem(sig.codeId,sig.signature,slipBps(),await guardedPrice(1)),t("rdPending"),t("rdDone"));
+  if(rc){
+    S.rCode=""; S.rInfo=null;
+    showTxPop(t("rdPopTitle"),t("rdPopMsg",{amt:amtTxt}),rc.hash);
+    await refresh(); setTab("positions");
+  }
+}
+
+/* ---------- Distributor tab ---------- */
+async function loadDist(){
+  if(!S.acct||!S.v) return;
+  try{
+    const [val,info,fee,per,mn,mx,al]=await Promise.all([
+      S.v.distributorValidity(S.acct),S.v.distributors(S.acct),S.v.registrationFee(),S.v.distributorPeriod(),
+      S.v.minVoucherAmount(),S.v.maxVoucherAmount(),S.stable.allowance(S.acct,CONFIG.voucher)]);
+    S.dist={valid:val[0],expiresAt:Number(val[1]),daysLeft:Number(val[2]),info,fee,periodDays:Math.round(Number(per)/86400),minV:mn,maxV:mx,allow:al,err:""};
+  }catch(e){ S.dist={err:t("dsLoadErr")}; }
+  if(!typing()) renderDist(); else updateCreate();
+}
+function distCard(inner,title,sub){
+  return `<div class="panel">${title?`<div class="ph"><h3>${title}</h3>${sub?`<div class="n">${sub}</div>`:""}</div>`:""}<div class="pb">${inner}</div></div>`;
+}
+function renderDist(){
+  const b=$("#distBox"); if(!b) return;
+  if(!S.acct){ b.innerHTML=distCard(`<div class="empty"><div class="f">◈</div>${t("dsConnect")}</div><button class="btn btn-p full" onclick="connect()">${t("connectWallet")}</button>`,t("dsTitle"),t("dsSub")); return; }
+  const d=S.dist;
+  if(!d){ b.innerHTML=distCard(`<div class="hemp">${t("mrLoading")}</div>`,t("dsTitle"),t("dsSub")); loadDist(); return; }
+  if(d.err){ b.innerHTML=distCard(`<div class="hemp">${d.err}</div><button class="btn btn-g full" onclick="loadDist()">${t("dsRetry")}</button>`,t("dsTitle")); return; }
+  const fee=fmt(d.fee,S.sd,2)+" "+S.ss, inf=d.info, out=[];
+  if(!inf.active){
+    if(S.dRef==null) S.dRef=refIsSet()?S.myReferrer:(S.refIn||"");
+    out.push(distCard(`
+      <ul class="feat">
+        <li>${t("dsF1",{fee,days:d.periodDays})}</li>
+        <li>${t("dsF2",{min:fmt(d.minV,S.sd,2),max:fmt(d.maxV,S.sd,2),sym:S.ss})}</li>
+        <li>${t("dsF3")}</li>
+        <li>${t("dsF4")}</li>
+      </ul>
+      <div class="field"><label><span>${t("dsRefLabel")}</span></label>
+        <input class="inp" id="dRef" placeholder="0x… (optional)" value="${esc(S.dRef)}" oninput="S.dRef=this.value.trim()"></div>
+      <button class="btn btn-p full" onclick="doRegister()">${d.allow<d.fee?t("dsApproveJoin",{fee}):t("dsJoin",{fee})}</button>
+      <div class="hint">${t("dsJoinHint")}</div>`,t("dsBecome"),t("dsBecomeSub",{fee,days:d.periodDays})));
+  }else{
+    const st=d.valid?t("dsActive"):t("dsExpired");
+    out.push(distCard(`
+      <div class="btot">
+        <div><span>${t("rdStatus")}</span><b class="${d.valid?"ok":"bad"}">${st}</b></div>
+        <div><span>${t("dsValidTill")}</span><b>${fmtDate(d.expiresAt)}</b></div>
+        <div><span>${t("dsDaysLeft")}</span><b>${d.valid?d.daysLeft:0}</b></div>
+      </div>
+      <div class="btot">
+        <div><span>${t("dsCreated")}</span><b>${inf.codesCreated}</b></div>
+        <div><span>${t("dsRedeemed")}</span><b>${inf.codesRedeemed}</b></div>
+        <div><span>${t("dsCancelledN")}</span><b>${inf.codesCancelled}</b></div>
+        <div><span>${t("dsLocked")}</span><b>${fmt(inf.lockedBalance,S.sd,2)}</b></div>
+      </div>
+      ${d.valid?"":`<div class="warn">${t("dsExpiredNote")}</div>`}
+      <button class="btn ${d.valid?"btn-g":"btn-p"} full" onclick="doRegister()">${t("dsRenew",{fee,days:d.periodDays})}</button>
+      <div class="hint">${t("dsRenewHint")}</div>`,t("dsTitle"),short(S.acct)));
+    if(d.valid) out.push(distCard(createForm(),t("dsCreateTitle"),t("dsCreateSub")));
+  }
+  if(S.newCodes&&S.newCodes.length) out.push(distCard(newCodesHtml(),t("dsNewTitle"),t("dsNewSub")));
+  if(inf.active) out.push(distCard(myCodesHtml(),t("dsMyTitle"),t("dsMySub")));
+  b.innerHTML=out.join("");
+  updateCreate();
+}
+function createForm(){
+  if(S.dCount==null) S.dCount="10";
+  if(S.dAmt==null) S.dAmt="10";
+  if(S.dExp==null) S.dExp=0;
+  const mult=planMult(S.plan);
+  return `
+  <div class="field" style="margin-top:0"><label><span>${t("dsCount")}</span></label>
+    <input class="inp tnum" id="dCount" inputmode="numeric" value="${esc(S.dCount)}" oninput="S.dCount=this.value;updateCreate()"></div>
+  <div class="field"><label><span>${t("dsAmt",{sym:S.ss})}</span><b onclick="S.dAmt='${E.formatUnits(S.dist.maxV,S.sd)}';renderDist()">${t("dsMaxShort")}</b></label>
+    <input class="inp tnum" id="dAmt" inputmode="decimal" value="${esc(S.dAmt)}" oninput="S.dAmt=this.value;updateCreate()">
+    <div class="hint">${t("dsAmtHint",{min:fmt(S.dist.minV,S.sd,2),max:fmt(S.dist.maxV,S.sd,2),sym:S.ss})}</div></div>
+  <div class="field"><label><span>${t("dsExp")}</span></label>
+    <div class="chips" id="dExpChips">${[[0,t("dsNoExp")],[30,"30 "+t("dsDays")],[90,"90 "+t("dsDays")],[365,"365 "+t("dsDays")]].map(([dd,l])=>`<button class="${S.dExp===dd?"on":""}" onclick="S.dExp=${dd};document.querySelectorAll('#dExpChips button').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${l}</button>`).join("")}</div></div>
+  <div class="field"><label><span>${t("gbPlan")}</span></label>
+    <div class="planfix"><span class="pm">${(mult||200)/2}×</span><span class="ps">${t("dsPlanNote",{m:mult||200})}</span></div></div>
+  <div class="prev">
+    <div class="pr hi"><span class="k">${t("dsTotal")}</span><span class="v" id="dTotal">—</span></div>
+    <div class="pr"><span class="k">${t("dsTxCount")}</span><span class="v" id="dTxs">—</span></div>
+    <div class="pr"><span class="k">${t("dsYourBal")}</span><span class="v">${fmt(S.bal,S.sd,2)} ${S.ss}</span></div>
+  </div>
+  <div class="warn" id="dWarn" style="display:none"></div>
+  <button class="btn btn-p full" id="dBtn" onclick="doCreateCodes()"></button>
+  <div class="hint">${t("dsCreateHint")}</div>`;
+}
+function createState(){
+  const d=S.dist||{}, n=Number(S.dCount), amt=parse(S.dAmt,S.sd);
+  const okN=Number.isInteger(n)&&n>=1&&n<=1000;
+  const total=okN?amt*BigInt(n):0n;
+  let warn="";
+  if(!okN) warn=t("dsBadCount");
+  else if(amt<=0n) warn=t("dsBadAmt");
+  else if(d.minV!=null&&amt<d.minV) warn=t("dsAmtLow",{min:fmt(d.minV,S.sd,2),sym:S.ss});
+  else if(d.maxV!=null&&amt>d.maxV) warn=t("dsAmtHigh",{max:fmt(d.maxV,S.sd,2),sym:S.ss});
+  else if(total>S.bal) warn=t("fwOverBal",{bal:fmt(S.bal,S.sd,2),sym:S.ss});
+  return {n,amt,total,okN,warn,batches:okN?Math.ceil(n/100):0};
+}
+function updateCreate(){
+  const btn=$("#dBtn"); if(!btn) return;
+  const c=createState(), d=S.dist||{};
+  const set=(id,v)=>{const e=document.getElementById(id); if(e) e.textContent=v;};
+  set("dTotal",c.okN&&c.amt>0n?fmt(c.total,S.sd,2)+" "+S.ss:"—");
+  set("dTxs",c.okN?String(c.batches+(d.allow<c.total?1:0)):"—");
+  const w=$("#dWarn"); if(w){ w.textContent=c.warn; w.style.display=c.warn?"block":"none"; }
+  btn.disabled=!!c.warn||S.dBusy;
+  btn.textContent=S.dBusy?t("dsWorking"):(d.allow<c.total?t("dsApproveCreate",{n:c.okN?c.n:0}):t("dsCreateBtn",{n:c.okN?c.n:0}));
+}
+async function doRegister(){
+  if(!guard()) return;
+  const d=S.dist; if(!d) return;
+  let ref=ZERO;
+  if(!d.info.active){
+    const r=(S.dRef||"").trim();
+    if(r){ if(!isAddr(r)){toast(t("refHintInvalid"),"","err");return} if(r.toLowerCase()===S.acct.toLowerCase()){toast(t("refHintSelf"),"","err");return} ref=r; }
+  }
+  if(S.bal<d.fee){ toast(t("fwOverBal",{bal:fmt(S.bal,S.sd,2),sym:S.ss}),"","err"); return; }
+  if(d.fee>0n&&d.allow<d.fee){
+    const a=await sendTx(()=>S.stable.connect(S.signer).approve(CONFIG.voucher,d.fee),t("dsApproving",{sym:S.ss}),t("dsApproved",{sym:S.ss}));
+    if(!a) return;
+  }
+  const rc=await sendTx(()=>S.v.connect(S.signer).registerDistributor(ref),d.info.active?t("dsRenewing"):t("dsJoining"),t("dsJoinDone"));
+  if(rc){ showTxPop(d.info.active?t("dsRenewPop"):t("dsJoinPop"),t("dsJoinPopMsg",{days:d.periodDays}),rc.hash); S.dist=null; await refresh(); }
+}
+async function doCreateCodes(){
+  if(!guard()) return;
+  const c=createState(); if(c.warn){toast(c.warn,"","err");return}
+  if(!S.dist||!S.dist.valid){toast(t("dsExpiredNote"),"","err");return}
+  S.dBusy=true; updateCreate();
+  try{
+    let seed; try{ seed=await getSeed(); }catch(e){ toast(t("dsSignFail"),decodeErr(e),"err"); return; }
+    if(S.dist.allow<c.total){
+      const a=await sendTx(()=>S.stable.connect(S.signer).approve(CONFIG.voucher,c.total),t("dsApproving",{sym:S.ss}),t("dsApproved",{sym:S.ss}));
+      if(!a) return;
+    }
+    const start=Number(await S.v.getDistributorCodeCount(S.acct));
+    const all=[]; for(let k=0;k<c.n;k++){ const code=codeFromSeed(seed,start+k); all.push({index:start+k,code,codeId:codeIdOf(code),amount:S.dAmt}); }
+    const expiry=S.dExp?now()+S.dExp*86400:0;
+    const nb=Math.ceil(all.length/100); let made=0, last=null;
+    for(let bi=0;bi<nb;bi++){
+      const chunk=all.slice(bi*100,bi*100+100);
+      const rc=await sendTx(()=>S.v.connect(S.signer).createCodes(chunk.map(x=>x.codeId),c.amt,S.plan,expiry),
+        t("dsCreating",{i:bi+1,n:nb}),t("dsCreated2",{i:bi+1,n:nb}));
+      if(!rc) break;
+      last=rc; made+=chunk.length; S.newCodes=chunk.concat(S.newCodes||[]);
+    }
+    if(made){
+      S.myCodes=null;
+      showTxPop(t("dsPopTitle"),t("dsPopMsg",{n:made,amt:S.dAmt,sym:S.ss}),last.hash);
+    }
+  }finally{ S.dBusy=false; S.dist=null; await refresh(); }
+}
+function codesCsv(rows){
+  return "code,amount_usdt,status,code_id\n"+rows.map(r=>`${r.code||""},${r.amount},${r.key||"active"},${r.codeId}`).join("\n");
+}
+function newCodesHtml(){
+  const rows=S.newCodes.map(r=>`<div class="crow"><div class="cl"><span class="code">${r.code}</span><span class="cm">${esc(r.amount)} ${S.ss}</span></div>
+    <div class="ca"><button class="mini" onclick="copyText('${r.code}')">${t("dsCopy")}</button><button class="mini" onclick="waShare('${r.code}','${esc(r.amount)} ${S.ss}')">WhatsApp</button></div></div>`).join("");
+  return `<div class="alert w" style="margin:0 0 10px"><div class="a">!</div><div>${t("dsSaveWarn")}</div></div>
+   <div class="toolbar">
+     <button class="btn btn-s" onclick="copyText(S.newCodes.map(r=>r.code+'  ('+r.amount+' '+S.ss+')').join('\\n'),t('dsCopiedAll'))">${t("dsCopyAll")}</button>
+     <button class="btn btn-g" onclick="downloadFile('kavi-codes-'+Date.now()+'.csv',codesCsv(S.newCodes))">${t("dsCsv")}</button>
+     <button class="btn btn-g" onclick="S.newCodes=[];renderDist()">${t("dsHide")}</button>
+   </div>
+   <div class="hlist">${rows}</div>`;
+}
+function myCodesHtml(){
+  const L=S.myCodes;
+  const tools=`<div class="toolbar">
+     <button class="btn btn-s" onclick="loadMyCodes(false)">${L?t("dsReload"):t("dsLoadCodes")}</button>
+     <button class="btn btn-g" onclick="loadMyCodes(true)">${t("dsReveal")}</button>
+     ${L&&L.some(r=>r.code)?`<button class="btn btn-g" onclick="downloadFile('kavi-my-codes-'+Date.now()+'.csv',codesCsv(S.myCodes))">${t("dsCsv")}</button>`:""}
+   </div>`;
+  if(!L) return tools+`<div class="hint">${t("dsRevealHint")}</div>`;
+  if(L.loading) return tools+`<div class="hemp">${t("mrLoading")}</div>`;
+  if(!L.length) return tools+`<div class="hemp">${t("dsNoCodes")}</div>`;
+  const cnt={active:0,redeemed:0,cancelled:0,expired:0}; L.forEach(r=>cnt[r.key]=(cnt[r.key]||0)+1);
+  const sum=`<div class="btot"><div><span>${t("vs_active")}</span><b>${cnt.active}</b></div><div><span>${t("vs_redeemed")}</span><b>${cnt.redeemed}</b></div><div><span>${t("vs_expired")}</span><b>${cnt.expired}</b></div><div><span>${t("vs_cancelled")}</span><b>${cnt.cancelled}</b></div></div>`;
+  const rows=L.map(r=>{
+    const canCancel=r.key==="active"||r.key==="expired";
+    const label=r.code?`<span class="code">${r.code}</span>`:`<span class="code" style="color:var(--muted)">#${r.index+1} · ${short(r.codeId)}</span>`;
+    const extra=r.key==="redeemed"?` · ${t("dsBy")} ${short(r.redeemedBy)}`:"";
+    return `<div class="crow"><div class="cl">${label}<span class="cm">${fmt(r.amountRaw,S.sd,2)} ${S.ss}${extra}</span></div>
+      <div class="ca">${vTag(r.key)}
+        ${r.code&&r.key==="active"?`<button class="mini" onclick="copyText('${r.code}')">${t("dsCopy")}</button><button class="mini" onclick="waShare('${r.code}','${fmt(r.amountRaw,S.sd,2)} ${S.ss}')">WhatsApp</button>`:""}
+        ${canCancel?`<button class="mini dan" onclick="doCancelCode('${r.codeId}')">${t("dsCancel")}</button>`:""}</div></div>`;
+  }).join("");
+  return tools+sum+`<div class="hlist">${rows}</div>`;
+}
+async function loadMyCodes(reveal){
+  if(!S.acct||!S.v) return;
+  let seed=null;
+  if(reveal){ try{ seed=await getSeed(); }catch(e){ toast(t("dsSignFail"),decodeErr(e),"err"); return; } }
+  S.myCodes=Object.assign([], {loading:true}); renderDist();
+  try{
+    const n=Number(await S.v.getDistributorCodeCount(S.acct)), out=[];
+    for(let s=0;s<n;s+=200){
+      const r=await S.v.getDistributorCodesPaged(S.acct,s,200);
+      r[0].forEach((id,k)=>{
+        const v=r[1][k], idx=s+k;
+        let code=null;
+        if(seed){ const c=codeFromSeed(seed,idx); if(codeIdOf(c)===id) code=c; }
+        out.push({index:idx,codeId:id,code,amount:E.formatUnits(v.amount,S.sd),amountRaw:v.amount,key:vStatus(v),redeemedBy:v.redeemedBy});
+      });
+    }
+    out.reverse(); S.myCodes=out;
+    if(seed&&out.length&&!out.some(r=>r.code)) toast(t("dsRevealMismatch"),"","err");
+  }catch(e){ S.myCodes=null; toast(t("dsLoadErr"),decodeErr(e),"err"); }
+  renderDist();
+}
+async function doCancelCode(codeId){
+  if(!guard()) return;
+  if(!confirm(t("dsCancelConfirm"))) return;
+  const rc=await sendTx(()=>S.v.connect(S.signer).cancelVoucher(codeId),t("dsCancelling"),t("dsCancelDone"));
+  if(rc){ const had=!!(S.myCodes&&S.myCodes.some(r=>r.code)); S.dist=null; await refresh(); loadMyCodes(had); }
+}
+
+/* ---------- New strings (en, hi) ---------- */
+const NEW_STR={
+ tabRedeem:["Redeem Code","कोड रिडीम करें"],
+ tabDist:["Distributor","डिस्ट्रीब्यूटर"],
+ gbLimits:["Per gift: minimum {min}, maximum {max}.","हर गिफ्ट: कम से कम {min}, ज़्यादा से ज़्यादा {max}।"],
+ fwMin:["Minimum per gift is {min}.","हर गिफ्ट कम से कम {min} का होना चाहिए।"],
+ fwMax:["Maximum per gift is {max}.","हर गिफ्ट ज़्यादा से ज़्यादा {max} का हो सकता है।"],
+ txConfirmWallet:["Confirm in your wallet…","अपने वॉलेट में कन्फ़र्म करें…"],
+ txWaiting:["Waiting for confirmation…","कन्फ़र्मेशन का इंतज़ार…"],
+ copied:["Copied","कॉपी हो गया"],copyFail:["Couldn't copy","कॉपी नहीं हो सका"],
+ shareMsg:["🎁 You have a KAVI gift of {amt}!\nYour code: {code}\nOpen the app → Redeem Code, and enter this code.","🎁 आपके लिए {amt} का KAVI गिफ्ट!\nआपका कोड: {code}\nऐप खोलें → Redeem Code में यह कोड डालें।"],
+ vs_active:["Active","एक्टिव"],vs_redeemed:["Redeemed","रिडीम हो गया"],vs_cancelled:["Cancelled","कैंसल"],vs_expired:["Expired","एक्सपायर"],vs_none:["Not found","नहीं मिला"],
+ rdTitle:["Redeem a gift code","गिफ्ट कोड रिडीम करें"],
+ rdSub:["Got a code from a distributor? Enter it to receive the gift in your wallet.","डिस्ट्रीब्यूटर से कोड मिला है? उसे डालें और गिफ्ट अपने वॉलेट में पाएँ।"],
+ rdLabel:["Gift code","गिफ्ट कोड"],rdEnter:["Enter your 16-character code","अपना 16 अक्षरों का कोड डालें"],
+ rdChecking:["Checking code…","कोड जाँचा जा रहा है…"],rdNotFound:["This code doesn't exist. Check every character.","यह कोड मौजूद नहीं है। हर अक्षर जाँचें।"],
+ rdStatus:["Status","स्थिति"],rdGiftAmount:["Gift amount","गिफ्ट राशि"],rdFrom:["From distributor","डिस्ट्रीब्यूटर"],rdValidTill:["Code valid till","कोड वैध है"],
+ rdUsed:["This code was already redeemed by {w}.","यह कोड पहले ही {w} ने रिडीम कर लिया है।"],
+ rdCancelled:["The distributor cancelled this code.","डिस्ट्रीब्यूटर ने यह कोड कैंसल कर दिया है।"],
+ rdExpired:["This code has expired.","यह कोड एक्सपायर हो चुका है।"],
+ rdOwn:["You created this code — give it to someone else.","यह कोड आपने बनाया है — इसे किसी और को दें।"],
+ rdRedeemBtn:["Redeem {amt} {sym} gift","{amt} {sym} का गिफ्ट रिडीम करें"],
+ rdNotRedeemable:["This code can't be redeemed.","यह कोड रिडीम नहीं हो सकता।"],
+ rdWrong:["That code doesn't match.","कोड मेल नहीं खाता।"],
+ rdPending:["Redeeming code","कोड रिडीम हो रहा है"],rdDone:["Gift received","गिफ्ट मिल गया"],
+ rdPopTitle:["Gift received!","गिफ्ट मिल गया!"],
+ rdPopMsg:["A {amt} position is now in your wallet. You can claim it once the price target is reached.","{amt} की पोजीशन अब आपके वॉलेट में है। प्राइस टारगेट पूरा होने पर आप क्लेम कर सकते हैं।"],
+ rdFooter:["The gift is locked as KAVI in your name. You claim 10 monthly payouts once the price target is met — if the price never reaches it, nothing can be claimed.","गिफ्ट आपके नाम पर KAVI में लॉक होता है। प्राइस टारगेट पूरा होने पर 10 मासिक क्लेम मिलते हैं — अगर प्राइस वहाँ तक नहीं पहुँचा, तो कुछ क्लेम नहीं होगा।"],
+ dsTitle:["Distributor","डिस्ट्रीब्यूटर"],dsSub:["Create gift codes that anyone can redeem.","गिफ्ट कोड बनाएँ जिन्हें कोई भी रिडीम कर सके।"],
+ dsConnect:["Connect your wallet to become a distributor or manage your codes.","डिस्ट्रीब्यूटर बनने या अपने कोड मैनेज करने के लिए वॉलेट कनेक्ट करें।"],
+ dsRetry:["Try again","फिर से कोशिश करें"],dsLoadErr:["Couldn't load distributor data.","डिस्ट्रीब्यूटर डेटा लोड नहीं हो सका।"],
+ dsBecome:["Become a distributor","डिस्ट्रीब्यूटर बनें"],dsBecomeSub:["One-time {fee} for {days} days.","{days} दिनों के लिए एक बार {fee}।"],
+ dsF1:["Pay {fee} → distributor for {days} days (renew anytime).","{fee} दें → {days} दिनों के लिए डिस्ट्रीब्यूटर (कभी भी रिन्यू करें)।"],
+ dsF2:["Create codes worth {min}–{max} {sym} each; the USDT stays locked until a code is redeemed or you cancel it.","हर कोड {min}–{max} {sym} का; USDT तब तक लॉक रहता है जब तक कोड रिडीम न हो या आप कैंसल न करें।"],
+ dsF3:["Whoever redeems your code becomes the beneficiary of the gift.","जो आपका कोड रिडीम करेगा, वही गिफ्ट का लाभार्थी बनेगा।"],
+ dsF4:["You earn 10% of every claim on gifts made from your codes.","आपके कोड से बने गिफ्ट के हर क्लेम का 10% आपको मिलता है।"],
+ dsRefLabel:["Referrer (optional, permanent)","रेफरर (वैकल्पिक, स्थायी)"],
+ dsApproveJoin:["Approve & pay {fee}","अप्रूव करें और {fee} दें"],dsJoin:["Pay {fee} & become distributor","{fee} देकर डिस्ट्रीब्यूटर बनें"],
+ dsJoinHint:["The fee is non-refundable. Your wallet will ask you to confirm up to 2 transactions.","फीस वापस नहीं होती। वॉलेट में 2 ट्रांज़ैक्शन तक कन्फ़र्म करने पड़ सकते हैं।"],
+ dsActive:["Active","एक्टिव"],dsExpired:["Expired","एक्सपायर"],dsValidTill:["Valid till","वैध है"],dsDaysLeft:["Days left","बचे दिन"],
+ dsCreated:["Codes created","बने कोड"],dsRedeemed:["Redeemed","रिडीम हुए"],dsCancelledN:["Cancelled","कैंसल"],dsLocked:["USDT locked","लॉक USDT"],
+ dsExpiredNote:["Your distributorship has expired. Renew to create new codes. Existing codes still work and can be cancelled.","डिस्ट्रीब्यूटरशिप एक्सपायर हो गई है। नए कोड के लिए रिन्यू करें। पुराने कोड चलते रहेंगे और कैंसल हो सकते हैं।"],
+ dsRenew:["Renew: +{days} days for {fee}","रिन्यू: {fee} में +{days} दिन"],
+ dsRenewHint:["Renewing early keeps your remaining days.","पहले रिन्यू करने पर बचे दिन नहीं जाते।"],
+ dsCreateTitle:["Create gift codes","गिफ्ट कोड बनाएँ"],dsCreateSub:["How many codes, and how much USDT in each.","कितने कोड, और हर कोड में कितने USDT।"],
+ dsCount:["Number of codes","कोड की संख्या"],dsAmt:["{sym} per code","हर कोड में {sym}"],dsMaxShort:["Max","मैक्स"],
+ dsAmtHint:["Between {min} and {max} {sym} per code.","हर कोड {min} से {max} {sym} के बीच।"],
+ dsExp:["Code validity","कोड की वैधता"],dsNoExp:["No expiry","कोई सीमा नहीं"],dsDays:["days","दिन"],
+ dsPlanNote:["Unlocks at {m}× today's price","आज की कीमत के {m}× पर अनलॉक"],
+ dsTotal:["Total USDT to lock","कुल USDT लॉक होंगे"],dsTxCount:["Wallet confirmations","वॉलेट कन्फ़र्मेशन"],dsYourBal:["Your balance","आपका बैलेंस"],
+ dsBadCount:["Enter between 1 and 1000 codes.","1 से 1000 कोड डालें।"],dsBadAmt:["Enter an amount per code.","हर कोड की राशि डालें।"],
+ dsAmtLow:["Minimum is {min} {sym} per code.","हर कोड कम से कम {min} {sym}।"],dsAmtHigh:["Maximum is {max} {sym} per code.","हर कोड ज़्यादा से ज़्यादा {max} {sym}।"],
+ dsWorking:["Working… check your wallet","काम चल रहा है… वॉलेट देखें"],
+ dsApproveCreate:["Approve & create {n} codes","अप्रूव करें और {n} कोड बनाएँ"],dsCreateBtn:["Create {n} codes","{n} कोड बनाएँ"],
+ dsCreateHint:["You'll sign one message (it generates your codes — sign it only in this app), then confirm the transaction(s). Codes can be recovered later with the same wallet.","पहले एक मैसेज साइन होगा (इससे आपके कोड बनते हैं — इसे सिर्फ़ इसी ऐप में साइन करें), फिर ट्रांज़ैक्शन कन्फ़र्म करें। इसी वॉलेट से कोड बाद में भी वापस मिल सकते हैं।"],
+ dsSignTitle:["Sign the code message","कोड मैसेज साइन करें"],dsSignBody:["This creates your codes. No gas is used.","इससे आपके कोड बनते हैं। कोई गैस नहीं लगती।"],
+ dsSignFail:["Signature cancelled","साइन कैंसल हुआ"],
+ dsApproving:["Approving {sym}","{sym} अप्रूव हो रहा है"],dsApproved:["{sym} approved","{sym} अप्रूव हो गया"],
+ dsJoining:["Becoming distributor","डिस्ट्रीब्यूटर बन रहे हैं"],dsRenewing:["Renewing","रिन्यू हो रहा है"],dsJoinDone:["Done","हो गया"],
+ dsJoinPop:["You're a distributor!","आप डिस्ट्रीब्यूटर बन गए!"],dsRenewPop:["Distributorship renewed","डिस्ट्रीब्यूटरशिप रिन्यू हो गई"],
+ dsJoinPopMsg:["Valid for {days} more days. You can now create gift codes.","अगले {days} दिनों के लिए वैध। अब आप गिफ्ट कोड बना सकते हैं।"],
+ dsCreating:["Creating codes ({i}/{n})","कोड बन रहे हैं ({i}/{n})"],dsCreated2:["Codes created ({i}/{n})","कोड बन गए ({i}/{n})"],
+ dsPopTitle:["Codes created","कोड बन गए"],dsPopMsg:["{n} codes × {amt} {sym} are ready. Save them now — copy, download CSV or share on WhatsApp.","{n} कोड × {amt} {sym} तैयार हैं। अभी सेव करें — कॉपी, CSV डाउनलोड या WhatsApp पर शेयर करें।"],
+ dsNewTitle:["Your new codes","आपके नए कोड"],dsNewSub:["Anyone who has a code can redeem it — share each one only with its recipient.","जिसके पास कोड है वह उसे रिडीम कर सकता है — हर कोड सिर्फ़ उसी व्यक्ति को दें।"],
+ dsSaveWarn:["Save these codes now (Copy all / CSV). You can also reveal them later in “My codes” with the same wallet.","ये कोड अभी सेव करें (Copy all / CSV)। बाद में इसी वॉलेट से “मेरे कोड” में भी देख सकते हैं।"],
+ dsCopy:["Copy","कॉपी"],dsCopyAll:["Copy all","सब कॉपी करें"],dsCopiedAll:["All codes copied","सारे कोड कॉपी हो गए"],dsCsv:["Download CSV","CSV डाउनलोड"],dsHide:["Hide","छिपाएँ"],
+ dsMyTitle:["My codes","मेरे कोड"],dsMySub:["Status of every code you created. Cancel an unused code to get its USDT back.","आपके हर कोड की स्थिति। बिना इस्तेमाल हुआ कोड कैंसल करके USDT वापस लें।"],
+ dsLoadCodes:["Load my codes","मेरे कोड लोड करें"],dsReload:["Refresh","रिफ्रेश"],dsReveal:["Show codes (sign)","कोड दिखाएँ (साइन)"],
+ dsRevealHint:["“Load” shows status only. “Show codes” asks for the same signature to display the actual codes.","“लोड” सिर्फ़ स्थिति दिखाता है। “कोड दिखाएँ” वही साइन माँगकर असली कोड दिखाता है।"],
+ dsRevealMismatch:["Codes couldn't be regenerated with this wallet's signature. Use your saved CSV.","इस वॉलेट के साइन से कोड दोबारा नहीं बन सके। अपनी सेव की हुई CSV इस्तेमाल करें।"],
+ dsNoCodes:["You haven't created any codes yet.","आपने अभी तक कोई कोड नहीं बनाया।"],dsBy:["by","द्वारा"],
+ dsCancel:["Cancel & refund","कैंसल करें, पैसा वापस"],dsCancelConfirm:["Cancel this code and get its USDT back? The code will stop working.","यह कोड कैंसल करके USDT वापस लें? यह कोड फिर काम नहीं करेगा।"],
+ dsCancelling:["Cancelling code","कोड कैंसल हो रहा है"],dsCancelDone:["Code cancelled, USDT refunded","कोड कैंसल, USDT वापस"]
+};
+for(const k in NEW_STR){ T.en[k]=NEW_STR[k][0]; if(T.hi) T.hi[k]=NEW_STR[k][1]; }
+
+
+/* ---------- Admin tab (visible only to admin / pending admin) ---------- */
+function sameA(a,b){return !!a&&!!b&&a.toLowerCase()===b.toLowerCase()}
+function isAdminW(){return !!(S.acct&&sameA(S.acct,S.adminAddr))}
+function isPendingW(){return !!(S.acct&&S.pendingAdmin&&S.pendingAdmin!==ZERO&&sameA(S.acct,S.pendingAdmin))}
+function tabsList(){return (isAdminW()||isPendingW())?TABS.concat([["admin","tabAdmin"]]):TABS}
+async function loadAdminRole(){
+  if(!S.acct||!S.c) return;
+  try{ const [a,p]=await Promise.all([S.c.admin(),S.c.pendingAdmin()]); S.adminAddr=a; S.pendingAdmin=p; }catch(_){ S.adminAddr=null; S.pendingAdmin=null; }
+}
+async function loadAdmin(){
+  if(!S.c||!S.v) return;
+  try{
+    const [admin,pending,linked,mn,mx,ifee,tl,tc,rk]=await Promise.all([S.c.admin(),S.c.pendingAdmin(),S.c.voucherContract(),
+      S.c.minDepositUSD(),S.c.maxDepositUSD(),S.c.feeWallet(),S.c.totalLocked(),S.c.totalDepositsCount(),S.c.totalReserveFundedKavi()]);
+    const [vfee,vper,vcount,vinv,vfw]=await Promise.all([S.v.registrationFee(),S.v.distributorPeriod(),S.v.distributorCount(),S.v.invest(),S.v.feeWallet()]);
+    const vBal=await S.stable.balanceOf(CONFIG.voucher).catch(()=>null);
+    S.adminAddr=admin; S.pendingAdmin=pending;
+    S.adm={admin,pending,linked,mn,mx,ifee,tl,tc,rk,vfee,vper,vcount:Number(vcount),vinv,vfw,vBal};
+  }catch(e){ S.adm={err:decodeErr(e)}; }
+  if(S.tab==="admin"&&!typing()) renderAdmin();
+}
+const aLink=a=>a&&a!==ZERO?`<a class="hlink" href="${CONFIG.explorer}/address/${a}" target="_blank" rel="noopener">${short(a)} ↗</a>`:"—";
+function renderAdmin(){
+  const b=$("#adminBox"); if(!b) return;
+  if(!isAdminW()&&!isPendingW()){ b.innerHTML=distCard(`<div class="empty"><div class="f">—</div>${t("adOnly")}</div>`,t("adTitle")); return; }
+  const d=S.adm;
+  if(!d){ b.innerHTML=distCard(`<div class="hemp">${t("mrLoading")}</div>`,t("adTitle")); loadAdmin(); return; }
+  if(d.err){ b.innerHTML=distCard(`<div class="hemp">${esc(d.err)}</div><div class="hint">${t("adOldContract")}</div><button class="btn btn-g full" onclick="S.adm=null;renderAdmin()">${t("dsRetry")}</button>`,t("adTitle")); return; }
+  const out=[], dis=isAdminW()?"":"disabled", sd=Number(S.sd||18);
+  if(isPendingW()&&!isAdminW()){
+    out.push(distCard(`<div class="hint" style="margin-top:0">${t("adPendingNote")}</div><button class="btn btn-p full" onclick="admAccept()">${t("adAccept")}</button>`,t("adPendingTitle")));
+  }
+  const linkedOk=sameA(d.linked,CONFIG.voucher), backOk=sameA(d.vinv,CONFIG.contract);
+  out.push(distCard(`
+    <div class="btot">
+      <div><span>${t("bandPrice")}</span><b>${S.price?usd(S.price,6):"—"}</b></div>
+      <div><span>${t("adTotalGifts")}</span><b>${d.tc}</b></div>
+      <div><span>${t("adKaviLocked")}</span><b>${fmt(d.tl,S.kd,2)}</b></div>
+    </div>
+    <div class="btot">
+      <div><span>${t("adReserve")}</span><b>${fmt(d.rk,S.kd,2)} ${S.ks}</b></div>
+      <div><span>${t("adDistributors")}</span><b>${d.vcount}</b></div>
+      <div><span>${t("adUnusedCodes")}</span><b>${d.vBal!=null?fmt(d.vBal,sd,2):"—"} ${S.ss}</b></div>
+    </div>`,t("adOverview"),t("adOverviewSub")));
+  out.push(distCard(`
+    <div class="prev" style="margin-top:0">
+      <div class="pr"><span class="k">InvestForCustomer2</span><span class="v">${aLink(CONFIG.contract)}</span></div>
+      <div class="pr"><span class="k">KaviVoucher</span><span class="v">${aLink(CONFIG.voucher)}</span></div>
+      <div class="pr"><span class="k">${t("adLinked")}</span><span class="v">${linkedOk?`<span class="ok">✓ ${t("adYes")}</span>`:`<span class="bad">✗ ${d.linked===ZERO?t("adNotLinked"):short(d.linked)}</span>`}</span></div>
+      <div class="pr"><span class="k">${t("adBack")}</span><span class="v">${backOk?`<span class="ok">✓ ${t("adYes")}</span>`:`<span class="bad">✗ ${t("adNo")}</span>`}</span></div>
+      <div class="pr"><span class="k">${t("adFeeWalletG")}</span><span class="v">${aLink(d.ifee)}</span></div>
+      <div class="pr"><span class="k">${t("adFeeWalletD")}</span><span class="v">${aLink(d.vfw)}</span></div>
+    </div>
+    ${d.linked===ZERO?`<button class="btn btn-p full" ${dis} onclick="admLink()">${t("adLinkBtn")}</button><div class="hint">${t("adLinkHint")}</div>`:""}`,t("adContracts")));
+  out.push(distCard(`
+    <div class="prev" style="margin-top:0">
+      <div class="pr"><span class="k">${t("adCurMin")}</span><span class="v">$${fmt(d.mn,18,4)}</span></div>
+      <div class="pr"><span class="k">${t("adCurMax")}</span><span class="v">$${fmt(d.mx,18,4)}</span></div>
+    </div>
+    <div class="row" style="margin-top:4px">
+      <div class="field" style="flex:1"><label><span>${t("adNewMin")}</span></label><input class="inp tnum" id="aMin" inputmode="decimal" placeholder="0.1" value="${esc(S.aMin||"")}" oninput="S.aMin=this.value"></div>
+      <div class="field" style="flex:1"><label><span>${t("adNewMax")}</span></label><input class="inp tnum" id="aMax" inputmode="decimal" placeholder="10" value="${esc(S.aMax||"")}" oninput="S.aMax=this.value"></div>
+    </div>
+    <div class="hint">${t("adLimitsHint")}</div>
+    <button class="btn btn-p full" ${dis} onclick="admSaveLimits()">${t("adSaveLimits")}</button>`,t("adLimits"),t("adLimitsSub")));
+  out.push(distCard(`
+    <div class="prev" style="margin-top:0">
+      <div class="pr"><span class="k">${t("adCurFee")}</span><span class="v">${fmt(d.vfee,sd,4)} ${S.ss}</span></div>
+      <div class="pr"><span class="k">${t("adCurDays")}</span><span class="v">${Math.round(Number(d.vper)/86400)} ${t("dsDays")}</span></div>
+    </div>
+    <div class="row" style="margin-top:4px">
+      <div class="field" style="flex:1"><label><span>${t("adNewFee",{sym:S.ss})}</span></label><input class="inp tnum" id="aFee" inputmode="decimal" placeholder="50" value="${esc(S.aFee||"")}" oninput="S.aFee=this.value"></div>
+      <div class="field" style="flex:1"><label><span>${t("adNewDays")}</span></label><input class="inp tnum" id="aDays" inputmode="numeric" placeholder="365" value="${esc(S.aDays||"")}" oninput="S.aDays=this.value"></div>
+    </div>
+    <div class="hint">${t("adDistHint")}</div>
+    <div class="row"><button class="btn btn-p full" ${dis} onclick="admSaveFee()">${t("adSaveFee")}</button><button class="btn btn-p full" ${dis} onclick="admSavePeriod()">${t("adSaveDays")}</button></div>`,t("adDistSettings"),t("adDistSettingsSub")));
+  out.push(distCard(`
+    <div class="prev" style="margin-top:0">
+      <div class="pr"><span class="k">${t("adAdmin")}</span><span class="v">${aLink(d.admin)}</span></div>
+      <div class="pr"><span class="k">${t("adPending")}</span><span class="v">${d.pending&&d.pending!==ZERO?aLink(d.pending):t("adNone")}</span></div>
+    </div>
+    <div class="field"><label><span>${t("adNewAdmin")}</span></label><input class="inp" id="aNew" placeholder="0x…" value="${esc(S.aNew||"")}" oninput="S.aNew=this.value.trim()"></div>
+    <div class="row"><button class="btn btn-p full" ${dis} onclick="admTransfer()">${t("adStartTransfer")}</button><button class="btn btn-g full" ${dis} onclick="admCancelTransfer()">${t("adCancelPending")}</button></div>
+    <div class="hint">${t("adTransferHint")}</div>`,t("adWallet"),t("adWalletSub")));
+  out.push(distCard(`
+    <div class="row"><input class="inp" id="aLook" placeholder="0x…" value="${esc(S.aLook||"")}" oninput="S.aLook=this.value.trim()" onkeydown="if(event.key==='Enter')admLookup()"><button class="mx" onclick="admLookup()">${t("lkSearch")}</button></div>
+    <div id="aLookBox"></div>
+    <div class="elab">${t("adAllDist")}</div>
+    <div class="hlist" id="aList"><div class="hemp">${t("mrLoading")}</div></div>
+    <div class="toolbar" style="justify-content:flex-end;align-items:center"><span class="hint" id="aPg" style="margin:0"></span>
+      <button class="btn btn-g" onclick="admPage(-1)">‹</button><button class="btn btn-g" onclick="admPage(1)">›</button></div>`,t("adDistributors"),t("adDistSub")));
+  b.innerHTML=out.join("");
+  admLoadList();
+}
+function admRow(a,d){
+  const valid=d.active&&Number(d.expiresAt)>now(), sd=Number(S.sd||18);
+  return `<div class="crow"><div class="cl"><span>${aLink(a)} <span class="${valid?"ok":"bad"}" style="font-size:12px">${valid?t("dsActive"):t("dsExpired")}</span></span>
+    <span class="cm">${t("dsValidTill")} ${fmtDate(d.expiresAt)} · ${t("adCodesLine",{c:d.codesCreated,r:d.codesRedeemed,x:d.codesCancelled})}</span></div>
+    <div class="ca"><span class="cm">${t("dsLocked")}: <b>${fmt(d.lockedBalance,sd,2)}</b> · ${t("dsRedeemed")}: <b>${fmt(d.totalRedeemed,sd,2)}</b></span></div></div>`;
+}
+async function admLoadList(){
+  const el=$("#aList"), d=S.adm; if(!el||!d||d.err) return;
+  const per=20, total=d.vcount, pages=Math.max(1,Math.ceil(total/per));
+  S.aPg=Math.min(Math.max(0,S.aPg||0),pages-1);
+  const pg=$("#aPg"); if(pg) pg.textContent=total?t("adPageInfo",{p:S.aPg+1,n:pages,t:total}):"";
+  if(!total){ el.innerHTML=`<div class="hemp">${t("adNoDist")}</div>`; return; }
+  try{
+    const list=await S.v.getDistributorsPaged(S.aPg*per,per);
+    const infos=await Promise.all(list.map(a=>S.v.distributors(a)));
+    const e2=$("#aList"); if(e2) e2.innerHTML=list.map((a,k)=>admRow(a,infos[k])).join("");
+  }catch(e){ el.innerHTML=`<div class="hemp">${esc(decodeErr(e))}</div>`; }
+}
+function admPage(dir){ S.aPg=(S.aPg||0)+dir; admLoadList(); }
+async function admLookup(){
+  const a=(S.aLook||"").trim(), box=$("#aLookBox"); if(!box) return;
+  if(!isAddr(a)){ toast(t("refHintInvalid"),"","err"); return; }
+  try{
+    const d=await S.v.distributors(a);
+    box.innerHTML=d.active?`<div class="hlist" style="margin-top:8px">${admRow(a,d)}</div><div class="hint">${t("adJoined")} ${fmtDate(d.joinedAt)} · ${t("adRef")} ${d.referrer===ZERO?t("adNone"):short(d.referrer)}</div>`
+      :`<div class="hemp">${t("adNotDist",{a:short(a)})}</div>`;
+  }catch(e){ box.innerHTML=`<div class="hemp">${esc(decodeErr(e))}</div>`; }
+}
+async function admAfter(rc){ if(rc){ S.adm=null; await loadAdminRole(); await loadAdmin(); renderTabs(); } return rc; }
+async function admSaveLimits(){
+  if(!guard()) return;
+  const d=S.adm, p=v=>{try{return E.parseUnits(String(v).trim(),18)}catch(_){return null}};
+  const mn=(S.aMin||"").trim()?p(S.aMin):d.mn, mx=(S.aMax||"").trim()?p(S.aMax):d.mx;
+  if(mn==null||mx==null){ toast(t("adBadNum"),"","err"); return; }
+  if(mn<E.parseUnits("0.01",18)){ toast(t("adMinFloor"),"","err"); return; }
+  if(mx<mn){ toast(t("adMaxBelowMin"),"","err"); return; }
+  if(!confirm(t("adConfirmLimits",{a:E.formatUnits(mn,18),b:E.formatUnits(mx,18)}))) return;
+  if(await admAfter(await sendTx(()=>S.c.connect(S.signer).setDepositLimits(mn,mx),t("adSaving"),t("adSaved")))){ S.aMin=""; S.aMax=""; S.minUsd=mn; S.maxUsd=mx; renderAdmin(); }
+}
+async function admSaveFee(){
+  if(!guard()) return;
+  const v=(S.aFee||"").trim(); let fee;
+  if(!v){ toast(t("adBadNum"),"","err"); return; }
+  try{ fee=E.parseUnits(v,Number(S.sd||18)); }catch(_){ toast(t("adBadNum"),"","err"); return; }
+  if(!confirm(t("adConfirmFee",{f:v,sym:S.ss}))) return;
+  if(await admAfter(await sendTx(()=>S.v.connect(S.signer).setRegistrationFee(fee),t("adSaving"),t("adSaved")))){ S.aFee=""; S.dist=null; renderAdmin(); }
+}
+async function admSavePeriod(){
+  if(!guard()) return;
+  const n=Number((S.aDays||"").trim());
+  if(!Number.isInteger(n)||n<1||n>3650){ toast(t("adBadDays"),"","err"); return; }
+  if(!confirm(t("adConfirmDays",{n}))) return;
+  if(await admAfter(await sendTx(()=>S.v.connect(S.signer).setDistributorPeriodDays(n),t("adSaving"),t("adSaved")))){ S.aDays=""; S.dist=null; renderAdmin(); }
+}
+async function admTransfer(){
+  if(!guard()) return;
+  const a=(S.aNew||"").trim();
+  if(!isAddr(a)||a===ZERO){ toast(t("refHintInvalid"),"","err"); return; }
+  if(sameA(a,S.adm.admin)){ toast(t("adAlreadyAdmin"),"","err"); return; }
+  if(!confirm(t("adConfirmTransfer",{a}))) return;
+  if(await admAfter(await sendTx(()=>S.c.connect(S.signer).transferAdmin(a),t("adSaving"),t("adTransferStarted")))){ S.aNew=""; renderAdmin(); }
+}
+async function admCancelTransfer(){
+  if(!guard()) return;
+  if(!S.adm.pending||S.adm.pending===ZERO){ toast(t("adNoPending"),"","err"); return; }
+  await admAfter(await sendTx(()=>S.c.connect(S.signer).transferAdmin(ZERO),t("adSaving"),t("adSaved")));
+}
+async function admAccept(){
+  if(!guard()) return;
+  await admAfter(await sendTx(()=>S.c.connect(S.signer).acceptAdmin(),t("adSaving"),t("adNowAdmin")));
+}
+async function admLink(){
+  if(!guard()) return;
+  if(!confirm(t("adConfirmLink",{a:CONFIG.voucher}))) return;
+  await admAfter(await sendTx(()=>S.c.connect(S.signer).setVoucherContract(CONFIG.voucher),t("adSaving"),t("adLinkedDone")));
+}
+const ADM_STR={
+ tabAdmin:["Admin","एडमिन"],adTitle:["Admin","एडमिन"],
+ adOnly:["Only the admin wallet can open this section.","यह हिस्सा सिर्फ़ एडमिन वॉलेट खोल सकता है।"],
+ adOldContract:["If this keeps failing, the deployed InvestForCustomer2 may be an older version without admin settings.","अगर बार-बार फेल हो, तो deploy हुआ InvestForCustomer2 पुराना version (बिना admin settings) हो सकता है।"],
+ adPendingTitle:["You are the pending admin","आप pending एडमिन हैं"],adPendingNote:["The current admin started a transfer to this wallet. Accept to take over.","मौजूदा एडमिन ने इस वॉलेट को transfer शुरू किया है। लेने के लिए Accept करें।"],adAccept:["Accept admin role","एडमिन रोल स्वीकार करें"],
+ adOverview:["Overview","ओवरव्यू"],adOverviewSub:["Live data from the contracts.","कॉन्ट्रैक्ट से लाइव डेटा।"],
+ adTotalGifts:["Total gifts","कुल गिफ्ट"],adKaviLocked:["KAVI locked","लॉक KAVI"],adReserve:["Reserve funded","रिज़र्व में"],adDistributors:["Distributors","डिस्ट्रीब्यूटर"],adUnusedCodes:["In unused codes","बिना इस्तेमाल कोड में"],
+ adContracts:["Contracts","कॉन्ट्रैक्ट"],adLinked:["Voucher linked","वाउचर लिंक"],adBack:["Voucher → InvestForCustomer2","वाउचर → InvestForCustomer2"],adYes:["Yes","हाँ"],adNo:["No","नहीं"],adNotLinked:["Not linked","लिंक नहीं"],
+ adFeeWalletG:["Fee wallet (gifts)","फीस वॉलेट (गिफ्ट)"],adFeeWalletD:["Fee wallet (distributors)","फीस वॉलेट (डिस्ट्रीब्यूटर)"],
+ adLinkBtn:["Link KaviVoucher now (one time)","KaviVoucher अभी लिंक करें (एक बार)"],adLinkHint:["Without this, codes can't be redeemed.","इसके बिना कोड रिडीम नहीं होंगे।"],
+ adLimits:["Deposit limits","डिपॉज़िट सीमा"],adLimitsSub:["Per gift and per code (USD).","हर गिफ्ट और हर कोड (USD)।"],adCurMin:["Current minimum","मौजूदा न्यूनतम"],adCurMax:["Current maximum","मौजूदा अधिकतम"],
+ adNewMin:["New minimum ($)","नया न्यूनतम ($)"],adNewMax:["New maximum ($)","नया अधिकतम ($)"],
+ adLimitsHint:["Minimum at least $0.01, maximum ≥ minimum. Leave a box empty to keep it. Codes already created keep working.","न्यूनतम कम से कम $0.01, अधिकतम ≥ न्यूनतम। खाली छोड़ने पर वही रहेगा। पहले बने कोड चलते रहेंगे।"],adSaveLimits:["Save limits","सीमा सेव करें"],
+ adDistSettings:["Distributor settings","डिस्ट्रीब्यूटर सेटिंग"],adDistSettingsSub:["For new registrations and renewals.","नई रजिस्ट्रेशन और रिन्यू के लिए।"],adCurFee:["Current fee","मौजूदा फीस"],adCurDays:["Current validity","मौजूदा वैधता"],
+ adNewFee:["New fee ({sym})","नई फीस ({sym})"],adNewDays:["New validity (days)","नई वैधता (दिन)"],
+ adDistHint:["Fee 0 = free. Validity 1–3650 days. Existing distributors keep their current expiry.","फीस 0 = मुफ़्त। वैधता 1–3650 दिन। पुराने डिस्ट्रीब्यूटर की expiry नहीं बदलती।"],adSaveFee:["Save fee","फीस सेव करें"],adSaveDays:["Save validity","वैधता सेव करें"],
+ adWallet:["Admin wallet","एडमिन वॉलेट"],adWalletSub:["Move admin to a new wallet (e.g. a multisig) in 2 steps.","एडमिन को नए वॉलेट (जैसे multisig) पर 2 step में ले जाएँ।"],adAdmin:["Admin","एडमिन"],adPending:["Pending admin","Pending एडमिन"],adNone:["none","कोई नहीं"],
+ adNewAdmin:["New admin address","नए एडमिन का पता"],adStartTransfer:["Start transfer","Transfer शुरू करें"],adCancelPending:["Cancel pending","Pending रद्द करें"],
+ adTransferHint:["You stay admin until the new wallet opens this app and presses “Accept admin role”.","नया वॉलेट इस ऐप में “Accept” दबाने तक आप ही एडमिन रहेंगे।"],
+ adDistSub:["Everyone who has registered.","सभी रजिस्टर्ड डिस्ट्रीब्यूटर।"],adAllDist:["All distributors","सभी डिस्ट्रीब्यूटर"],adNoDist:["No distributors yet.","अभी कोई डिस्ट्रीब्यूटर नहीं।"],
+ adPageInfo:["Page {p} of {n} · {t} total","पेज {p}/{n} · कुल {t}"],adCodesLine:["codes {c} made · {r} used · {x} cancelled","कोड {c} बने · {r} इस्तेमाल · {x} कैंसल"],
+ adJoined:["Joined","जुड़े"],adRef:["Referrer","रेफरर"],adNotDist:["{a} has never registered as a distributor.","{a} कभी डिस्ट्रीब्यूटर नहीं बना।"],
+ adBadNum:["Enter a valid number.","सही संख्या डालें।"],adMinFloor:["Minimum must be at least $0.01.","न्यूनतम कम से कम $0.01 होना चाहिए।"],adMaxBelowMin:["Maximum must be ≥ minimum.","अधिकतम ≥ न्यूनतम होना चाहिए।"],adBadDays:["Validity must be 1–3650 days.","वैधता 1–3650 दिन होनी चाहिए।"],
+ adConfirmLimits:["Set deposit limits to ${a} – ${b}?","डिपॉज़िट सीमा ${a} – ${b} करें?"],adConfirmFee:["Set distributor fee to {f} {sym}?","डिस्ट्रीब्यूटर फीस {f} {sym} करें?"],adConfirmDays:["Set distributor validity to {n} days?","डिस्ट्रीब्यूटर वैधता {n} दिन करें?"],
+ adConfirmTransfer:["Start admin transfer to {a}? That wallet must then accept.","{a} को एडमिन transfer शुरू करें? उस वॉलेट को फिर accept करना होगा।"],
+ adConfirmLink:["Link KaviVoucher {a}? This can be done only once.","KaviVoucher {a} लिंक करें? यह सिर्फ़ एक बार होता है।"],
+ adAlreadyAdmin:["That wallet is already the admin.","यह वॉलेट पहले से एडमिन है।"],adNoPending:["No pending transfer.","कोई pending transfer नहीं।"],
+ adSaving:["Saving","सेव हो रहा है"],adSaved:["Saved","सेव हो गया"],adTransferStarted:["Transfer started — waiting for accept","Transfer शुरू — accept का इंतज़ार"],adNowAdmin:["You are now the admin","अब आप एडमिन हैं"],adLinkedDone:["Voucher linked","वाउचर लिंक हो गया"]
+};
+for(const k in ADM_STR){ T.en[k]=ADM_STR[k][0]; if(T.hi) T.hi[k]=ADM_STR[k][1]; }
+
+
+/* ---------- No injected wallet: open this page inside a wallet app ---------- */
+function isMobileUA(){return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent||"")}
+function openWalletGate(){
+  const g=$("#walletGate"); if(!g) return;
+  const web=/^https?:$/.test(location.protocol), href=location.href, noProto=href.replace(/^https?:\/\//,"");
+  $("#wgTitle").textContent=isMobileUA()?t("wgTitleM"):t("wgTitleD");
+  $("#wgDesc").textContent=isMobileUA()?t("wgDescM"):t("wgDescD");
+  let btns="";
+  if(web&&isMobileUA()){
+    btns=`<a class="btn btn-p" href="https://metamask.app.link/dapp/${noProto}">${t("wgMetaMask")}</a>
+      <a class="btn btn-p" href="https://link.trustwallet.com/open_url?coin_id=20000714&url=${encodeURIComponent(href)}">${t("wgTrust")}</a>
+      <button class="btn btn-g" onclick="copyText(location.href,t('wgCopied'))">${t("wgCopy")}</button>`;
+  }else if(web){
+    btns=`<a class="btn btn-p" href="https://metamask.io/download/" target="_blank" rel="noopener">${t("wgInstall")}</a>
+      <button class="btn btn-g" onclick="location.reload()">${t("wgReload")}</button>`;
+  }else{
+    btns=`<button class="btn btn-g" onclick="closeWalletGate()">OK</button>`;
+  }
+  $("#wgBtns").innerHTML=btns;
+  $("#wgHint").textContent=web?(isMobileUA()?t("wgHintM"):""):t("wgFile");
+  g.style.display="flex";
+}
+function closeWalletGate(){const g=$("#walletGate");if(g)g.style.display="none"}
+const WG_STR={
+ wgTitleM:["Open in your wallet app","अपने वॉलेट ऐप में खोलें"],
+ wgTitleD:["No wallet found in this browser","इस ब्राउज़र में वॉलेट नहीं मिला"],
+ wgDescM:["Mobile browsers like Chrome can't connect a crypto wallet. Open this page inside MetaMask or Trust Wallet — tap a button below.","Chrome जैसे मोबाइल ब्राउज़र में वॉलेट कनेक्ट नहीं होता। यह पेज MetaMask या Trust Wallet के अंदर खोलें — नीचे बटन दबाएँ।"],
+ wgDescD:["Install the MetaMask extension (or another BNB Chain wallet), then reload this page.","MetaMask extension (या कोई BNB Chain वॉलेट) इंस्टॉल करें, फिर पेज रीलोड करें।"],
+ wgMetaMask:["Open in MetaMask","MetaMask में खोलें"],wgTrust:["Open in Trust Wallet","Trust Wallet में खोलें"],
+ wgCopy:["Copy link (for other wallets)","लिंक कॉपी करें (दूसरे वॉलेट के लिए)"],wgCopied:["Link copied — paste it in your wallet's browser","लिंक कॉपी हुआ — वॉलेट के ब्राउज़र में पेस्ट करें"],
+ wgInstall:["Install MetaMask","MetaMask इंस्टॉल करें"],wgReload:["I installed it — reload","इंस्टॉल कर लिया — रीलोड करें"],
+ wgHintM:["Other wallets (TokenPocket, SafePal, Binance Web3…): copy the link, open the wallet's Browser / DApp tab and paste it.","दूसरे वॉलेट (TokenPocket, SafePal, Binance Web3…): लिंक कॉपी करें, वॉलेट का Browser / DApp टैब खोलकर पेस्ट करें।"],
+ wgFile:["This page is opened as a file. Upload it to your website (https://…) and open that link — wallets can't connect to a local file.","यह पेज फ़ाइल की तरह खुला है। इसे अपनी वेबसाइट (https://…) पर अपलोड करके वह लिंक खोलें — लोकल फ़ाइल से वॉलेट कनेक्ट नहीं होता।"]
+};
+for(const k in WG_STR){ T.en[k]=WG_STR[k][0]; if(T.hi) T.hi[k]=WG_STR[k][1]; }
+
+document.getElementById("qrFile").addEventListener("change",e=>{const f=e.target.files[0];e.target.value="";readQrFile(f)});
+document.getElementById("scan").addEventListener("click",e=>{if(e.target.id==="scan")closeScanner()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!document.getElementById("scan").hidden)closeScanner()});
+
+setInterval(()=>{const t=now();document.querySelectorAll(".cd[data-at]").forEach(e=>{const a=+e.dataset.at;if(a>t)e.textContent=dur(a-t)})},1000);
+setInterval(()=>{if(S.c)refresh()},25000);
+(function(){try{const q=new URLSearchParams(location.search).get("code");if(q){S.rCode=fmtCode(q);S.tab="redeem";}}catch(_){}})();
+render();
+bootstrap();
+
+function waitForEthereum(timeout=3500){
+  return new Promise(res=>{
+    if(window.ethereum) return res(true);
+    let done=false; const finish=v=>{if(!done){done=true;res(v)}};
+    window.addEventListener("ethereum#initialized",()=>finish(true),{once:true});
+    const iv=setInterval(()=>{ if(window.ethereum){clearInterval(iv);finish(true)} },120);
+    setTimeout(()=>{clearInterval(iv);finish(!!window.ethereum)},timeout);
+  });
+}
+async function autoConnect(){
+  if(S.acct) return;
+  await waitForEthereum(4000);
+  if(!window.ethereum) return;                              // no wallet here — nothing to auto-connect
+  try{
+    const accs=await window.ethereum.request({method:"eth_accounts"});
+    if(accs&&accs.length){ await connect(); return; }       // already authorized → connect silently
+  }catch(_){}
+  try{ await connect(); }catch(_){}                          // not yet authorized → auto-prompt the wallet
+}
+autoConnect();
+</script>
+</body>
+</html>
